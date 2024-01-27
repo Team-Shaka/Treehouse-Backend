@@ -27,9 +27,10 @@ public class Member extends BaseDateTimeEntity {
 
     private MemberStatus status;
 
-    private Integer activeRate; //활동량
-
-    private Integer invitationCount; //남아있는 초대장의 개수
+    @Builder.Default
+    private Double activeRate = 0.0; //활동량
+    @Builder.Default
+    private Integer invitationCount = 0; //남아있는 초대장의 개수
 
     private LocalDateTime inactivatedAt; //탈퇴일자
 
