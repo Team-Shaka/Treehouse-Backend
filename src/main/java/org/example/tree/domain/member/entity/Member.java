@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.tree.common.BaseDateTimeEntity;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Builder
@@ -13,5 +15,23 @@ import org.example.tree.common.BaseDateTimeEntity;
 public class Member extends BaseDateTimeEntity {
 
     @Id
-    private String id;
+    private String id; //고유 문자열 아이디(인스타그램 st.)
+
+    private String name;
+
+    private String bio;
+
+    private String phone; //전화번호
+
+    private String profileImageUrl; //프로필 이미지
+
+    private MemberStatus status;
+
+    private Integer activeRate; //활동량
+
+    private Integer invitationCount; //남아있는 초대장의 개수
+
+    private LocalDateTime inactivatedAt; //탈퇴일자
+
+
 }
