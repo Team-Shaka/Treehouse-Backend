@@ -36,4 +36,15 @@ public class InvitationService {
         Invitation savedInvitation = invitationCommandService.createInvitation(invitation);
         return invitationConverter.toInviteUser(savedInvitation, isNewUser);
     }
+
+    @Transactional
+    public void inviteMember(InvitationRequestDTO.inviteMember request) {
+        Member sender = memberQueryService.findById(request.getSenderId());
+        sender.decreaseInvitationCount();
+
+        Tree tree = treeQueryService.findById(request.getTreeId());
+        Member targetMember = memberQueryService.findById(request.getTargetUserId());
+        Invitation invitation = invitationConverter.toInvitation(sender, tree, targetMember.getPhone());
+        invitationCommandService.createInvitation(invitation);
+    }
 }
