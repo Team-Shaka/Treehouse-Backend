@@ -15,4 +15,5 @@ public class InvitationCommandService {
     public Invitation createInvitation(Invitation invitation) {
         return invitationRepository.save(invitation);
     }
+
 }

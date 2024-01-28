@@ -28,7 +28,7 @@ public class InvitationController {
     public ApiResponse inviteMember(
             @RequestBody final InvitationRequestDTO.inviteMember request
     ) {
-        return null;
+        return ApiResponse.onSuccess("");
     }
 
     @PostMapping("/trees/members/invitation/accept")
