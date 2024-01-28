@@ -16,4 +16,7 @@ public class InvitationCommandService {
         return invitationRepository.save(invitation);
     }
 
+    public void deleteInvitation(Invitation invitation) {
+        invitationRepository.delete(invitation);
+    }
 }

@@ -27,6 +27,10 @@ public enum GlobalErrorCode {
     //Tree
     //404 Not Found - 찾을 수 없음
     TREE_NOT_FOUND(NOT_FOUND, "존재하지 않는 트리입니다."),
+
+    //Invitation
+    //404 Not Found - 찾을 수 없음
+    INVITATION_NOT_FOUND(NOT_FOUND, "존재하지 않는 초대장입니다."),
     ;
 
 

@@ -47,4 +47,11 @@ public class InvitationService {
         Invitation invitation = invitationConverter.toInvitation(sender, tree, targetMember.getPhone());
         invitationCommandService.createInvitation(invitation);
     }
+
+    @Transactional
+    public  InvitationResponseDTO.acceptInvitation acceptInvitation(InvitationRequestDTO.acceptInvitation request) {
+        Invitation invitation = invitationQueryService.findById(request.getInvitationId());
+        invitationCommandService.deleteInvitation(invitation);
+        return invitationConverter.toAcceptInvitation(invitation);
+    }
 }

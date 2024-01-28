@@ -22,4 +22,11 @@ public class InvitationConverter {
                 .isNewUser(isNewUser)
                 .build();
     }
+
+    public InvitationResponseDTO.acceptInvitation toAcceptInvitation (Invitation invitation) {
+        return InvitationResponseDTO.acceptInvitation.builder()
+                .treeId(invitation.getTree().getId())
+                .isAccept(true)
+                .build();
+    }
 }
