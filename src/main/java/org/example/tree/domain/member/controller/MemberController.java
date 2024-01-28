@@ -21,7 +21,7 @@ public class MemberController {
     public ApiResponse<MemberResponseDTO.checkId> checkId(
             @RequestBody final MemberRequestDTO.checkId request
     ) {
-        return null;
+        return ApiResponse.onSuccess(memberService.checkId(request));
     }
     @PostMapping("/register")
     public ApiResponse<MemberResponseDTO.registerMember> registerMember(
