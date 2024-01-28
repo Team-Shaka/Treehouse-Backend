@@ -10,14 +10,12 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "member")
 public class Member extends BaseDateTimeEntity {
 
     @Id
     private String id; //고유 문자열 아이디(인스타그램 st.)
-
-    private String name;
 
     private String bio;
 
@@ -26,6 +24,9 @@ public class Member extends BaseDateTimeEntity {
     private String profileImageUrl; //프로필 이미지
 
     private MemberStatus status;
+
+    @Enumerated(EnumType.STRING)
+    private MemberRole role;
 
     @Builder.Default
     private Double activeRate = 0.0; //활동량
