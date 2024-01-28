@@ -2,6 +2,7 @@ package org.example.tree.domain.invitation.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.example.tree.common.BaseDateTimeEntity;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.tree.entity.Tree;
 
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Invitation {
+public class Invitation extends BaseDateTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
