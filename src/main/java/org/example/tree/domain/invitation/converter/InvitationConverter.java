@@ -29,4 +29,11 @@ public class InvitationConverter {
                 .isAccept(true)
                 .build();
     }
+
+    public InvitationResponseDTO.getAvailableInvitation toGetAvailableInvitation (Member member) {
+        return InvitationResponseDTO.getAvailableInvitation.builder()
+                .availableInvitation(member.getInvitationCount())
+                .activeRate(member.getActiveRate())
+                .build();
+    }
 }

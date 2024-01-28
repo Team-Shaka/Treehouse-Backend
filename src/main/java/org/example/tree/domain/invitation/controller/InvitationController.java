@@ -5,10 +5,7 @@ import org.example.tree.domain.invitation.dto.InvitationRequestDTO;
 import org.example.tree.domain.invitation.dto.InvitationResponseDTO;
 import org.example.tree.domain.invitation.service.InvitationService;
 import org.example.tree.global.common.ApiResponse;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,7 +42,10 @@ public class InvitationController {
     }
 
     @GetMapping("/users/availableInvitation")
-    public ApiResponse<InvitationResponseDTO.getAvailableInvitation> getAvailableInvitation() {
-        return null;
+    public ApiResponse<InvitationResponseDTO.getAvailableInvitation> getAvailableInvitation(
+            @RequestHeader("Authorization") final String header
+    ) {
+        String token = header.replace("Bearer ", "");
+        return ApiResponse.onSuccess(invitationService.getAvailableInvitation(token));
     }
 }
