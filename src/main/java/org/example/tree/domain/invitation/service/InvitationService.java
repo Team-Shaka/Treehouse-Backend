@@ -54,4 +54,10 @@ public class InvitationService {
         invitationCommandService.deleteInvitation(invitation);
         return invitationConverter.toAcceptInvitation(invitation);
     }
+
+    @Transactional
+    public InvitationResponseDTO.getAvailableInvitation getAvailableInvitation(String token) {
+        Member member = memberQueryService.findByToken(token);
+        return invitationConverter.toGetAvailableInvitation(member);
+    }
 }
