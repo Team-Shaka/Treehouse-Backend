@@ -14,6 +14,9 @@ import java.util.Optional;
 public class MemberQueryService {
     private final MemberRepository memberRepository;
 
+    public Optional<Member> checkId(String id) {
+        return memberRepository.findById(id);
+    }
     public Member findById(String id) {
         return memberRepository.findById(id)
                 .orElseThrow(()->new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));

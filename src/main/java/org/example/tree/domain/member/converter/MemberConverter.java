@@ -18,6 +18,12 @@ public class MemberConverter {
                 .build();
     }
 
+    public MemberResponseDTO.checkId toCheckId(Boolean isDuplicate) {
+        return MemberResponseDTO.checkId.builder()
+                .isDuplicate(isDuplicate)
+                .build();
+    }
+
     public MemberResponseDTO.registerMember toRegister(String accessToken, String refreshToken) {
         return MemberResponseDTO.registerMember.builder()
                 .accessToken(accessToken)
