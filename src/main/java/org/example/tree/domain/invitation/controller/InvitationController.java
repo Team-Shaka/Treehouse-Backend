@@ -28,6 +28,7 @@ public class InvitationController {
     public ApiResponse inviteMember(
             @RequestBody final InvitationRequestDTO.inviteMember request
     ) {
+        invitationService.inviteMember(request);
         return ApiResponse.onSuccess("");
     }
 
@@ -35,7 +36,7 @@ public class InvitationController {
     public ApiResponse<InvitationResponseDTO.acceptInvitation> acceptInvitation(
             @RequestBody final InvitationRequestDTO.acceptInvitation request
     ) {
-        return null;
+        return ApiResponse.onSuccess(invitationService.acceptInvitation(request));
     }
 
     @GetMapping("/users/invitation")
