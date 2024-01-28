@@ -20,7 +20,8 @@ public class TreeController {
     public ApiResponse createTree(
             @RequestBody TreeRequestDTO.createTree request
     ) {
-        return null;
+        treeService.createTree(request);
+        return ApiResponse.onSuccess("");
     }
 
     @PostMapping("/members/register")
