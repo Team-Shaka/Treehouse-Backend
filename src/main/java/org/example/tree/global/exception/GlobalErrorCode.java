@@ -20,10 +20,13 @@ public enum GlobalErrorCode {
     AUTHENTICATION_REQUIRED(UNAUTHORIZED, "인증 정보가 유효하지 않습니다."),
     // 404 Not Found - 찾을 수 없음
     NEED_AGREE_REQUIRE_TERMS(NOT_FOUND, "필수 약관에 동의해 주세요."),
-    MEMBER_INFO_NOT_FOUND(NOT_FOUND, "등록된 사용자 정보가 없습니다."),
+    MEMBER_NOT_FOUND(NOT_FOUND, "등록된 사용자 정보가 없습니다."),
     // 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_PHONE_NUMBER(CONFLICT, "중복된 전화번호가 존재합니다."),
 
+    //Tree
+    //404 Not Found - 찾을 수 없음
+    TREE_NOT_FOUND(NOT_FOUND, "존재하지 않는 트리입니다."),
     ;
 
 
