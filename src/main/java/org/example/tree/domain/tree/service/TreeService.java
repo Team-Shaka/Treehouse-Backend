@@ -2,6 +2,7 @@ package org.example.tree.domain.tree.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.tree.converter.TreeConverter;
 import org.example.tree.domain.tree.dto.TreeRequestDTO;
 import org.example.tree.domain.tree.entity.Tree;
@@ -19,4 +20,5 @@ public class TreeService {
         Tree tree = treeConverter.toTree(request.getTreeName());
         treeCommandService.createTree(tree);
     }
+
 }
