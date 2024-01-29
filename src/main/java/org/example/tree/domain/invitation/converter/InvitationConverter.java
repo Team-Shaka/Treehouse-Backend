@@ -6,6 +6,8 @@ import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.tree.entity.Tree;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class InvitationConverter {
     public Invitation toInvitation (Member sender, Tree tree, String phone) {
@@ -34,6 +36,16 @@ public class InvitationConverter {
         return InvitationResponseDTO.getAvailableInvitation.builder()
                 .availableInvitation(member.getInvitationCount())
                 .activeRate(member.getActiveRate())
+                .build();
+    }
+
+    public InvitationResponseDTO.getInvitation toGetInvitation (Invitation invitation) {
+        return InvitationResponseDTO.getInvitation.builder()
+                .invitationId(invitation.getId())
+                .treeName(invitation.getTree().getName())
+                .senderName(invitation.getSender().getId())
+                .treeSize(invitation.getTree().getTreeSize())
+                .treeMemberProfileImages(new ArrayList<>())
                 .build();
     }
 }
