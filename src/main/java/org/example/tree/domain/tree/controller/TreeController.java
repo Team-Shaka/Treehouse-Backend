@@ -24,10 +24,5 @@ public class TreeController {
         return ApiResponse.onSuccess("");
     }
 
-    @PostMapping("/members/register")
-    public ApiResponse registerTreeMember(
-            @RequestBody TreeRequestDTO.registerTreeMember request
-    ) {
-        return null;
-    }
+
 }

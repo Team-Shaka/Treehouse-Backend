@@ -17,6 +17,11 @@ public class Tree extends BaseDateTimeEntity {
 
     private String name;
 
-    private Integer treeSize; //트리 규모(총 인원)
+    @Builder.Default
+    private Integer treeSize = 1; //트리 규모(총 인원)
+
+    public void increaseTreeSize() {
+        this.treeSize++;
+    }
 
 }

@@ -16,6 +16,8 @@ public class Profile extends BaseDateTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String memberName; //트리에서 사용할 닉네임
+
     private String profileImageUrl; //프로필 이미지(트리 별로 상이)
 
     @JoinColumn(name = "memberId")
