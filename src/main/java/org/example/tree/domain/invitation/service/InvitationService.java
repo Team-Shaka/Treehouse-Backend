@@ -13,7 +13,9 @@ import org.example.tree.domain.tree.service.TreeQueryService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -59,5 +61,14 @@ public class InvitationService {
     public InvitationResponseDTO.getAvailableInvitation getAvailableInvitation(String token) {
         Member member = memberQueryService.findByToken(token);
         return invitationConverter.toGetAvailableInvitation(member);
+    }
+
+    @Transactional
+    public List<InvitationResponseDTO.getInvitation> getInvitation(String token) {
+        Member member = memberQueryService.findByToken(token);
+        List<Invitation> invitations= invitationQueryService.findAllByPhone(member.getPhone());
+        return invitations.stream()
+                .map(invitationConverter::toGetInvitation)
+                .collect(Collectors.toList());
     }
 }

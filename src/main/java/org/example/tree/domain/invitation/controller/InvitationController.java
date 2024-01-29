@@ -37,8 +37,11 @@ public class InvitationController {
     }
 
     @GetMapping("/users/invitation")
-    public ApiResponse<List<InvitationResponseDTO.getInvitation>> getInvitation() {
-        return null;
+    public ApiResponse<List<InvitationResponseDTO.getInvitation>> getInvitation(
+            @RequestHeader("Authorization") final String header
+    ) {
+        String token = header.replace("Bearer ", "");
+        return ApiResponse.onSuccess(invitationService.getInvitation(token));
     }
 
     @GetMapping("/users/availableInvitation")
