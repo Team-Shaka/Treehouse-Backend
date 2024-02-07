@@ -1,11 +1,8 @@
 package org.example.tree.domain.post.converter;
 
-import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.post.dto.PostResponseDTO;
 import org.example.tree.domain.post.entity.Post;
-import org.example.tree.domain.post.entity.PostImage;
 import org.example.tree.domain.profile.entity.Profile;
-import org.example.tree.domain.tree.entity.Tree;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +18,7 @@ public class PostConverter {
                 .postImages(postImageUrls)
                 .profile(profile)
                 .tree(profile.getTree())
+                .commentCount(0)
                 .build();
     }
 
@@ -41,6 +39,7 @@ public class PostConverter {
                 .content(post.getContent())
                 .postImageUrls(post.getPostImages())
                 .createdAt(post.getCreatedAt())
+                .commentCount(post.getCommentCount())
                 .build();
     }
 

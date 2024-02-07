@@ -25,6 +25,8 @@ public class Post extends BaseDateTimeEntity {
 
     private Integer reactionCount;
 
+    private Integer commentCount;
+
     @JoinColumn(name = "profileId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Profile profile;
@@ -45,6 +47,17 @@ public class Post extends BaseDateTimeEntity {
             this.reactionCount--;
         }
     }
+
+    public void increaseCommentCount() {
+        this.commentCount++;
+    }
+
+    public void decreaseCommentCount() {
+        if (this.commentCount > 0){
+            this.commentCount--;
+        }
+    }
+
 
     public void updatePost(String content) {
         this.content = content;
