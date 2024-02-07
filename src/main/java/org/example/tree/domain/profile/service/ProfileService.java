@@ -11,13 +11,16 @@ import org.example.tree.domain.tree.entity.Tree;
 import org.example.tree.domain.tree.service.TreeQueryService;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ProfileService {
-    ProfileCommandService profileCommandService;
-    ProfileConverter profileConverter;
-    TreeQueryService treeQueryService;
-    MemberQueryService memberQueryService;
+    private final ProfileCommandService profileCommandService;
+    private final ProfileQueryService profileQueryService;
+    private final ProfileConverter profileConverter;
+    private final TreeQueryService treeQueryService;
+    private final MemberQueryService memberQueryService;
 
     @Transactional
     public void createProfile(ProfileRequestDTO.createProfile request) {
@@ -25,6 +28,16 @@ public class ProfileService {
         Member member = memberQueryService.findById(request.getUserId());
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getProfileImageUrl());
         profileCommandService.createProfile(newProfile);
+        System.out.println("newProfile = " + newProfile);
+        System.out.println("newProfile.getMemberName() = " + newProfile.getMemberName());
+        System.out.println("newProfile.getProfileImageUrl() = " + newProfile.getProfileImageUrl());
         tree.increaseTreeSize();
+    }
+
+    @Transactional
+    public Profile getTreeProfile(String token, Long treeId) {
+        Member member = memberQueryService.findByToken(token);
+        Tree tree = treeQueryService.findById(treeId);
+        return profileQueryService.getTreeProfile(member,tree);
     }
 }

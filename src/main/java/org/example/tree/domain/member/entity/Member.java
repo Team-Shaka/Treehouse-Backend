@@ -3,8 +3,10 @@ package org.example.tree.domain.member.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.tree.common.BaseDateTimeEntity;
+import org.example.tree.domain.post.entity.Post;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +36,7 @@ public class Member extends BaseDateTimeEntity {
     private Integer invitationCount = 5; //남아있는 초대장의 개수
 
     private LocalDateTime inactivatedAt; //탈퇴일자
+
 
     public void increaseInvitationCount() {
         this.invitationCount++;
