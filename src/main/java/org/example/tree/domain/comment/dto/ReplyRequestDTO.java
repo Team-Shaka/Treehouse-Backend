@@ -5,15 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class CommentRequestDTO {
+public class ReplyRequestDTO {
 
     @Getter
-    public static class createComment {
+    public static class createReply {
         private String content;
     }
 
     @Getter
-    public static class updateComment {
+    public static class updateReply {
         private String content;
     }
 }

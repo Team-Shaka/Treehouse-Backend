@@ -39,6 +39,14 @@ public enum GlobalErrorCode {
     //Post
     //404 Not Found - 찾을 수 없음
     POST_NOT_FOUND(NOT_FOUND, "존재하지 않는 게시글입니다."),
+
+    //Comment
+    //404 Not Found - 찾을 수 없음
+    COMMENT_NOT_FOUND(NOT_FOUND, "존재하지 않는 댓글입니다."),
+
+    //Reply
+    //404 Not Found - 찾을 수 없음
+    REPLY_NOT_FOUND(NOT_FOUND, "존재하지 않는 답글입니다."),
     ;
 
 

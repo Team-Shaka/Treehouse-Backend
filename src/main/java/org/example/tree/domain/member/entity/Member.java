@@ -38,6 +38,7 @@ public class Member extends BaseDateTimeEntity {
     private LocalDateTime inactivatedAt; //탈퇴일자
 
 
+
     public void increaseInvitationCount() {
         this.invitationCount++;
     }
