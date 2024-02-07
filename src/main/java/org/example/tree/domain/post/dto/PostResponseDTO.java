@@ -1,6 +1,7 @@
 package org.example.tree.domain.post.dto;
 
 import lombok.*;
+import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,6 +33,7 @@ public class PostResponseDTO {
         private List<String> postImageUrls;
         private LocalDateTime createdAt;
         private Integer commentCount;
+        private List<ReactionResponseDTO.getReaction> reactions;
 
     }
 
@@ -45,6 +47,7 @@ public class PostResponseDTO {
         private String memberName;
         private String content;
         private List<String> postImageUrls;
+        private List<ReactionResponseDTO.getReaction> reactions;
         private LocalDateTime createdAt;
 
     }
