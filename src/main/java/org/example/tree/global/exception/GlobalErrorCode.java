@@ -24,6 +24,10 @@ public enum GlobalErrorCode {
     // 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_PHONE_NUMBER(CONFLICT, "중복된 전화번호가 존재합니다."),
 
+    //Profile
+    //404 Not Found - 찾을 수 없음
+    PROFILE_NOT_FOUND(NOT_FOUND, "존재하지 않는 프로필입니다."),
+
     //Tree
     //404 Not Found - 찾을 수 없음
     TREE_NOT_FOUND(NOT_FOUND, "존재하지 않는 트리입니다."),
@@ -31,6 +35,10 @@ public enum GlobalErrorCode {
     //Invitation
     //404 Not Found - 찾을 수 없음
     INVITATION_NOT_FOUND(NOT_FOUND, "존재하지 않는 초대장입니다."),
+
+    //Post
+    //404 Not Found - 찾을 수 없음
+    POST_NOT_FOUND(NOT_FOUND, "존재하지 않는 게시글입니다."),
     ;
 
 

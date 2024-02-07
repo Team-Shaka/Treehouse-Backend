@@ -12,11 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class ProfileController {
-    ProfileService profileService;
+    private final ProfileService profileService;
     @PostMapping("/trees/members/register")
     public ApiResponse registerTreeMember(
             @RequestBody ProfileRequestDTO.createProfile request
     ) {
+        profileService.createProfile(request);
         return ApiResponse.onSuccess("");
     }
 }
