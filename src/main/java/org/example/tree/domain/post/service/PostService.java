@@ -12,6 +12,8 @@ import org.example.tree.domain.post.entity.PostImage;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.profile.service.ProfileQueryService;
 import org.example.tree.domain.profile.service.ProfileService;
+import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
+import org.example.tree.domain.reaction.service.ReactionService;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.springframework.stereotype.Component;
@@ -26,6 +28,7 @@ public class PostService {
     private final PostQueryService postQueryService;
     private final PostConverter postConverter;
     private final ProfileService profileService;
+    private final ReactionService reactionService;
 
     @Transactional
     public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, String token) {
@@ -40,7 +43,12 @@ public class PostService {
         Profile profile = profileService.getTreeProfile(token, treeId);
         List<Post> posts = postQueryService.getPosts(profile.getTree());
         return posts.stream()
-                .map(post -> postConverter.toGetFeed(post))
+                .map(post -> {
+                    // 각 포스트에 대한 반응들을 가져옵니다.
+                    List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, post.getId(), token);
+                    // Post와 해당 Post의 반응들을 포함하여 DTO를 생성합니다.
+                    return postConverter.toGetFeed(post, reactions);
+                })
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +56,8 @@ public class PostService {
     public PostResponseDTO.getPost getPost(Long treeId, Long postId, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         Post post = postQueryService.findById(postId);
-        return postConverter.toGetPost(post);
+        List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, postId, token);
+        return postConverter.toGetPost(post, reactions);
     }
 
     @Transactional

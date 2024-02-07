@@ -9,6 +9,8 @@ import org.example.tree.domain.comment.entity.Comment;
 import org.example.tree.domain.comment.entity.Reply;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.profile.service.ProfileService;
+import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
+import org.example.tree.domain.reaction.service.ReactionService;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.springframework.stereotype.Component;
@@ -24,6 +26,7 @@ public class ReplyService {
     private final ReplyConverter replyConverter;
     private final CommentQueryService commentQueryService;
     private final ProfileService profileService;
+    private final ReactionService reactionService;
 
     @Transactional
     public void createReply(Long treeId, Long commentId, ReplyRequestDTO.createReply request, String token) {
@@ -37,7 +40,10 @@ public class ReplyService {
     public List<ReplyResponseDTO.getReply> getReplies(Comment comment) {
         List<Reply> replies = replyQueryService.getReplies(comment);
         return replies.stream()
-                .map(reply -> replyConverter.toGetReply(reply))
+                .map(reply -> {
+                    List<ReactionResponseDTO.getReaction> reactions = reactionService.getReplyReactions(comment.getPost().getTree().getId(), reply.getId(), comment.getProfile());
+                    return replyConverter.toGetReply(reply, reactions);
+                })
                 .collect(Collectors.toList());
     }
 

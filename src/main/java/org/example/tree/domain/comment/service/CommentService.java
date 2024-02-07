@@ -11,6 +11,8 @@ import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.service.PostQueryService;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.profile.service.ProfileService;
+import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
+import org.example.tree.domain.reaction.service.ReactionService;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.springframework.stereotype.Component;
@@ -27,6 +29,7 @@ public class CommentService {
     private final ReplyService replyService;
     private final CommentConverter commentConverter;
     private final ProfileService profileService;
+    private final ReactionService reactionService;
 
     @Transactional
     public void createComment(Long treeId, Long postId, CommentRequestDTO.createComment request, String token) {
@@ -44,8 +47,9 @@ public class CommentService {
         List<Comment> comments = commentQueryService.getComments(post);
         return comments.stream()
                 .map(comment -> {
+                    List<ReactionResponseDTO.getReaction> reactions = reactionService.getCommentReactions(treeId, comment.getId(), token);
                     List<ReplyResponseDTO.getReply> repliesForComment = replyService.getReplies(comment);
-                    return commentConverter.toGetComment(comment, repliesForComment); // toGetComment 메서드 수정 필요
+                    return commentConverter.toGetComment(comment, reactions, repliesForComment); // toGetComment 메서드 수정 필요
                 })
                 .collect(Collectors.toList());
     }
