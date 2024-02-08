@@ -11,7 +11,7 @@ COPY --from=0 app.jar app.jar
 
 # 애플리케이션 실행 스크립트 추가
 COPY dev_start.sh start.sh
-RUN chmod +x dev_start.sh
+RUN chmod +x start.sh
 
 EXPOSE 8080
 
