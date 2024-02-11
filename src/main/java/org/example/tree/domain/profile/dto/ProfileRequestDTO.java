@@ -3,6 +3,7 @@ package org.example.tree.domain.profile.dto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ProfileRequestDTO {
@@ -11,7 +12,7 @@ public class ProfileRequestDTO {
         private Long treeId;
         private String userId;
         private String memberName;
-        private String profileImageUrl;
+        private MultipartFile profileImage;
         private String bio;
 
     }

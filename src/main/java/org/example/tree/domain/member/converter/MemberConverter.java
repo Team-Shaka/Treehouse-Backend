@@ -13,6 +13,7 @@ public class MemberConverter {
                 .id(id)
                 .phone(phone)
                 .role(MemberRole.valueOf("ROLE_USER"))
+                .profileImageUrl("default-profile-image")
                 .build();
     }
 

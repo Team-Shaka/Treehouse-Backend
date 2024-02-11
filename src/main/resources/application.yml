@@ -5,7 +5,14 @@ spring:
   profiles:
     group:
       dev: common, dev
-
+---
+spring:
+  profiles:
+    active: dev
+  servlet:
+    multipart:
+      maxFileSize: 10MB
+      maxRequestSize: 20MB
 ---
 spring:
   config:
@@ -19,30 +26,30 @@ springdoc:
     disabled: true
   use-fqn: true
 ---
-spring:
-  application:
-    name: tree-server-dev
-  config:
-    activate:
-      on-profile: "dev"
-  datasource:
-    username: ${aws.db.username}
-    password: ${aws.db.password}
-    url: jdbc:mysql://${aws.db.url}/${aws.db.name}?autoReconnect=true&setTimezone=Asia/Seoul
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  sql:
-    init:
-      mode: never
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-        show_sql: true
-        format_sql: true
-        use_sql_comments: true
-        hbm2ddl:
-          auto: update
-        default_batch_fetch_size: 1000
+#spring:
+#  application:
+#    name: tree-server-dev
+#  config:
+#    activate:
+#      on-profile: "dev"
+#  datasource:
+#    username: ${aws.db.username}
+#    password: ${aws.db.password}
+#    url: jdbc:mysql://${aws.db.url}/${aws.db.name}?autoReconnect=true&setTimezone=Asia/Seoul
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#  sql:
+#    init:
+#      mode: never
+#  jpa:
+#    properties:
+#      hibernate:
+#        dialect: org.hibernate.dialect.MySQLDialect
+#        show_sql: true
+#        format_sql: true
+#        use_sql_comments: true
+#        hbm2ddl:
+#          auto: update
+#        default_batch_fetch_size: 1000
 jwt:
   header: Authorization
   # dev server
@@ -50,8 +57,25 @@ jwt:
     key: ${JWT_SECRET}
   #  secret : ${JWT_SECRET}
   authorities-key: authoritiesKey
-  access-token-validity-in-seconds: 1210000000 # 30 m
+  access-token-validity-in-seconds: 1800000 # 30 m
   refresh-token-validity-in-seconds: 1210000000 # 14 d
+
+
+
+cloud:
+  aws:
+    s3:
+      bucket: mytreebucket.bucket
+      #s3 bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
+      #aws access key, secret key
 
 ---
 #spring:
