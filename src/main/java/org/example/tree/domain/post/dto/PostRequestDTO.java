@@ -13,7 +13,6 @@ public class PostRequestDTO {
     @Getter
     public static class createPost {
         private String content;
-        private List<String> postImageUrls;
     }
 
     @Getter

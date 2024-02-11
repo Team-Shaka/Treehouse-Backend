@@ -17,7 +17,9 @@ import org.example.tree.domain.reaction.service.ReactionService;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,12 +31,22 @@ public class PostService {
     private final PostConverter postConverter;
     private final ProfileService profileService;
     private final ReactionService reactionService;
+    private final PostImageCommandService postImageCommandService;
 
     @Transactional
-    public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, String token) {
+    public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, List<MultipartFile> images, String token) throws Exception {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
         Profile profile = profileService.getTreeProfile(token, treeId);
-        Post post = postConverter.toPost(request.getContent(), profile, request.getPostImageUrls());
+        List<PostImage> postImages = postConverter.toPostImages(images);
+        Post post = postConverter.toPost(request.getContent(), profile);
         Post savedPost = postCommandService.createPost(post);
+        for (PostImage postImage : postImages) {
+            postImage.setPost(savedPost); // 각 PostImage에 Post 설정
+            postImageCommandService.createPostImage(postImage);// PostImage 저장
+            savedPost.addPostImage(postImage); // Post에 PostImage 추가
+        }
         return postConverter.toCreatePost(savedPost);
     }
 

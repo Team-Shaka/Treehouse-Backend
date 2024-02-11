@@ -65,7 +65,7 @@ jwt:
 cloud:
   aws:
     s3:
-      bucket: mytreebucket.bucket
+      bucket: mytreebucket
       #s3 bucket
     region:
       static: ap-northeast-2
