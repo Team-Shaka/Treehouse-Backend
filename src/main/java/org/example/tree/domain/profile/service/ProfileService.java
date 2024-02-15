@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+import static org.example.tree.global.consts.TreeStatic.DEFAULT_PROFILE_IMAGE;
+
 @Component
 @RequiredArgsConstructor
 public class ProfileService {
@@ -30,7 +32,7 @@ public class ProfileService {
     public ProfileResponseDTO.createProfile createProfile(ProfileRequestDTO.createProfile request, MultipartFile profileImage) throws Exception {
         Tree tree = treeQueryService.findById(request.getTreeId());
         Member member = memberQueryService.findById(request.getUserId());
-        String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : "";
+        String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);
         tree.increaseTreeSize();
