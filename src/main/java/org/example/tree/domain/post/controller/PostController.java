@@ -7,6 +7,7 @@ import org.example.tree.domain.post.dto.PostResponseDTO;
 import org.example.tree.domain.post.service.PostService;
 import org.example.tree.global.common.ApiResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,10 +20,11 @@ public class PostController {
     public ApiResponse<PostResponseDTO.createPost> createPost(
             @PathVariable final Long treeId,
             @RequestHeader("Authorization") final String header,
-            @RequestBody final PostRequestDTO.createPost request
-    ) {
+            @RequestPart final PostRequestDTO.createPost request,
+            @RequestPart(required = false) List<MultipartFile> images
+    ) throws Exception {
         String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.createPost(treeId, request, token));
+        return ApiResponse.onSuccess(postService.createPost(treeId, request, images, token));
     }
 
     @GetMapping("/trees/{treeId}/feed")
