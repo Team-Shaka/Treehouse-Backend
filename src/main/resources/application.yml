@@ -65,7 +65,7 @@ jwt:
 cloud:
   aws:
     s3:
-      bucket: mytreebucket
+      bucket: elasticbeanstalk-ap-northeast-2-851725177732
       #s3 bucket
     region:
       static: ap-northeast-2

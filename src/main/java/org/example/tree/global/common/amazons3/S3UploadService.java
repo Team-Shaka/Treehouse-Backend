@@ -17,7 +17,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class S3UploadService {
     private  final AmazonS3Client amazonS3Client;
-    private final AmazonS3 amazonS3;
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
