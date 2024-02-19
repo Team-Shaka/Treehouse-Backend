@@ -20,4 +20,16 @@ public class ProfileQueryService {
         return profileRepository.findByMemberAndTree(member, tree)
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.PROFILE_NOT_FOUND));
     }
+
+    public Profile findByMemberId(String memberId) {
+        return (Profile) profileRepository.findByMember_Id(memberId)
+                .orElseThrow(() -> new GeneralException(GlobalErrorCode.PROFILE_NOT_FOUND));
+    }
+
+    public List<Long> findJoinedTree(String memberId) {
+        List<Profile> profiles = profileRepository.findAllByMember_Id(memberId);
+        return profiles.stream()
+                .map(profile -> profile.getTree().getId())
+                .toList();
+    }
 }

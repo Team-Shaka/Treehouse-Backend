@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class MemberController {
     private final MemberService memberService;
-
-    @GetMapping("/test")
-    public ApiResponse test() {
-        return ApiResponse.onSuccess("test");
-    }
     @PostMapping("/checkId")
     public ApiResponse<MemberResponseDTO.checkId> checkId(
             @RequestBody final MemberRequestDTO.checkId request

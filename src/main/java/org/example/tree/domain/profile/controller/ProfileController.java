@@ -20,4 +20,13 @@ public class ProfileController {
             ) throws Exception {
         return ApiResponse.onSuccess(profileService.createProfile(request, profileImage));
     }
+
+    @GetMapping("/trees/{treeId}/members/{memberId}") //프로필 조회
+    public ApiResponse getProfileDetails(
+            @PathVariable Long treeId,
+            @PathVariable String memberId) {
+        return ApiResponse.onSuccess(profileService.getProfileDetails(memberId));
+    }
+
+
 }

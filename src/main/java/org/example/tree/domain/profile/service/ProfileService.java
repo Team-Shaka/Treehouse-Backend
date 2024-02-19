@@ -45,4 +45,11 @@ public class ProfileService {
         Tree tree = treeQueryService.findById(treeId);
         return profileQueryService.getTreeProfile(member,tree);
     }
+
+    @Transactional
+    public ProfileResponseDTO.getProfileDetails getProfileDetails(String memberId) {
+        Profile profile = profileQueryService.findByMemberId(memberId);
+        List<Long> treeIds = profileQueryService.findJoinedTree(memberId);
+        return profileConverter.toGetProfileDetails(profile, treeIds);
+    }
 }
