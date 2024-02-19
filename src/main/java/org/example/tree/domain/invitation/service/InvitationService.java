@@ -51,7 +51,7 @@ public class InvitationService {
     }
 
     @Transactional
-    public  InvitationResponseDTO.acceptInvitation acceptInvitation(InvitationRequestDTO.acceptInvitation request) {
+    public InvitationResponseDTO.acceptInvitation acceptInvitation(InvitationRequestDTO.acceptInvitation request) {
         Invitation invitation = invitationQueryService.findById(request.getInvitationId());
         invitationCommandService.acceptInvitation(invitation);
         return invitationConverter.toAcceptInvitation(invitation);

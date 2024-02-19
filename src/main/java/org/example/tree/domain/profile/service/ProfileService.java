@@ -62,4 +62,5 @@ public class ProfileService {
         List<Long> treeIds = profileQueryService.findJoinedTree(profile);
         return profileConverter.toGetProfileDetails(profile, treeIds);
     }
+
 }
