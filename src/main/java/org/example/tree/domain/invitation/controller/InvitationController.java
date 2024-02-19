@@ -36,6 +36,13 @@ public class InvitationController {
         return ApiResponse.onSuccess(invitationService.acceptInvitation(request));
     }
 
+    @PostMapping("/trees/members/invitation/reject")
+    public ApiResponse<InvitationResponseDTO.rejectInvitation> rejectInvitation(
+            @RequestBody final InvitationRequestDTO.rejectInvitation request
+    ) {
+        return ApiResponse.onSuccess(invitationService.rejectInvitation(request));
+    }
+
     @GetMapping("/users/invitation")
     public ApiResponse<List<InvitationResponseDTO.getInvitation>> getInvitation(
             @RequestHeader("Authorization") final String header
