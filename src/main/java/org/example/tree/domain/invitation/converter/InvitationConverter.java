@@ -32,6 +32,13 @@ public class InvitationConverter {
                 .build();
     }
 
+    public InvitationResponseDTO.rejectInvitation toRejectInvitation (Invitation invitation) {
+        return InvitationResponseDTO.rejectInvitation.builder()
+                .treeId(invitation.getTree().getId())
+                .isAccept(false)
+                .build();
+    }
+
     public InvitationResponseDTO.getAvailableInvitation toGetAvailableInvitation (Member member) {
         return InvitationResponseDTO.getAvailableInvitation.builder()
                 .availableInvitation(member.getInvitationCount())

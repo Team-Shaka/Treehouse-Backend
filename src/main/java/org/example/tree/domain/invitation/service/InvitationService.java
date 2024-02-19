@@ -53,8 +53,15 @@ public class InvitationService {
     @Transactional
     public  InvitationResponseDTO.acceptInvitation acceptInvitation(InvitationRequestDTO.acceptInvitation request) {
         Invitation invitation = invitationQueryService.findById(request.getInvitationId());
-        invitationCommandService.deleteInvitation(invitation);
+        invitationCommandService.acceptInvitation(invitation);
         return invitationConverter.toAcceptInvitation(invitation);
+    }
+
+    @Transactional
+    public InvitationResponseDTO.rejectInvitation rejectInvitation(InvitationRequestDTO.rejectInvitation request) {
+        Invitation invitation = invitationQueryService.findById(request.getInvitationId());
+        invitationCommandService.rejectInvitation(invitation);
+        return invitationConverter.toRejectInvitation(invitation);
     }
 
     @Transactional

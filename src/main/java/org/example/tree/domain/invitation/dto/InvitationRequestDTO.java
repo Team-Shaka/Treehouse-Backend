@@ -26,4 +26,15 @@ public class InvitationRequestDTO {
         private Long invitationId;
         private Boolean isAccept;
     }
+
+    @Getter
+    public static class getInvitation {
+        private Long invitationId;
+    }
+
+    @Getter
+    public static class rejectInvitation {
+        private Long invitationId;
+        private Boolean isAccept;
+    }
 }
