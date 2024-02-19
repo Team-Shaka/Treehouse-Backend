@@ -46,6 +46,16 @@ public class PostController {
         return ApiResponse.onSuccess(postService.getPost(treeId, postId, token));
     }
 
+    @GetMapping("/trees/{treeId}/feed/posts")
+    public ApiResponse<List<PostResponseDTO.getPost>> getPosts(
+            @PathVariable final Long treeId,
+            @RequestParam(name = "member") final Long profileId,
+            @RequestHeader("Authorization") final String header
+    ) {
+        String token = header.replace("Bearer ", "");
+        return ApiResponse.onSuccess(postService.getTreePosts(treeId, profileId, token));
+    }
+
     @PatchMapping("/trees/{treeId}/feed/posts/{postId}")
     public ApiResponse updatePost(
             @PathVariable final Long treeId,

@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
+import org.example.tree.domain.post.service.PostService;
 import org.example.tree.domain.profile.converter.ProfileConverter;
 import org.example.tree.domain.profile.dto.ProfileRequestDTO;
 import org.example.tree.domain.profile.dto.ProfileResponseDTO;
@@ -47,9 +48,18 @@ public class ProfileService {
     }
 
     @Transactional
-    public ProfileResponseDTO.getProfileDetails getProfileDetails(String memberId) {
-        Profile profile = profileQueryService.findByMemberId(memberId);
-        List<Long> treeIds = profileQueryService.findJoinedTree(memberId);
+    public ProfileResponseDTO.getProfileDetails getProfileDetails(Long profileId) {
+        Profile profile = profileQueryService.findById(profileId);
+        List<Long> treeIds = profileQueryService.findJoinedTree(profile);
+        return profileConverter.toGetProfileDetails(profile, treeIds);
+    }
+
+    @Transactional
+    public ProfileResponseDTO.getProfileDetails getMyProfile(String token, Long treeId) {
+        Member member = memberQueryService.findByToken(token);
+        Tree tree = treeQueryService.findById(treeId);
+        Profile profile = profileQueryService.getTreeProfile(member,tree);
+        List<Long> treeIds = profileQueryService.findJoinedTree(profile);
         return profileConverter.toGetProfileDetails(profile, treeIds);
     }
 }

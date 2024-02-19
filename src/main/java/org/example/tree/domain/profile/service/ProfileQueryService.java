@@ -21,15 +21,16 @@ public class ProfileQueryService {
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.PROFILE_NOT_FOUND));
     }
 
-    public Profile findByMemberId(String memberId) {
-        return (Profile) profileRepository.findByMember_Id(memberId)
+    public Profile findById(Long profileId) {
+        return profileRepository.findById(profileId)
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.PROFILE_NOT_FOUND));
     }
 
-    public List<Long> findJoinedTree(String memberId) {
-        List<Profile> profiles = profileRepository.findAllByMember_Id(memberId);
-        return profiles.stream()
-                .map(profile -> profile.getTree().getId())
+    public List<Long> findJoinedTree(Profile profile) {
+        String memberId = profile.getMember().getId();
+        List<Profile> foundProfiles = profileRepository.findAllByMember_Id(memberId);
+        return foundProfiles.stream()
+                .map(foundProfile -> foundProfile.getTree().getId())
                 .toList();
     }
 }

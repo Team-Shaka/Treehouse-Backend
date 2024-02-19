@@ -21,12 +21,19 @@ public class ProfileController {
         return ApiResponse.onSuccess(profileService.createProfile(request, profileImage));
     }
 
-    @GetMapping("/trees/{treeId}/members/{memberId}") //프로필 조회
+    @GetMapping("/trees/{treeId}/members/{profileId}") //프로필 조회
     public ApiResponse getProfileDetails(
             @PathVariable Long treeId,
-            @PathVariable String memberId) {
-        return ApiResponse.onSuccess(profileService.getProfileDetails(memberId));
+            @PathVariable Long profileId) {
+        return ApiResponse.onSuccess(profileService.getProfileDetails(profileId));
     }
 
-
+    @GetMapping("/trees/{treeId}/myProfile") //내 프로필 조회
+    public ApiResponse getMyProfile(
+            @RequestHeader("Authorization") final String header,
+            @PathVariable Long treeId
+    ) {
+        String token = header.replace("Bearer ", "");
+        return ApiResponse.onSuccess(profileService.getMyProfile(token, treeId));
+    }
 }
