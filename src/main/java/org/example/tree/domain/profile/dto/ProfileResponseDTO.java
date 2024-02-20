@@ -29,6 +29,6 @@ public class ProfileResponseDTO {
         private String memberName;
         private String bio;
         private String profileImageUrl;
-        private Integer branch;
+        private Integer branchDegree;
     }
 }

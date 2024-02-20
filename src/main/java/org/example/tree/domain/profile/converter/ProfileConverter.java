@@ -30,7 +30,7 @@ public class ProfileConverter {
                 .build();
     }
 
-    public ProfileResponseDTO.getProfileDetails toGetProfileDetails(Profile profile, List<Long> treeIds) {
+    public ProfileResponseDTO.getProfileDetails toGetProfileDetails(Profile profile, List<Long> treeIds, int branchDegree) {
         return ProfileResponseDTO.getProfileDetails.builder()
                 .profileId(profile.getId())
                 .treeIds(treeIds)
@@ -38,6 +38,7 @@ public class ProfileConverter {
                 .memberName(profile.getMemberName())
                 .bio(profile.getBio())
                 .profileImageUrl(profile.getProfileImageUrl())
+                .branchDegree(branchDegree)
                 .build();
     }
 

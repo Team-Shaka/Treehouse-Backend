@@ -16,4 +16,9 @@ public class BranchQueryService {
         return branchRepository.findByTreeIdAndRootIdAndLeafId(treeId, rootId, leafId)
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.BRANCH_NOT_FOUND));
     }
+
+    public Branch findByTreeIdAndLeafId(Long treeId, Long profileId) {
+        return branchRepository.findByTree_IdAndLeaf_Id(treeId, profileId)
+                .orElseThrow(() -> new GeneralException(GlobalErrorCode.BRANCH_NOT_FOUND));
+    }
 }

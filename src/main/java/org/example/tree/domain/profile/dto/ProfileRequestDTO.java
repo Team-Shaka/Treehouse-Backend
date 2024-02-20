@@ -16,4 +16,14 @@ public class ProfileRequestDTO {
         private String bio;
 
     }
+
+    @Getter
+    public static class ownerProfile {
+        private Long treeId;
+        private String userId;
+        private String memberName;
+        private MultipartFile profileImage;
+        private String bio;
+
+    }
 }

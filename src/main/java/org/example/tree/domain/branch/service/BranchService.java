@@ -20,10 +20,7 @@ public class BranchService {
     private final BranchConverter branchConverter;
 
     @Transactional
-    public void createBranch(Long treeId,Long inviterId, Long inviteeId) {
-        Tree tree = treeQueryService.findById(treeId);
-        Profile inviter = profileQueryService.findById(inviterId);
-        Profile invitee = profileQueryService.findById(inviteeId);
+    public void createBranch(Tree tree,Profile inviter, Profile invitee) {
         Branch branch = branchConverter.toBranch(tree, inviter, invitee);
         branchCommandService.createBranch(branch);
     }
@@ -33,4 +30,26 @@ public class BranchService {
         Branch branch = branchQueryService.findBranch(treeId, rootId, leafId);
         return branch.getBranchDegree();
     }
+
+    public int calculateBranchDegree(Long treeId, Long rootId, Long leafId) {
+        int degree = 1;
+        Long currentMemberId = leafId;
+
+        while (true) {
+            // 현재 멤버를 초대한 멤버를 찾습니다.
+            Branch branch = branchQueryService.findByTreeIdAndLeafId(treeId, currentMemberId);
+            Long inviterId = branch.getRoot().getId();
+            // 루트 사용자에 도달했거나, 더 이상 상위 사용자가 없는 경우 루프를 종료합니다.
+            if ((branch == null) || (inviterId.equals(rootId))) {
+                break;
+            }
+
+            // BranchDegree를 증가시키고, 다음 상위 사용자로 이동합니다.
+            degree++;
+            currentMemberId = inviterId;
+        }
+        System.out.println("degree = " + degree);
+        return degree;
+    }
 }
+

@@ -13,6 +13,15 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class ProfileController {
     private final ProfileService profileService;
+
+    @PostMapping(value = "/trees/owner/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ApiResponse registerTreeOwner(
+            @RequestPart ProfileRequestDTO.ownerProfile request,
+            @RequestPart("profileImage") final MultipartFile profileImage
+    ) throws Exception {
+        return ApiResponse.onSuccess(profileService.ownerProfile(request, profileImage));
+    }
+
     @PostMapping(value = "/trees/members/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ApiResponse registerTreeMember(
             @RequestPart ProfileRequestDTO.createProfile request,
@@ -23,9 +32,11 @@ public class ProfileController {
 
     @GetMapping("/trees/{treeId}/members/{profileId}") //프로필 조회
     public ApiResponse getProfileDetails(
+            @RequestHeader("Authorization") final String header,
             @PathVariable Long treeId,
             @PathVariable Long profileId) {
-        return ApiResponse.onSuccess(profileService.getProfileDetails(profileId));
+        String token = header.replace("Bearer ", "");
+        return ApiResponse.onSuccess(profileService.getProfileDetails(token, profileId));
     }
 
     @GetMapping("/trees/{treeId}/myProfile") //내 프로필 조회

@@ -3,6 +3,7 @@ package org.example.tree.domain.invitation.converter;
 import org.example.tree.domain.invitation.dto.InvitationResponseDTO;
 import org.example.tree.domain.invitation.entity.Invitation;
 import org.example.tree.domain.member.entity.Member;
+import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.tree.entity.Tree;
 import org.springframework.stereotype.Component;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 
 @Component
 public class InvitationConverter {
-    public Invitation toInvitation (Member sender, Tree tree, String phone) {
+    public Invitation toInvitation (Profile sender, Tree tree, String phone) {
         return Invitation.builder()
                 .sender(sender)
                 .tree(tree)
@@ -20,7 +21,7 @@ public class InvitationConverter {
 
     public InvitationResponseDTO.sendInvitation toInviteUser (Invitation savedInvitation, Boolean isNewUser) {
         return InvitationResponseDTO.sendInvitation.builder()
-                .availableInvitation(savedInvitation.getSender().getInvitationCount())
+                .availableInvitation(savedInvitation.getSender().getMember().getInvitationCount())
                 .isNewUser(isNewUser)
                 .build();
     }
@@ -50,7 +51,7 @@ public class InvitationConverter {
         return InvitationResponseDTO.getInvitation.builder()
                 .invitationId(invitation.getId())
                 .treeName(invitation.getTree().getName())
-                .senderName(invitation.getSender().getId())
+                .senderName(invitation.getSender().getMemberName())
                 .treeSize(invitation.getTree().getTreeSize())
                 .treeMemberProfileImages(new ArrayList<>())
                 .build();

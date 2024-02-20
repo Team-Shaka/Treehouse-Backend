@@ -2,6 +2,9 @@ package org.example.tree.domain.profile.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.branch.service.BranchService;
+import org.example.tree.domain.invitation.entity.Invitation;
+import org.example.tree.domain.invitation.service.InvitationQueryService;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
 import org.example.tree.domain.post.service.PostService;
@@ -28,9 +31,25 @@ public class ProfileService {
     private final TreeQueryService treeQueryService;
     private final MemberQueryService memberQueryService;
     private final S3UploadService s3UploadService;
+    private final BranchService branchService;
+    private final InvitationQueryService invitationQueryService;
 
     @Transactional
     public ProfileResponseDTO.createProfile createProfile(ProfileRequestDTO.createProfile request, MultipartFile profileImage) throws Exception {
+        Tree tree = treeQueryService.findById(request.getTreeId());
+        Member member = memberQueryService.findById(request.getUserId());
+        String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
+        Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
+        profileCommandService.createProfile(newProfile);
+        tree.increaseTreeSize();
+        Invitation receivedInvitation = invitationQueryService.findReceivedInvitation(member, tree);
+        Profile sender = receivedInvitation.getSender();
+        branchService.createBranch(tree, sender, newProfile);
+        return profileConverter.toCreateProfile(newProfile);
+    }
+
+    @Transactional
+    public ProfileResponseDTO.createProfile ownerProfile(ProfileRequestDTO.ownerProfile request, MultipartFile profileImage) throws Exception {
         Tree tree = treeQueryService.findById(request.getTreeId());
         Member member = memberQueryService.findById(request.getUserId());
         String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
@@ -48,10 +67,14 @@ public class ProfileService {
     }
 
     @Transactional
-    public ProfileResponseDTO.getProfileDetails getProfileDetails(Long profileId) {
+    public ProfileResponseDTO.getProfileDetails getProfileDetails(String token, Long profileId) {
+        Member member = memberQueryService.findByToken(token);
         Profile profile = profileQueryService.findById(profileId);
+        Tree tree = profile.getTree();
+        Profile myProfile = profileQueryService.getTreeProfile(member,tree);
         List<Long> treeIds = profileQueryService.findJoinedTree(profile);
-        return profileConverter.toGetProfileDetails(profile, treeIds);
+        int branchDegree = branchService.calculateBranchDegree(tree.getId(), myProfile.getId(), profile.getId());
+        return profileConverter.toGetProfileDetails(profile, treeIds, branchDegree);
     }
 
     @Transactional
@@ -60,7 +83,7 @@ public class ProfileService {
         Tree tree = treeQueryService.findById(treeId);
         Profile profile = profileQueryService.getTreeProfile(member,tree);
         List<Long> treeIds = profileQueryService.findJoinedTree(profile);
-        return profileConverter.toGetProfileDetails(profile, treeIds);
+        return profileConverter.toGetProfileDetails(profile, treeIds, 0);
     }
 
 }

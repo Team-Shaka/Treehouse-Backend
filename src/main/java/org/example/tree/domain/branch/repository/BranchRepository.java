@@ -17,4 +17,6 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
     Optional<Branch> findByTreeIdAndRootIdAndLeafId(@Param("treeId") Long treeId,
                                                     @Param("rootId") Long rootId,
                                                     @Param("leafId") Long leafId);
+
+    Optional<Branch> findByTree_IdAndLeaf_Id(Long treeId, Long profileId);
 }
