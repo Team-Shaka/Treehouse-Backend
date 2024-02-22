@@ -10,11 +10,11 @@ import org.example.tree.domain.tree.service.TreeQueryService;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.*;
+
 @Component
 @RequiredArgsConstructor
 public class BranchService {
-    private final ProfileQueryService profileQueryService;
-    private final TreeQueryService treeQueryService;
     private final BranchCommandService branchCommandService;
     private final BranchQueryService branchQueryService;
     private final BranchConverter branchConverter;
@@ -32,24 +32,52 @@ public class BranchService {
     }
 
     public int calculateBranchDegree(Long treeId, Long rootId, Long leafId) {
-        int degree = 1;
-        Long currentMemberId = leafId;
+        // 두 멤버 사이의 모든 Branch 엔티티를 찾습니다.
+        List<Branch> branches = branchQueryService.findAllBranchesInTree(treeId);
 
-        while (true) {
-            // 현재 멤버를 초대한 멤버를 찾습니다.
-            Branch branch = branchQueryService.findByTreeIdAndLeafId(treeId, currentMemberId);
-            Long inviterId = branch.getRoot().getId();
-            // 루트 사용자에 도달했거나, 더 이상 상위 사용자가 없는 경우 루프를 종료합니다.
-            if ((branch == null) || (inviterId.equals(rootId))) {
-                break;
+        // Branch 목록을 사용하여 최단 거리를 계산합니다.
+        int shortestDistance = findShortestDistance(branches, rootId, leafId);
+
+        return shortestDistance;
+    }
+
+    public int findShortestDistance(List<Branch> branches, Long startMemberId, Long endMemberId) {
+        // 멤버 ID를 기준으로 연결된 Branch를 매핑합니다.
+        Map<Long, List<Long>> adjacencyList = new HashMap<>();
+        for (Branch branch : branches) {
+            adjacencyList.computeIfAbsent(branch.getRoot().getId(), k -> new ArrayList<>()).add(branch.getLeaf().getId());
+            adjacencyList.computeIfAbsent(branch.getLeaf().getId(), k -> new ArrayList<>()).add(branch.getRoot().getId()); // 양방향 그래프
+        }
+
+        // BFS를 위한 초기화
+        Queue<Long> queue = new LinkedList<>();
+        Map<Long, Integer> distance = new HashMap<>(); // 각 멤버까지의 거리
+        Set<Long> visited = new HashSet<>(); // 방문한 멤버 ID
+
+        queue.offer(startMemberId);
+        distance.put(startMemberId, 0);
+        visited.add(startMemberId);
+
+        // BFS 실행
+        while (!queue.isEmpty()) {
+            Long currentMemberId = queue.poll();
+            int currentDistance = distance.get(currentMemberId);
+
+            if (currentMemberId.equals(endMemberId)) {
+                return currentDistance; // 목표 멤버에 도달했다면 거리 반환
             }
 
-            // BranchDegree를 증가시키고, 다음 상위 사용자로 이동합니다.
-            degree++;
-            currentMemberId = inviterId;
+            // 인접한 멤버에 대해 탐색
+            for (Long nextMemberId : adjacencyList.getOrDefault(currentMemberId, Collections.emptyList())) {
+                if (!visited.contains(nextMemberId)) {
+                    queue.offer(nextMemberId);
+                    visited.add(nextMemberId);
+                    distance.put(nextMemberId, currentDistance + 1);
+                }
+            }
         }
-        System.out.println("degree = " + degree);
-        return degree;
+
+        return -1; // 경로가 없는 경우
     }
 }
 

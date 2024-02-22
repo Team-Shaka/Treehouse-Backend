@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -18,5 +19,6 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
                                                     @Param("rootId") Long rootId,
                                                     @Param("leafId") Long leafId);
 
-    Optional<Branch> findByTree_IdAndLeaf_Id(Long treeId, Long profileId);
+
+    List<Branch> findAllByTree_Id(Long treeId);
 }

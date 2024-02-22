@@ -7,6 +7,8 @@ import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BranchQueryService {
@@ -17,8 +19,7 @@ public class BranchQueryService {
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.BRANCH_NOT_FOUND));
     }
 
-    public Branch findByTreeIdAndLeafId(Long treeId, Long profileId) {
-        return branchRepository.findByTree_IdAndLeaf_Id(treeId, profileId)
-                .orElseThrow(() -> new GeneralException(GlobalErrorCode.BRANCH_NOT_FOUND));
+    public List<Branch> findAllBranchesInTree(Long treeId) {
+        return branchRepository.findAllByTree_Id(treeId);
     }
 }
