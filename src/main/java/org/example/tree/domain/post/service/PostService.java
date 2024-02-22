@@ -73,6 +73,17 @@ public class PostService {
     }
 
     @Transactional
+    public List<PostResponseDTO.getPost> getTreePosts(Long treeId, Long profileId, String token) {
+        List<Post> posts = postQueryService.findByProfileId(profileId);
+        return posts.stream()
+                .map(post -> {
+                    List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, post.getId(), token);
+                    return postConverter.toGetPost(post, reactions);
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
     public void updatePost(Long treeId, Long postId, PostRequestDTO.updatePost request, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         Post post = postQueryService.findById(postId);

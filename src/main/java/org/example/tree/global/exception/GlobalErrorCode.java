@@ -47,7 +47,10 @@ public enum GlobalErrorCode {
     //Reply
     //404 Not Found - 찾을 수 없음
     REPLY_NOT_FOUND(NOT_FOUND, "존재하지 않는 답글입니다."),
-    ;
+
+    //Branch
+    //404 Not Found - 찾을 수 없음
+    BRANCH_NOT_FOUND(NOT_FOUND, "브랜치 정보를 찾을 수 없습니다.");
 
 
 
