@@ -24,7 +24,8 @@ public class ReplyConverter {
     public ReplyResponseDTO.getReply toGetReply(Reply reply, List<ReactionResponseDTO.getReaction> reactions) {
         return ReplyResponseDTO.getReply.builder()
                 .replyId(reply.getId())
-                .memberName(reply.getProfile().getMemberName())
+                .authorId(reply.getProfile().getId())
+                .authorName(reply.getProfile().getMemberName())
                 .content(reply.getContent())
                 .reactions(reactions)
                 .createdAt(reply.getCreatedAt())
