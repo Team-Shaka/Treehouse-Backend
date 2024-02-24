@@ -34,10 +34,8 @@ public class PostService {
     private final PostImageCommandService postImageCommandService;
 
     @Transactional
-    public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, List<MultipartFile> images, String token) throws Exception {
-        if (images == null) {
-            images = new ArrayList<>();
-        }
+    public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, String token) throws Exception {
+        List<MultipartFile> images = request.getImages() != null && !request.getImages().isEmpty() ? request.getImages() : new ArrayList<>();
         Profile profile = profileService.getTreeProfile(token, treeId);
         List<PostImage> postImages = postConverter.toPostImages(images);
         Post post = postConverter.toPost(request.getContent(), profile);

@@ -49,6 +49,8 @@ public class PostConverter {
                 .map(PostImage::getImageUrl)
                 .collect(Collectors.toList());
         return PostResponseDTO.getFeed.builder()
+                .postId(post.getId())
+                .postAuthorId(post.getProfile().getId())
                 .profileImageUrl(post.getProfile().getProfileImageUrl())
                 .memberName(post.getProfile().getMemberName())
                 .content(post.getContent())

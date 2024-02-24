@@ -27,6 +27,8 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class getFeed {
 
+        private Long postId;
+        private Long postAuthorId;
         private String profileImageUrl;
         private String memberName;
         private String content;
