@@ -15,7 +15,8 @@ public class ReplyResponseDTO {
     @AllArgsConstructor
     public static class getReply {
         private Long replyId;
-        private String memberName;
+        private Long authorId;
+        private String authorName;
         private String content;
         private List<ReactionResponseDTO.getReaction> reactions;
         private LocalDateTime createdAt;

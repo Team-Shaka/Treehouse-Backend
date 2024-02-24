@@ -16,7 +16,8 @@ public class CommentResponseDTO {
     @AllArgsConstructor
     public static class getComment {
         private Long commentId;
-        private String memberName;
+        private Long authorId;
+        private String authorName;
         private String content;
         private List<ReactionResponseDTO.getReaction> reactions;
         private LocalDateTime createdAt;
