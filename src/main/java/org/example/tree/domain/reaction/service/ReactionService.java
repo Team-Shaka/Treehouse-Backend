@@ -36,16 +36,19 @@ public class ReactionService {
     private final ReactionRepository reactionRepository;
 
     @Transactional
-    public void reactToPost(Long treeId, Long postId, ReactionRequestDTO.createReaction request, String token) {
+    public ReactionResponseDTO.addReaction reactToPost(Long treeId, Long postId, ReactionRequestDTO.createReaction request, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         Post Post = postQueryService.findById(postId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(postId, TargetType.POST, request.getType(), profile);
         if(isPushed){
             reactionCommandService.unReactToPost(postId, profile, request.getType());
-            return;
+            Integer countAfterUnreact = reactionQueryService.getReactionCount(postId, TargetType.POST, request.getType());
+            return reactionConverter.toAddReaction(request.getType(), countAfterUnreact);
         }
         Reaction reaction = reactionConverter.toPostReaction(profile, postId, request.getType());
         reactionCommandService.reactToPost(reaction);
+        Integer count = reactionQueryService.getReactionCount(postId, TargetType.POST, request.getType());
+        return reactionConverter.toAddReaction(request.getType(), count);
     }
 
     @Transactional
@@ -63,16 +66,19 @@ public class ReactionService {
     }
 
     @Transactional
-    public void reactToComment(Long treeId, Long commentId, ReactionRequestDTO.createReaction request, String token) {
+    public ReactionResponseDTO.addReaction reactToComment(Long treeId, Long commentId, ReactionRequestDTO.createReaction request, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         Comment comment = commentQueryService.findById(commentId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(commentId, TargetType.COMMENT, request.getType(), profile);
         if(isPushed){
             reactionCommandService.unReactToComment(commentId, profile, request.getType());
-            return;
+            Integer countAfterUnreact = reactionQueryService.getReactionCount(commentId, TargetType.COMMENT, request.getType());
+            return reactionConverter.toAddReaction(request.getType(), countAfterUnreact);
         }
         Reaction reaction = reactionConverter.toCommentReaction(profile, commentId, request.getType());
-        reactionCommandService.reactToComment(reaction);
+        reactionCommandService.reactToPost(reaction);
+        Integer count = reactionQueryService.getReactionCount(commentId, TargetType.COMMENT, request.getType());
+        return reactionConverter.toAddReaction(request.getType(), count);
     }
 
     @Transactional
@@ -90,16 +96,19 @@ public class ReactionService {
     }
 
     @Transactional
-    public void reactToReply(Long treeId, Long replyId, ReactionRequestDTO.createReaction request, String token) {
+    public ReactionResponseDTO.addReaction reactToReply(Long treeId, Long replyId, ReactionRequestDTO.createReaction request, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         Reply reply = replyQueryService.findById(replyId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(replyId, TargetType.REPLY, request.getType(), profile);
         if(isPushed){
             reactionCommandService.unReactToReply(replyId, profile, request.getType());
-            return;
+            Integer countAfterUnreact = reactionQueryService.getReactionCount(replyId, TargetType.REPLY, request.getType());
+            return reactionConverter.toAddReaction(request.getType(), countAfterUnreact);
         }
         Reaction reaction = reactionConverter.toReplyReaction(profile, replyId, request.getType());
-        reactionCommandService.reactToReply(reaction);
+        reactionCommandService.reactToPost(reaction);
+        Integer count = reactionQueryService.getReactionCount(replyId, TargetType.REPLY, request.getType());
+        return reactionConverter.toAddReaction(request.getType(), count);
     }
 
     @Transactional

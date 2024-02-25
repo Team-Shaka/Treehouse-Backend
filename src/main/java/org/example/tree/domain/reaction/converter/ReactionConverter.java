@@ -27,6 +27,13 @@ public class ReactionConverter {
                 .build();
     }
 
+    public ReactionResponseDTO.addReaction toAddReaction(ReactionType type, Integer count) {
+        return ReactionResponseDTO.addReaction.builder()
+                .type(type.name())
+                .count(count)
+                .build();
+    }
+
     public Reaction toReplyReaction(Profile profile, Long replyId, ReactionType type) {
         return Reaction.builder()
                 .profile(profile)

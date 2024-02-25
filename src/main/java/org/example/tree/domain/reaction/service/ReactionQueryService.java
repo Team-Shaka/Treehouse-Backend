@@ -30,5 +30,9 @@ public class ReactionQueryService {
         return countsByType;
     }
 
+    public Integer getReactionCount(Long targetId, TargetType targetType, ReactionType type) {
+        return reactionRepository.countReactionsByTypeAndTargetIdAndTargetType(type, targetId, targetType);
+    }
+
 
 }
