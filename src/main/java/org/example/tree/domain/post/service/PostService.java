@@ -2,6 +2,7 @@ package org.example.tree.domain.post.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.branch.service.BranchService;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
 import org.example.tree.domain.post.converter.PostConverter;
@@ -32,6 +33,7 @@ public class PostService {
     private final ProfileService profileService;
     private final ReactionService reactionService;
     private final PostImageCommandService postImageCommandService;
+    private final BranchService branchService;
 
     @Transactional
     public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, String token) throws Exception {
@@ -54,10 +56,12 @@ public class PostService {
         List<Post> posts = postQueryService.getPosts(profile.getTree());
         return posts.stream()
                 .map(post -> {
+                    // 작성자와의 branch degree를 가져옵니다.
+                    int branchDegree = branchService.calculateBranchDegree(treeId, profile.getId(), post.getProfile().getId());
                     // 각 포스트에 대한 반응들을 가져옵니다.
                     List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, post.getId(), token);
                     // Post와 해당 Post의 반응들을 포함하여 DTO를 생성합니다.
-                    return postConverter.toGetFeed(post, reactions);
+                    return postConverter.toGetFeed(post, branchDegree, reactions);
                 })
                 .collect(Collectors.toList());
     }
@@ -66,17 +70,20 @@ public class PostService {
     public PostResponseDTO.getPost getPost(Long treeId, Long postId, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         Post post = postQueryService.findById(postId);
+        int branchDegree = branchService.calculateBranchDegree(treeId, profile.getId(), post.getProfile().getId());
         List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, postId, token);
-        return postConverter.toGetPost(post, reactions);
+        return postConverter.toGetPost(post, branchDegree, reactions);
     }
 
     @Transactional
     public List<PostResponseDTO.getPost> getTreePosts(Long treeId, Long profileId, String token) {
+        Profile profile = profileService.getTreeProfile(token, treeId);
         List<Post> posts = postQueryService.findByProfileId(profileId);
         return posts.stream()
                 .map(post -> {
+                    int branchDegree = branchService.calculateBranchDegree(treeId, profile.getId(), post.getProfile().getId());
                     List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, post.getId(), token);
-                    return postConverter.toGetPost(post, reactions);
+                    return postConverter.toGetPost(post, branchDegree, reactions);
                 })
                 .collect(Collectors.toList());
     }

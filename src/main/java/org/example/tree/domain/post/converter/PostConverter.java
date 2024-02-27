@@ -39,20 +39,21 @@ public class PostConverter {
         return PostResponseDTO.createPost.builder()
                 .postId(savedPost.getId())
                 .postImageUrls(imageUrls)
-                .writerId(savedPost.getProfile().getMember().getId())
+                .authorId(savedPost.getProfile().getMember().getId())
                 .treeId(savedPost.getTree().getId())
                 .build();
     }
 
-    public PostResponseDTO.getFeed toGetFeed(Post post, List<ReactionResponseDTO.getReaction> reactions) {
+    public PostResponseDTO.getFeed toGetFeed(Post post, int branchDegree, List<ReactionResponseDTO.getReaction> reactions) {
         List<String> imageUrls = post.getPostImages().stream()
                 .map(PostImage::getImageUrl)
                 .collect(Collectors.toList());
         return PostResponseDTO.getFeed.builder()
                 .postId(post.getId())
-                .postAuthorId(post.getProfile().getId())
+                .authorId(post.getProfile().getId())
                 .profileImageUrl(post.getProfile().getProfileImageUrl())
                 .memberName(post.getProfile().getMemberName())
+                .branchDegree(branchDegree)
                 .content(post.getContent())
                 .postImageUrls(imageUrls)
                 .createdAt(post.getCreatedAt())
@@ -61,7 +62,7 @@ public class PostConverter {
                 .build();
     }
 
-    public PostResponseDTO.getPost toGetPost(Post post, List<ReactionResponseDTO.getReaction> reactions) {
+    public PostResponseDTO.getPost toGetPost(Post post, int branchDegree, List<ReactionResponseDTO.getReaction> reactions) {
         // PostImage 객체 리스트에서 이미지 URL 추출
         List<String> imageUrls = post.getPostImages().stream()
                 .map(PostImage::getImageUrl)
@@ -69,8 +70,10 @@ public class PostConverter {
 
         return PostResponseDTO.getPost.builder()
                 .postId(post.getId())
+                .authorId(post.getProfile().getId())
                 .profileImageUrl(post.getProfile().getProfileImageUrl())
                 .memberName(post.getProfile().getMemberName())
+                .branchDegree(branchDegree)
                 .content(post.getContent())
                 .postImageUrls(imageUrls)
                 .reactions(reactions)

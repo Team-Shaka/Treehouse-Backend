@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service;
 public class ReactionCommandService {
 
     private final ReactionRepository reactionRepository;
-    public void reactToPost(Reaction reaction) {
-        reactionRepository.save(reaction);
+    public Reaction reactToPost(Reaction reaction) {
+        return reactionRepository.save(reaction);
     }
 
     public void unReactToPost(Long postId, Profile profile, ReactionType type) {

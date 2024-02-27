@@ -23,7 +23,7 @@ public class PostController {
     public ApiResponse<PostResponseDTO.createPost> createPost(
             @PathVariable final Long treeId,
             @RequestHeader("Authorization") final String header,
-            @RequestBody final PostRequestDTO.createPost request
+            @RequestPart final PostRequestDTO.createPost request
     ) throws Exception {
         String token = header.replace("Bearer ", "");
         return ApiResponse.onSuccess(postService.createPost(treeId, request, token));
