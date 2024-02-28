@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -80,7 +81,19 @@ public class InvitationService {
         Member member = memberQueryService.findByToken(token);
         List<Invitation> invitations= invitationQueryService.findAllByPhone(member.getPhone());
         return invitations.stream()
-                .map(invitationConverter::toGetInvitation)
+                .map(invitation -> {
+                    Tree tree = invitation.getTree(); // Invitation에서 Tree 정보를 가져옵니다.
+                    List<Profile> treeMembers = profileQueryService.findTreeMembers(tree); // Tree의 모든 멤버를 조회합니다.
+
+                    // treeMembers에서 무작위로 3명의 멤버를 선택합니다. (멤버 수가 3명 미만인 경우 모든 멤버를 선택)
+                    List<String> randomProfileImages = treeMembers.stream()
+                            .map(Profile::getProfileImageUrl)
+                            .limit(3) // 최대 3명
+                            .collect(Collectors.toList());
+
+                    // toGetInvitation 메소드를 수정하여, 선택된 멤버의 profileImage 정보를 포함시켜야 합니다.
+                    return invitationConverter.toGetInvitation(invitation, randomProfileImages);
+                })
                 .collect(Collectors.toList());
     }
 }

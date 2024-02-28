@@ -16,4 +16,5 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     List<Profile> findAllByMember_Id(String memberId);
 
+    List<Profile> findAllByTree(Tree tree);
 }
