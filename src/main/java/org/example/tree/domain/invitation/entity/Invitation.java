@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.example.tree.common.BaseDateTimeEntity;
 import org.example.tree.domain.member.entity.Member;
+import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.tree.entity.Tree;
 
 import java.time.LocalDateTime;
@@ -20,13 +21,14 @@ public class Invitation extends BaseDateTimeEntity {
 
     private String phone;
 
+    @Setter
     private InvitationStatus status;
 
     private LocalDateTime expiredAt; //초대장 만료일자
 
     @JoinColumn(name = "senderId")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Member sender;
+    private Profile sender;
     @JoinColumn(name = "treeId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tree tree;

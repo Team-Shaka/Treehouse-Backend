@@ -29,6 +29,15 @@ public class InvitationResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class rejectInvitation {
+        private Long treeId;
+        private Boolean isAccept;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class getInvitation {
         private Long invitationId;
         private String treeName;

@@ -5,6 +5,15 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 
 public class ReactionResponseDTO {
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class addReaction {
+        private String type;
+        private Integer count;
+    }
     @Builder
     @Getter
     @NoArgsConstructor

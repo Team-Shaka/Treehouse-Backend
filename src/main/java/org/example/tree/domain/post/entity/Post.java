@@ -35,8 +35,9 @@ public class Post extends BaseDateTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Tree tree;
 
-    @ElementCollection
-    private List<String> postImages = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostImage> postImages = new ArrayList<>();
 
     public void increaseReactionCount() {
         this.reactionCount++;
@@ -61,6 +62,10 @@ public class Post extends BaseDateTimeEntity {
 
     public void updatePost(String content) {
         this.content = content;
+    }
+
+    public void addPostImage(PostImage postImage) {
+        this.postImages.add(postImage);
     }
 
 

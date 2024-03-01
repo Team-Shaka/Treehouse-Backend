@@ -17,7 +17,7 @@ public class PostResponseDTO {
     public static class createPost {
         private Long postId;
         private List<String> postImageUrls;
-        private String writerId;
+        private String authorId;
         private Long treeId;
     }
 
@@ -27,8 +27,11 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class getFeed {
 
+        private Long postId;
+        private Long authorId;
         private String profileImageUrl;
         private String memberName;
+        private int branchDegree;
         private String content;
         private List<String> postImageUrls;
         private LocalDateTime createdAt;
@@ -43,8 +46,10 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class getPost {
         private Long postId;
+        private Long authorId;
         private String profileImageUrl;
         private String memberName;
+        private int branchDegree;
         private String content;
         private List<String> postImageUrls;
         private List<ReactionResponseDTO.getReaction> reactions;

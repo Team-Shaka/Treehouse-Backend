@@ -1,5 +1,6 @@
 package org.example.tree.domain.member.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.member.dto.MemberRequestDTO;
 import org.example.tree.domain.member.dto.MemberResponseDTO;
@@ -12,18 +13,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class MemberController {
     private final MemberService memberService;
-
-    @GetMapping("/test")
-    public ApiResponse test() {
-        return ApiResponse.onSuccess("test");
-    }
     @PostMapping("/checkId")
+    @Operation(summary = "아이디 중복 체크", description = "서비스에서 사용할 고유 ID를 중복 체크합니다.")
     public ApiResponse<MemberResponseDTO.checkId> checkId(
             @RequestBody final MemberRequestDTO.checkId request
     ) {
         return ApiResponse.onSuccess(memberService.checkId(request));
     }
     @PostMapping("/register")
+    @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
     public ApiResponse<MemberResponseDTO.registerMember> registerMember(
             @RequestBody final MemberRequestDTO.registerMember request
     ) {

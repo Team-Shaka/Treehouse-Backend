@@ -12,7 +12,7 @@ public class MemberConverter {
         return Member.builder()
                 .id(id)
                 .phone(phone)
-                .role(MemberRole.valueOf("ROLE_USER"))
+                .role(MemberRole.USER)
                 .build();
     }
 

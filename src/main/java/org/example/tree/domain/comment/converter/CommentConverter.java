@@ -25,7 +25,8 @@ public class CommentConverter {
     public CommentResponseDTO.getComment toGetComment(Comment comment, List<ReactionResponseDTO.getReaction> reactions, List<ReplyResponseDTO.getReply> replies) {
         return CommentResponseDTO.getComment.builder()
                 .commentId(comment.getId())
-                .memberName(comment.getProfile().getMemberName())
+                .authorId(comment.getProfile().getId())
+                .authorName(comment.getProfile().getMemberName())
                 .content(comment.getContent())
                 .reactions(reactions)
                 .createdAt(comment.getCreatedAt())

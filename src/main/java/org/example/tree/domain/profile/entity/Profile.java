@@ -18,6 +18,8 @@ public class Profile extends BaseDateTimeEntity {
 
     private String memberName; //트리에서 사용할 닉네임
 
+    private String bio; //자기소개
+
     private String profileImageUrl; //프로필 이미지(트리 별로 상이)
 
     @JoinColumn(name = "memberId")

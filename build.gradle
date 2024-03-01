@@ -44,6 +44,9 @@ dependencies {
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    // aws s3
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
     runtimeOnly 'com.h2database:h2'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
@@ -52,6 +55,4 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-kotlin {
-    jvmToolchain(17)
-}
+

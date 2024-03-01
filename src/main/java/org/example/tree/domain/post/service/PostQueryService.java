@@ -3,6 +3,7 @@ package org.example.tree.domain.post.service;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.repository.PostRepository;
+import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.tree.entity.Tree;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
@@ -21,5 +22,10 @@ public class PostQueryService {
     }
     public List<Post> getPosts(Tree tree) {
         return postRepository.findAllByTree(tree);
+    }
+
+
+    public List<Post> findByProfileId(Long profileId) {
+        return postRepository.findAllByProfile_Id(profileId);
     }
 }
