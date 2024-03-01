@@ -50,7 +50,11 @@ public enum GlobalErrorCode {
 
     //Branch
     //404 Not Found - 찾을 수 없음
-    BRANCH_NOT_FOUND(NOT_FOUND, "브랜치 정보를 찾을 수 없습니다.");
+    BRANCH_NOT_FOUND(NOT_FOUND, "브랜치 정보를 찾을 수 없습니다."),
+
+    //Notification
+    //404 Not Found - 찾을 수 없음
+    NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 없습니다.");
 
 
 
