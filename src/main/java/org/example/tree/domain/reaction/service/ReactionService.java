@@ -6,6 +6,7 @@ import org.example.tree.domain.comment.entity.Comment;
 import org.example.tree.domain.comment.entity.Reply;
 import org.example.tree.domain.comment.service.CommentQueryService;
 import org.example.tree.domain.comment.service.ReplyQueryService;
+import org.example.tree.domain.notification.service.NotificationService;
 import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.service.PostQueryService;
 import org.example.tree.domain.profile.entity.Profile;
@@ -34,11 +35,12 @@ public class ReactionService {
     private final ProfileService profileService;
     private final ReactionConverter reactionConverter;
     private final ReactionRepository reactionRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public ReactionResponseDTO.addReaction reactToPost(Long treeId, Long postId, ReactionRequestDTO.createReaction request, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
-        Post Post = postQueryService.findById(postId);
+        Post post = postQueryService.findById(postId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(postId, TargetType.POST, request.getType(), profile);
         if(isPushed){
             reactionCommandService.unReactToPost(postId, profile, request.getType());
@@ -48,6 +50,7 @@ public class ReactionService {
         Reaction reaction = reactionConverter.toPostReaction(profile, postId, request.getType());
         reactionCommandService.reactToPost(reaction);
         Integer count = reactionQueryService.getReactionCount(postId, TargetType.POST, request.getType());
+        notificationService.reactionNotification(profile, reaction, post.getProfile().getMember().getId());
         return reactionConverter.toAddReaction(request.getType(), count);
     }
 

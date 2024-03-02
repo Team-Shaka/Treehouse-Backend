@@ -2,6 +2,7 @@ package org.example.tree.domain.notification.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.comment.entity.Comment;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
 import org.example.tree.domain.notification.converter.NotificationConverter;
@@ -10,6 +11,7 @@ import org.example.tree.domain.notification.entity.Notification;
 import org.example.tree.domain.notification.entity.NotificationType;
 import org.example.tree.domain.notification.repository.NotificationRepository;
 import org.example.tree.domain.profile.entity.Profile;
+import org.example.tree.domain.reaction.entity.Reaction;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,9 +34,16 @@ public class NotificationService {
     }
 
     @Transactional
-    public void commentNotification(Profile sender, String receiverId) {
+    public void commentNotification(Profile sender, Comment comment, String receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
-        Notification notification = notificationConverter.toCommentNotification(sender, receiver);
+        Notification notification = notificationConverter.toCommentNotification(sender, comment, receiver);
+        notificationCommandService.createNotification(notification);
+    }
+
+    @Transactional
+    public void reactionNotification(Profile sender, Reaction reaction, String receiverId) {
+        Member receiver = memberQueryService.findById(receiverId);
+        Notification notification = notificationConverter.toReactionNotification(sender, reaction, receiver);
         notificationCommandService.createNotification(notification);
     }
 

@@ -42,7 +42,7 @@ public class CommentService {
         post.increaseCommentCount();
         commentCommandService.createComment(comment);
         Profile author = post.getProfile();
-        notificationService.commentNotification(profile, author.getMember().getId());
+        notificationService.commentNotification(profile, comment, author.getMember().getId()); //알림 생성 로직
     }
 
     @Transactional
