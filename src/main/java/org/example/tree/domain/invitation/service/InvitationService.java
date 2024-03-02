@@ -9,6 +9,7 @@ import org.example.tree.domain.invitation.dto.InvitationResponseDTO;
 import org.example.tree.domain.invitation.entity.Invitation;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
+import org.example.tree.domain.notification.service.NotificationService;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.profile.service.ProfileQueryService;
 import org.example.tree.domain.tree.entity.Tree;
@@ -28,7 +29,7 @@ public class InvitationService {
     private final MemberQueryService memberQueryService;
     private final TreeQueryService treeQueryService;
     private final ProfileQueryService profileQueryService;
-    private final BranchService branchService;
+    private final NotificationService notificationService;
     private final InvitationConverter invitationConverter;
 
     @Transactional
@@ -52,6 +53,7 @@ public class InvitationService {
         Profile sender = profileQueryService.getTreeProfile(member, tree);
         Member targetMember = memberQueryService.findById(request.getTargetUserId());
         Invitation invitation = invitationConverter.toInvitation(sender, tree, targetMember.getPhone());
+        notificationService.invitationNotification(sender, invitation, targetMember.getId());
         invitationCommandService.createInvitation(invitation);
     }
 

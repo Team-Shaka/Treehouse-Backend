@@ -2,10 +2,13 @@ package org.example.tree.domain.notification.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.notification.dto.NotificationRequestDTO;
 import org.example.tree.domain.notification.dto.NotificationResponseDTO;
 import org.example.tree.domain.notification.service.NotificationService;
 import org.example.tree.global.common.ApiResponse;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,10 +19,11 @@ public class NotificationController {
 
     @Operation(summary = "알림 생성 테스트")
     @PostMapping("/test")
-    public ApiResponse<NotificationResponseDTO.sendNotification> sendNotification(
+    public ApiResponse sendNotification(
             @RequestBody final NotificationRequestDTO.sendNotification request)
      {
-        return ApiResponse.onSuccess(notificationService.sendNotification(request));
+         notificationService.sendNotification(request.getTitle(), request.getMessage(), request.getType(), request.getReceiverId());
+        return ApiResponse.onSuccess("success");
     }
 
     @Operation(summary = "전체 알림 조회", description = "유저가 받은 알림들을 조회합니다.")
