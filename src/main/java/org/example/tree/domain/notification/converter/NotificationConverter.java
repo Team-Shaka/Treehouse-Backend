@@ -1,6 +1,7 @@
 package org.example.tree.domain.notification.converter;
 
 import org.example.tree.domain.comment.entity.Comment;
+import org.example.tree.domain.invitation.entity.Invitation;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.notification.dto.NotificationResponseDTO;
 import org.example.tree.domain.notification.entity.Notification;
@@ -39,6 +40,15 @@ public class NotificationConverter {
                 .build();
     }
 
+    public Notification toInvitationNotification(Profile sender, Invitation invitation, Member receiver) {
+        return Notification.builder()
+                .title("초대 알림")
+                .message(sender.getMemberName() + "님이 " + invitation.getTree().getName() + " 트리에 초대하였습니다.")
+                .type(NotificationType.INVITATION)
+                .receiver(receiver)
+                .build();
+    }
+
     public NotificationResponseDTO.getNotification toGetNotification(Notification notification) {
         return NotificationResponseDTO.getNotification.builder()
                 .id(notification.getId())
@@ -47,4 +57,6 @@ public class NotificationConverter {
                 .type(notification.getType().name())
                 .build();
     }
+
+
 }

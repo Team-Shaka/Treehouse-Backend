@@ -3,6 +3,7 @@ package org.example.tree.domain.notification.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.comment.entity.Comment;
+import org.example.tree.domain.invitation.entity.Invitation;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
 import org.example.tree.domain.notification.converter.NotificationConverter;
@@ -44,6 +45,13 @@ public class NotificationService {
     public void reactionNotification(Profile sender, Reaction reaction, String receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
         Notification notification = notificationConverter.toReactionNotification(sender, reaction, receiver);
+        notificationCommandService.createNotification(notification);
+    }
+
+    @Transactional
+    public void invitationNotification(Profile sender, Invitation invitation, String receiverId) {
+        Member receiver = memberQueryService.findById(receiverId);
+        Notification notification = notificationConverter.toInvitationNotification(sender, invitation, receiver);
         notificationCommandService.createNotification(notification);
     }
 
