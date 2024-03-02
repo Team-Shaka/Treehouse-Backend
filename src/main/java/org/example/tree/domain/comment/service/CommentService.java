@@ -7,6 +7,8 @@ import org.example.tree.domain.comment.dto.CommentRequestDTO;
 import org.example.tree.domain.comment.dto.CommentResponseDTO;
 import org.example.tree.domain.comment.dto.ReplyResponseDTO;
 import org.example.tree.domain.comment.entity.Comment;
+import org.example.tree.domain.notification.entity.NotificationType;
+import org.example.tree.domain.notification.service.NotificationService;
 import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.service.PostQueryService;
 import org.example.tree.domain.profile.entity.Profile;
@@ -30,6 +32,7 @@ public class CommentService {
     private final CommentConverter commentConverter;
     private final ProfileService profileService;
     private final ReactionService reactionService;
+    private final NotificationService notificationService;
 
     @Transactional
     public void createComment(Long treeId, Long postId, CommentRequestDTO.createComment request, String token) {
@@ -38,6 +41,8 @@ public class CommentService {
         Comment comment = commentConverter.toComment(request.getContent(), profile, post);
         post.increaseCommentCount();
         commentCommandService.createComment(comment);
+        Profile author = post.getProfile();
+        notificationService.commentNotification(profile, author.getMember().getId());
     }
 
     @Transactional

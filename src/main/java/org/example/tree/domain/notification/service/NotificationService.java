@@ -9,6 +9,7 @@ import org.example.tree.domain.notification.dto.NotificationResponseDTO;
 import org.example.tree.domain.notification.entity.Notification;
 import org.example.tree.domain.notification.entity.NotificationType;
 import org.example.tree.domain.notification.repository.NotificationRepository;
+import org.example.tree.domain.profile.entity.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +19,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private final NotificationRepository notificationRepository;
     private final NotificationCommandService notificationCommandService;
     private final NotificationQueryService notificationQueryService;
     private final NotificationConverter notificationConverter;
@@ -28,6 +28,13 @@ public class NotificationService {
     public void sendNotification(String title, String message, NotificationType type, String receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
         Notification notification = notificationConverter.toNotification(title, message, type, receiver);
+        notificationCommandService.createNotification(notification);
+    }
+
+    @Transactional
+    public void commentNotification(Profile sender, String receiverId) {
+        Member receiver = memberQueryService.findById(receiverId);
+        Notification notification = notificationConverter.toCommentNotification(sender, receiver);
         notificationCommandService.createNotification(notification);
     }
 
