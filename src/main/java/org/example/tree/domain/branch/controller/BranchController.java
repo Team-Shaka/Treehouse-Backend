@@ -21,4 +21,11 @@ public class BranchController {
         String token = header.replace("Bearer ", "");
         return ApiResponse.onSuccess(branchService.getBranchView(treeId, token, profileId));
     }
+
+    @GetMapping("/trees/{treeId}/branchView/all")
+    public ApiResponse<BranchResponseDTO.branchView> getCompleteBranchView(
+            @PathVariable Long treeId
+    ) {
+        return ApiResponse.onSuccess(branchService.getCompleteBranchView(treeId));
+    }
 }

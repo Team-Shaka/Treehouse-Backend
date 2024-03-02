@@ -90,6 +90,8 @@ public class BranchService {
         int distance = path.size() - 1; // 거리는 경로의 길이에서 1을 뺀 값
         return branchConverter.toShortestPathResult(distance, path);
     }
+
+    @Transactional
     public BranchResponseDTO.branchView getBranchView(Long treeId, String token, Long leafId) {
         Member member = memberQueryService.findByToken(token);
         Tree tree = treeQueryService.findById(treeId);
@@ -111,6 +113,30 @@ public class BranchService {
 
         // 최종 DTO 생성 및 반환
         return branchConverter.toBranchView(nodes, links, rootId, leafId);
+    }
+
+    @Transactional
+    public BranchResponseDTO.branchView getCompleteBranchView(Long treeId) {
+        List<Branch> branches = branchQueryService.findAllBranchesInTree(treeId);
+        Set<Long> allProfileIds = new HashSet<>();
+        List<BranchResponseDTO.NodeDTO> nodes = new ArrayList<>();
+        List<BranchResponseDTO.LinkDTO> links = new ArrayList<>();
+
+        // 모든 Branch로부터 모든 멤버 ID를 수집하고 LinkDTO 생성
+        for (Branch branch : branches) {
+            allProfileIds.add(branch.getRoot().getId());
+            allProfileIds.add(branch.getLeaf().getId());
+            links.add(branchConverter.toLinkDTO(branch.getRoot().getId(), branch.getLeaf().getId()));
+        }
+
+        // 모든 멤버 ID에 대한 Profile 정보를 조회하고 NodeDTO 생성
+        for (Long profileId : allProfileIds) {
+            Profile profile = profileQueryService.findById(profileId);
+            nodes.add(branchConverter.toNodeDTO(profile));
+        }
+
+        // 최종 BranchView DTO 생성 및 반환
+        return branchConverter.toBranchView(nodes, links, null, null); // startId와 endId는 전체 뷰에서는 필요 없으므로 null 처리
     }
 }
 
