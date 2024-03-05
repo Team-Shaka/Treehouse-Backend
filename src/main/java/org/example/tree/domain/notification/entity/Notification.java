@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.tree.common.BaseDateTimeEntity;
 import org.example.tree.domain.member.entity.Member;
+import org.example.tree.domain.profile.entity.Profile;
 
 @Entity
 @Getter
@@ -27,6 +28,10 @@ public class Notification extends BaseDateTimeEntity {
     private String message;
 
     private boolean readStatus = false;
+
+    @ManyToOne
+    @JoinColumn(name = "sender_id")
+    private Profile sender;
 
     @ManyToOne
     @JoinColumn(name = "receiver_id")

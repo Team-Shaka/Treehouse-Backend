@@ -25,8 +25,9 @@ public class NotificationConverter {
     public Notification toCommentNotification(Profile sender, Comment comment, Member receiver) {
         return Notification.builder()
                 .title("댓글 알림")
-                .message(sender.getMemberName() + "님이 게시물에 댓글을 남겼습니다. " + comment.getContent())
+                .message(sender.getMemberName() + "님이 당신의 포스트에 댓글을 남겼습니다. " + comment.getContent())
                 .type(NotificationType.COMMENT)
+                .sender(comment.getProfile())
                 .receiver(receiver)
                 .build();
     }
@@ -34,8 +35,9 @@ public class NotificationConverter {
     public Notification toReactionNotification(Profile sender, Reaction reaction, Member receiver) {
         return Notification.builder()
                 .title("반응 알림")
-                .message(sender.getMemberName() + "님이 게시물에 " + reaction.getType() + " 반응을 남겼습니다.")
+                .message(sender.getMemberName() + "님이 당신의 포스트에 " + reaction.getType() + " 반응을 남겼습니다.")
                 .type(NotificationType.REACTION)
+                .sender(reaction.getProfile())
                 .receiver(receiver)
                 .build();
     }
@@ -43,18 +45,23 @@ public class NotificationConverter {
     public Notification toInvitationNotification(Profile sender, Invitation invitation, Member receiver) {
         return Notification.builder()
                 .title("초대 알림")
-                .message(sender.getMemberName() + "님이 " + invitation.getTree().getName() + " 트리에 초대하였습니다.")
+                .message(sender.getMemberName() + "님이 당신을 " + invitation.getTree().getName() + " 트리에 초대하였습니다.")
                 .type(NotificationType.INVITATION)
+                .sender(invitation.getSender())
                 .receiver(receiver)
                 .build();
     }
 
     public NotificationResponseDTO.getNotification toGetNotification(Notification notification) {
         return NotificationResponseDTO.getNotification.builder()
-                .id(notification.getId())
-                .title(notification.getTitle())
+                .notificationId(notification.getId())
+                .senderName(notification.getSender().getMemberName())
+                .senderProfileImageUrl(notification.getSender().getProfileImageUrl())
                 .message(notification.getMessage())
                 .type(notification.getType().name())
+                .treeId(notification.getSender().getTree().getId())
+                .treeName(notification.getSender().getTree().getName())
+                .createdAt(notification.getCreatedAt())
                 .build();
     }
 
