@@ -23,14 +23,17 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI openAPI() {
-        SecurityScheme securityScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
-                .in(SecurityScheme.In.HEADER).name("Authorization");
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
+            SecurityScheme securityScheme = new SecurityScheme()
+                    .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
+                    .in(SecurityScheme.In.HEADER).name("Authorization");
+            SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
-        return new OpenAPI()
-                .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
-                .security(Arrays.asList(securityRequirement));
+            return new OpenAPI()
+                    .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
+                    .security(Arrays.asList(securityRequirement))
+                    .info(new Info()
+                        .title("Tree API")
+                        .version("1.0.0"));
     }
 
 }
