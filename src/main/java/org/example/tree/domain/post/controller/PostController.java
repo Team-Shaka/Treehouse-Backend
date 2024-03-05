@@ -19,23 +19,14 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping(value = "/trees/{treeId}/feed/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-<<<<<<< Updated upstream
-    @Operation(summary = "게시글 작성", description = "게시글을 작성합니다.")
-    public ApiResponse<PostResponseDTO.createPost> createPost(
-            @PathVariable final Long treeId,
-            @RequestHeader("Authorization") final String header,
-            @RequestPart final PostRequestDTO.createPost request
-=======
     public ApiResponse<PostResponseDTO.createPost> createPost(
             @PathVariable final Long treeId,
             @RequestHeader("Authorization") final String header,
             @RequestPart(value="request") final PostRequestDTO.createPost request,
             @RequestPart(value="images") final List<MultipartFile> images
-
->>>>>>> Stashed changes
     ) throws Exception {
         String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.createPost(treeId, request, token));
+        return ApiResponse.onSuccess(postService.createPost(treeId, request, images, token));
     }
 
     @GetMapping("/trees/{treeId}/feed")
