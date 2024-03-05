@@ -33,4 +33,8 @@ public class ProfileQueryService {
                 .map(foundProfile -> foundProfile.getTree().getId())
                 .toList();
     }
+
+    public List<Profile> findTreeMembers(Tree tree) {
+        return profileRepository.findAllByTree(tree);
+    }
 }

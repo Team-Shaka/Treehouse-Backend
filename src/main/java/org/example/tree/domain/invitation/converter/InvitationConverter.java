@@ -8,6 +8,7 @@ import org.example.tree.domain.tree.entity.Tree;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class InvitationConverter {
@@ -47,13 +48,13 @@ public class InvitationConverter {
                 .build();
     }
 
-    public InvitationResponseDTO.getInvitation toGetInvitation (Invitation invitation) {
+    public InvitationResponseDTO.getInvitation toGetInvitation (Invitation invitation, List<String> treeMemberProfileImages) {
         return InvitationResponseDTO.getInvitation.builder()
                 .invitationId(invitation.getId())
                 .treeName(invitation.getTree().getName())
                 .senderName(invitation.getSender().getMemberName())
                 .treeSize(invitation.getTree().getTreeSize())
-                .treeMemberProfileImages(new ArrayList<>())
+                .treeMemberProfileImages(treeMemberProfileImages)
                 .build();
     }
 }
