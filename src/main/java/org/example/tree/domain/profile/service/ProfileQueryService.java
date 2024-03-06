@@ -42,4 +42,8 @@ public class ProfileQueryService {
         return profileRepository.findCurrentProfile(member)
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.AVAILABLE_PROFILE_NOT_FOUND));
     }
+
+    public boolean isNewUser(Member member) {
+        return profileRepository.existsActiveProfileByMember(member);
+    }
 }

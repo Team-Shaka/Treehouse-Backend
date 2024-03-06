@@ -12,4 +12,8 @@ public class ProfileCommandService {
     public void createProfile(Profile profile) {
         profileRepository.save(profile);
     }
+
+    public void updateProfile(Profile profile) {
+        profileRepository.save(profile);
+    }
 }

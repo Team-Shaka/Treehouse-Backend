@@ -30,6 +30,7 @@ public class TreeService {
         treeCommandService.createTree(tree);
     }
 
+    @Transactional
     public List<TreeResponseDTO.getTree> getTrees(String token) {
         Member member = memberQueryService.findByToken(token);
         Profile currentProfile = profileQueryService.getCurrentProfile(member);

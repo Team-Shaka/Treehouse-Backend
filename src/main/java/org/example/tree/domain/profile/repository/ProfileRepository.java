@@ -22,4 +22,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Long> {
 
     @Query("SELECT p FROM Profile p WHERE p.member = :member AND p.isActive = TRUE")
     Optional<Profile> findCurrentProfile(@Param("member") Member member);
+
+    @Query("SELECT COUNT(p) = 0 FROM Profile p WHERE p.member = :member AND p.isActive = TRUE")
+    boolean existsActiveProfileByMember(@Param("member") Member member);
 }

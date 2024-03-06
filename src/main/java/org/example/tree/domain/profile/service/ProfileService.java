@@ -37,6 +37,12 @@ public class ProfileService {
     public ProfileResponseDTO.createProfile createProfile(ProfileRequestDTO.createProfile request, MultipartFile profileImage) throws Exception {
         Tree tree = treeQueryService.findById(request.getTreeId());
         Member member = memberQueryService.findById(request.getUserId());
+        boolean isNewUser = profileQueryService.isNewUser(member);
+        if (!isNewUser) {
+            Profile currentProfile = profileQueryService.getCurrentProfile(member);
+            currentProfile.inactivate();
+            profileCommandService.updateProfile(currentProfile);
+        }
         String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);
@@ -51,6 +57,12 @@ public class ProfileService {
     public ProfileResponseDTO.createProfile ownerProfile(ProfileRequestDTO.ownerProfile request, MultipartFile profileImage) throws Exception {
         Tree tree = treeQueryService.findById(request.getTreeId());
         Member member = memberQueryService.findById(request.getUserId());
+        boolean isNewUser = profileQueryService.isNewUser(member);
+        if (!isNewUser) {
+            Profile currentProfile = profileQueryService.getCurrentProfile(member);
+            currentProfile.inactivate();
+            profileCommandService.updateProfile(currentProfile);
+        }
         String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);
