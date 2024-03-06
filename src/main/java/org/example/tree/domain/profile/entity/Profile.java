@@ -31,6 +31,9 @@ public class Profile extends BaseDateTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Tree tree;
 
+    public void actvate() {
+        this.isActive = true;
+    }
     public void inactivate() {
         this.isActive = false;
     }

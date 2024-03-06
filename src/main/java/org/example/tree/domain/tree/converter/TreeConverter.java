@@ -25,4 +25,10 @@ public class TreeConverter {
                 .isSelected(isSelected)
                 .build();
     }
+
+    public TreeResponseDTO.shiftTree toShiftTree(Tree tree) {
+        return TreeResponseDTO.shiftTree.builder()
+                .treeId(tree.getId())
+                .build();
+    }
 }

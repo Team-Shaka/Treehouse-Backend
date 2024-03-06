@@ -16,4 +16,12 @@ public class TreeResponseDTO {
         private List<String> treeMemberProfileImages;
         private Boolean isSelected;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class shiftTree {
+        private Long treeId;
+    }
 }

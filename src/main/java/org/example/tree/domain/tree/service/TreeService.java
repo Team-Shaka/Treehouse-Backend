@@ -49,4 +49,16 @@ public class TreeService {
                 })
                 .collect(Collectors.toList());
     }
+
+    @Transactional
+    public TreeResponseDTO.shiftTree shiftTree(Long treeId, String token) {
+        Member member = memberQueryService.findByToken(token);
+        Tree tree = treeQueryService.findById(treeId);
+        Profile currentProfile = profileQueryService.getCurrentProfile(member);
+        currentProfile.inactivate();
+        Profile shiftedProfile = profileQueryService.getTreeProfile(member, tree);
+        shiftedProfile.actvate();
+        return treeConverter.toShiftTree(tree);
+
+    }
 }

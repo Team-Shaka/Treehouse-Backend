@@ -35,5 +35,14 @@ public class TreeController {
          return ApiResponse.onSuccess(treeService.getTrees(token));
     }
 
+    @Operation(summary = "트리하우스 위치 변경")
+    @PostMapping("/{treeId}")
+    public ApiResponse<TreeResponseDTO.shiftTree> shiftTree(
+            @RequestHeader("Authorization") final String header,
+            @PathVariable final Long treeId
+    ) {
+        String token = header.replace("Bearer ", "");
+        return ApiResponse.onSuccess(treeService.shiftTree(treeId, token));
+    }
 
 }
