@@ -18,6 +18,7 @@ public class ProfileConverter {
                 .memberName(memberName)
                 .bio(bio)
                 .profileImageUrl(profileImageUrl)
+                .isActive(true)
                 .build();
     }
 

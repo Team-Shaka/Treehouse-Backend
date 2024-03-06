@@ -7,7 +7,6 @@ import org.example.tree.domain.invitation.entity.Invitation;
 import org.example.tree.domain.invitation.service.InvitationQueryService;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
-import org.example.tree.domain.post.service.PostService;
 import org.example.tree.domain.profile.converter.ProfileConverter;
 import org.example.tree.domain.profile.dto.ProfileRequestDTO;
 import org.example.tree.domain.profile.dto.ProfileResponseDTO;

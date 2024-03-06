@@ -1,13 +1,19 @@
 package org.example.tree.domain.tree.dto;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TreeResponseDTO {
-//    @Getter
-//    public static class registerTree {
-//        private String treeName;
-//    }
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getTree {
+        private String treeName;
+        private Integer treeSize;
+        private List<String> treeMemberProfileImages;
+        private Boolean isSelected;
+    }
 }
