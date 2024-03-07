@@ -50,19 +50,20 @@ public class PostService {
     }
 
     @Transactional
-    public List<PostResponseDTO.getFeed> getFeed(Long treeId, String token) {
+    public PostResponseDTO.getFeed getFeed(Long treeId, String token) {
         Profile profile = profileService.getTreeProfile(token, treeId);
         List<Post> posts = postQueryService.getPosts(profile.getTree());
-        return posts.stream()
+        List<PostResponseDTO.getPost> treePosts = posts.stream()
                 .map(post -> {
                     // 작성자와의 branch degree를 가져옵니다.
                     int branchDegree = branchService.calculateBranchDegree(treeId, profile.getId(), post.getProfile().getId());
                     // 각 포스트에 대한 반응들을 가져옵니다.
                     List<ReactionResponseDTO.getReaction> reactions = reactionService.getPostReactions(treeId, post.getId(), token);
                     // Post와 해당 Post의 반응들을 포함하여 DTO를 생성합니다.
-                    return postConverter.toGetFeed(post, branchDegree, reactions);
+                    return postConverter.toGetPost(post, branchDegree, reactions);
                 })
                 .collect(Collectors.toList());
+        return postConverter.toGetFeed(profile.getTree(),treePosts);
     }
 
     @Transactional

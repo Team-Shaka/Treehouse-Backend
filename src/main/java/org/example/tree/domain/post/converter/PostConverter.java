@@ -7,6 +7,7 @@ import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.entity.PostImage;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
+import org.example.tree.domain.tree.entity.Tree;
 import org.example.tree.global.common.amazons3.S3UploadService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
@@ -44,21 +45,11 @@ public class PostConverter {
                 .build();
     }
 
-    public PostResponseDTO.getFeed toGetFeed(Post post, int branchDegree, List<ReactionResponseDTO.getReaction> reactions) {
-        List<String> imageUrls = post.getPostImages().stream()
-                .map(PostImage::getImageUrl)
-                .collect(Collectors.toList());
+    public PostResponseDTO.getFeed toGetFeed(Tree tree, List<PostResponseDTO.getPost> posts) {
         return PostResponseDTO.getFeed.builder()
-                .postId(post.getId())
-                .authorId(post.getProfile().getId())
-                .profileImageUrl(post.getProfile().getProfileImageUrl())
-                .memberName(post.getProfile().getMemberName())
-                .branchDegree(branchDegree)
-                .content(post.getContent())
-                .postImageUrls(imageUrls)
-                .createdAt(post.getCreatedAt())
-                .reactions(reactions)
-                .commentCount(post.getCommentCount())
+                .treeId(tree.getId())
+                .treeName(tree.getName())
+                .posts(posts)
                 .build();
     }
 

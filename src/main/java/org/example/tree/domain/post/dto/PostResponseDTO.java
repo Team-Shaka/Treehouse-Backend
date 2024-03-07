@@ -26,17 +26,9 @@ public class PostResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class getFeed {
-
-        private Long postId;
-        private Long authorId;
-        private String profileImageUrl;
-        private String memberName;
-        private int branchDegree;
-        private String content;
-        private List<String> postImageUrls;
-        private LocalDateTime createdAt;
-        private Integer commentCount;
-        private List<ReactionResponseDTO.getReaction> reactions;
+        private Long treeId;
+        private String treeName;
+        private List<PostResponseDTO.getPost> posts;
 
     }
 
