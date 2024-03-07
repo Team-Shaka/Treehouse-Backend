@@ -78,6 +78,10 @@ cloud:
       secret-key: ${SECRET_KEY}
       #aws access key, secret key
 
+  firebase:
+    key-path: ${FIREBASE_KEY_PATH}
+    #firebase key path for push notification
+
 ---
 #spring:
 #  config:
