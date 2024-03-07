@@ -27,6 +27,7 @@ public enum GlobalErrorCode {
     //Profile
     //404 Not Found - 찾을 수 없음
     PROFILE_NOT_FOUND(NOT_FOUND, "존재하지 않는 프로필입니다."),
+    AVAILABLE_PROFILE_NOT_FOUND(NOT_FOUND, "현재 선택된 프로필이 없습니다."),
 
     //Tree
     //404 Not Found - 찾을 수 없음
@@ -54,7 +55,8 @@ public enum GlobalErrorCode {
 
     //Notification
     //404 Not Found - 찾을 수 없음
-    NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 없습니다.");
+    NOTIFICATION_NOT_FOUND(NOT_FOUND, "알림이 없습니다."),
+    ;
 
 
 

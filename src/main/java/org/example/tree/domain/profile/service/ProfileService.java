@@ -7,7 +7,6 @@ import org.example.tree.domain.invitation.entity.Invitation;
 import org.example.tree.domain.invitation.service.InvitationQueryService;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
-import org.example.tree.domain.post.service.PostService;
 import org.example.tree.domain.profile.converter.ProfileConverter;
 import org.example.tree.domain.profile.dto.ProfileRequestDTO;
 import org.example.tree.domain.profile.dto.ProfileResponseDTO;
@@ -38,6 +37,12 @@ public class ProfileService {
     public ProfileResponseDTO.createProfile createProfile(ProfileRequestDTO.createProfile request, MultipartFile profileImage) throws Exception {
         Tree tree = treeQueryService.findById(request.getTreeId());
         Member member = memberQueryService.findById(request.getUserId());
+        boolean isNewUser = profileQueryService.isNewUser(member);
+        if (!isNewUser) {
+            Profile currentProfile = profileQueryService.getCurrentProfile(member);
+            currentProfile.inactivate();
+            profileCommandService.updateProfile(currentProfile);
+        }
         String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);
@@ -52,6 +57,12 @@ public class ProfileService {
     public ProfileResponseDTO.createProfile ownerProfile(ProfileRequestDTO.ownerProfile request, MultipartFile profileImage) throws Exception {
         Tree tree = treeQueryService.findById(request.getTreeId());
         Member member = memberQueryService.findById(request.getUserId());
+        boolean isNewUser = profileQueryService.isNewUser(member);
+        if (!isNewUser) {
+            Profile currentProfile = profileQueryService.getCurrentProfile(member);
+            currentProfile.inactivate();
+            profileCommandService.updateProfile(currentProfile);
+        }
         String profileImageUrl = !profileImage.isEmpty() ? s3UploadService.uploadImage(profileImage) : DEFAULT_PROFILE_IMAGE;
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);

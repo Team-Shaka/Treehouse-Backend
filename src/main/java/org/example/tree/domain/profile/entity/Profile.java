@@ -22,10 +22,19 @@ public class Profile extends BaseDateTimeEntity {
 
     private String profileImageUrl; //프로필 이미지(트리 별로 상이)
 
+    private boolean isActive; //현재 선택한 트리의 프로필인지 여부
+
     @JoinColumn(name = "memberId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     @JoinColumn(name = "treeId")
     @ManyToOne(fetch = FetchType.LAZY)
     private Tree tree;
+
+    public void actvate() {
+        this.isActive = true;
+    }
+    public void inactivate() {
+        this.isActive = false;
+    }
 }
