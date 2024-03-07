@@ -31,7 +31,7 @@ public class PostController {
 
     @GetMapping("/trees/{treeId}/feed")
     @Operation(summary = "피드 조회", description = "특정 트리하우스 속 피드를 불러옵니다.")
-    public ApiResponse<List<PostResponseDTO.getFeed>> getFeed(
+    public ApiResponse<PostResponseDTO.getFeed> getFeed(
             @PathVariable final Long treeId,
             @RequestHeader("Authorization") final String header
     ) {
