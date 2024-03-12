@@ -19,6 +19,7 @@ public class NotificationResponseDTO {
         private String type;
         private Long treeId;
         private String treeName;
+        private Long sourceId;
         private LocalDateTime createdAt;
     }
 }

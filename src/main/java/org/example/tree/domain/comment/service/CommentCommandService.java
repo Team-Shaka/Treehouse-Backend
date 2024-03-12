@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 public class CommentCommandService {
     private final CommentRepository commentRepository;
 
-    public void createComment(Comment comment) {
-        commentRepository.save(comment);
+    public Comment createComment(Comment comment) {
+        return commentRepository.save(comment);
     }
 
     public void deleteComment(Comment comment) {

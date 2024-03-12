@@ -40,9 +40,9 @@ public class CommentService {
         Post post = postQueryService.findById(postId);
         Comment comment = commentConverter.toComment(request.getContent(), profile, post);
         post.increaseCommentCount();
-        commentCommandService.createComment(comment);
+        Comment createdComment = commentCommandService.createComment(comment);
         Profile author = post.getProfile();
-        notificationService.commentNotification(profile, comment, author.getMember().getId()); //알림 생성 로직
+        notificationService.commentNotification(profile, createdComment, author.getMember().getId()); //알림 생성 로직
     }
 
     @Transactional

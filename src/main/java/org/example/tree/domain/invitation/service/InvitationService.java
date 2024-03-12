@@ -54,8 +54,8 @@ public class InvitationService {
         Profile sender = profileQueryService.getTreeProfile(member, tree);
         Member targetMember = memberQueryService.findById(request.getTargetUserId());
         Invitation invitation = invitationConverter.toInvitation(sender, tree, targetMember.getPhone());
-        notificationService.invitationNotification(sender, invitation, targetMember.getId());
-        invitationCommandService.createInvitation(invitation);
+        Invitation savedInvitation = invitationCommandService.createInvitation(invitation);
+        notificationService.invitationNotification(sender, savedInvitation, targetMember.getId());
     }
 
     @Transactional

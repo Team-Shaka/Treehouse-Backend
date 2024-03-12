@@ -29,6 +29,8 @@ public class Notification extends BaseDateTimeEntity {
 
     private boolean readStatus = false;
 
+    private Long sourceId;
+
     @ManyToOne
     @JoinColumn(name = "sender_id")
     private Profile sender;

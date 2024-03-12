@@ -48,9 +48,9 @@ public class ReactionService {
             return reactionConverter.toAddReaction(request.getType(), countAfterUnreact);
         }
         Reaction reaction = reactionConverter.toPostReaction(profile, postId, request.getType());
-        reactionCommandService.reactToPost(reaction);
+        Reaction savedReaction = reactionCommandService.reactToPost(reaction);
         Integer count = reactionQueryService.getReactionCount(postId, TargetType.POST, request.getType());
-        notificationService.reactionNotification(profile, reaction, post.getProfile().getMember().getId());
+        notificationService.reactionNotification(profile, savedReaction, post.getProfile().getMember().getId());
         return reactionConverter.toAddReaction(request.getType(), count);
     }
 

@@ -29,6 +29,7 @@ public class NotificationConverter {
                 .type(NotificationType.COMMENT)
                 .sender(comment.getProfile())
                 .receiver(receiver)
+                .sourceId(comment.getPost().getId())
                 .build();
     }
 
@@ -39,6 +40,7 @@ public class NotificationConverter {
                 .type(NotificationType.REACTION)
                 .sender(reaction.getProfile())
                 .receiver(receiver)
+                .sourceId(reaction.getId())
                 .build();
     }
 
@@ -49,6 +51,7 @@ public class NotificationConverter {
                 .type(NotificationType.INVITATION)
                 .sender(invitation.getSender())
                 .receiver(receiver)
+                .sourceId(invitation.getId())
                 .build();
     }
 
@@ -61,6 +64,7 @@ public class NotificationConverter {
                 .type(notification.getType().name())
                 .treeId(notification.getSender().getTree().getId())
                 .treeName(notification.getSender().getTree().getName())
+                .sourceId(notification.getSourceId())
                 .createdAt(notification.getCreatedAt())
                 .build();
     }
