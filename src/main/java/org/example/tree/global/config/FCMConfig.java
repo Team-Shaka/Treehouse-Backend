@@ -28,9 +28,10 @@ public class FCMConfig {
                     .builder()
                     .setCredentials(GoogleCredentials.fromStream(refreshToken))
                     .build();
-
-            FirebaseApp.initializeApp(options);
-            log.info("Fcm Setting Completed");
+            if (FirebaseApp.getApps().isEmpty()) {
+                FirebaseApp.initializeApp(options);
+                log.info("Fcm Setting Completed");
+            }
 
         } catch (final IOException e) {
             throw new RuntimeException(e.getMessage());
