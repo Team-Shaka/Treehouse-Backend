@@ -30,7 +30,7 @@ public class FCMConfig {
                     .build();
             if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
-                log.info("Fcm Setting Completed");
+                log.info("FCM Setting Completed");
             }
 
         } catch (final IOException e) {
