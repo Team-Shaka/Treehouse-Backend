@@ -36,9 +36,9 @@ public class PostService {
     private final BranchService branchService;
 
     @Transactional
-    public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, List<MultipartFile> images, String token) throws Exception {
+    public PostResponseDTO.createPost createPost(Long treeId, PostRequestDTO.createPost request, String token) throws Exception {
         Profile profile = profileService.getTreeProfile(token, treeId);
-        List<PostImage> postImages = postConverter.toPostImages(images);
+        List<PostImage> postImages = postConverter.toPostImages(request.getImages());
         Post post = postConverter.toPost(request.getContent(), profile);
         Post savedPost = postCommandService.createPost(post);
         for (PostImage postImage : postImages) {

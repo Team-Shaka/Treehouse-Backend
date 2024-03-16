@@ -16,9 +16,6 @@ public class PostResponseDTO {
     @AllArgsConstructor
     public static class createPost {
         private Long postId;
-        private List<String> postImageUrls;
-        private String authorId;
-        private Long treeId;
     }
 
     @Builder

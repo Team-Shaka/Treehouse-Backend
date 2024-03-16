@@ -1,26 +1,21 @@
 package org.example.tree.domain.post.converter;
 
 import lombok.RequiredArgsConstructor;
-import org.example.tree.domain.post.dto.PostRequestDTO;
 import org.example.tree.domain.post.dto.PostResponseDTO;
 import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.entity.PostImage;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
 import org.example.tree.domain.tree.entity.Tree;
-import org.example.tree.global.common.amazons3.S3UploadService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class PostConverter {
-    private final S3UploadService s3UploadService;
 
     public Post toPost(String content, Profile profile) {
         return Post.builder()
@@ -39,9 +34,6 @@ public class PostConverter {
                 .collect(Collectors.toList());
         return PostResponseDTO.createPost.builder()
                 .postId(savedPost.getId())
-                .postImageUrls(imageUrls)
-                .authorId(savedPost.getProfile().getMember().getId())
-                .treeId(savedPost.getTree().getId())
                 .build();
     }
 
@@ -72,13 +64,12 @@ public class PostConverter {
                 .build();
     }
 
-    public List<PostImage> toPostImages(List<MultipartFile> images) throws Exception {
+    public List<PostImage> toPostImages(List<String> images) throws Exception {
         List<PostImage> postImages = new ArrayList<>();
-        for(MultipartFile image :images) {
-            if (!image.isEmpty()) {
-                String postImageUrl = s3UploadService.uploadImage(image); // 이미지 업로드 후 URL 획득
+        for(String imageUrl :images) {
+            if (imageUrl != null) {// 이미지 업로드 후 URL 획득
                 PostImage postImage = PostImage.builder()
-                        .imageUrl(postImageUrl) // PostImage 엔티티에는 imageUrl 필드가 있어야 합니다.
+                        .imageUrl(imageUrl) // PostImage 엔티티에는 imageUrl 필드가 있어야 합니다.
                         .build();
                 postImages.add(postImage);
             }

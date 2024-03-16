@@ -18,15 +18,14 @@ import java.util.List;
 public class PostController {
     private final PostService postService;
 
-    @PostMapping(value = "/trees/{treeId}/feed/posts", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/trees/{treeId}/feed/posts")
     public ApiResponse<PostResponseDTO.createPost> createPost(
             @PathVariable final Long treeId,
             @RequestHeader("Authorization") final String header,
-            @RequestPart(value="request") final PostRequestDTO.createPost request,
-            @RequestPart(value="images") final List<MultipartFile> images
+            @RequestBody final PostRequestDTO.createPost request
     ) throws Exception {
         String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.createPost(treeId, request, images, token));
+        return ApiResponse.onSuccess(postService.createPost(treeId, request, token));
     }
 
     @GetMapping("/trees/{treeId}/feed")
