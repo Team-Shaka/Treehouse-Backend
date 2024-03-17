@@ -28,4 +28,11 @@ public class MemberConverter {
                 .refreshToken(refreshToken)
                 .build();
     }
+
+    public MemberResponseDTO.reissue toReissue(String accessToken, String refreshToken) {
+        return MemberResponseDTO.reissue.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }
