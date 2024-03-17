@@ -45,6 +45,7 @@ public class PostResponseDTO {
         private String content;
         private List<String> postImageUrls;
         private List<ReactionResponseDTO.getReaction> reactions;
+        private Integer commentCount;
         private LocalDateTime createdAt;
 
     }

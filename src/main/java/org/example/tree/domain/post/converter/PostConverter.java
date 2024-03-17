@@ -68,6 +68,7 @@ public class PostConverter {
                 .content(post.getContent())
                 .postImageUrls(imageUrls)
                 .reactions(reactions)
+                .commentCount(post.getCommentCount())
                 .createdAt(post.getCreatedAt())
                 .build();
     }
