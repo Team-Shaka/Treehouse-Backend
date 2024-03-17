@@ -21,4 +21,13 @@ public class MemberResponseDTO {
         private String accessToken;
         private String refreshToken;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class reissue {
+        private String accessToken;
+        private String refreshToken;
+    }
 }

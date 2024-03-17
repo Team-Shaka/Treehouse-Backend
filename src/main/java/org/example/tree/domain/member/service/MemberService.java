@@ -32,4 +32,11 @@ public class MemberService {
         return memberConverter.toRegister(savedToken.getAccessToken(), savedToken.getRefreshToken());
     }
 
+    @Transactional
+    public MemberResponseDTO.reissue reissue(MemberRequestDTO.reissue request) {
+        Member member = memberQueryService.findByToken(request.getRefreshToken());
+        TokenDTO token = memberCommandService.reissue(member);
+        return memberConverter.toReissue(token.getAccessToken(), token.getRefreshToken());
+    }
+
 }

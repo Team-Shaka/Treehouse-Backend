@@ -28,5 +28,13 @@ public class MemberController {
         return ApiResponse.onSuccess((memberService.register(request)));
     }
 
+    @PostMapping("/reissue")
+    @Operation(summary = "토큰 재발급", description = "토큰을 재발급합니다.")
+    public ApiResponse<MemberResponseDTO.reissue> reissue(
+            @RequestBody final MemberRequestDTO.reissue request
+    ) {
+        return ApiResponse.onSuccess(memberService.reissue(request));
+    }
+
 
 }

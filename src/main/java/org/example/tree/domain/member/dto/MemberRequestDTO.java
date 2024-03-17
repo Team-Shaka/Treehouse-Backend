@@ -17,4 +17,9 @@ public class MemberRequestDTO {
         private String phoneNumber;
         private String userId;
     }
+
+    @Getter
+    public static class reissue {
+        private String refreshToken;
+    }
 }
