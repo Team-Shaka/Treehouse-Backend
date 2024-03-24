@@ -12,7 +12,7 @@ public class ProfileRequestDTO {
         private Long treeId;
         private String userId;
         private String memberName;
-        private MultipartFile profileImage;
+        private String profileImage;
         private String bio;
 
     }
@@ -22,7 +22,7 @@ public class ProfileRequestDTO {
         private Long treeId;
         private String userId;
         private String memberName;
-        private MultipartFile profileImage;
+        private String profileImage;
         private String bio;
 
     }

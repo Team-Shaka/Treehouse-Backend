@@ -15,22 +15,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
     private final ProfileService profileService;
 
-    @PostMapping(value = "/trees/owner/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/trees/owner/register")
     @Operation(summary = "트리하우스 설립자 프로필 등록", description = "트리하우스 오너 프로필을 등록합니다.")
     public ApiResponse registerTreeOwner(
-            @RequestPart ProfileRequestDTO.ownerProfile request,
-            @RequestPart("profileImage") final MultipartFile profileImage
+            @RequestBody ProfileRequestDTO.ownerProfile request
     ) throws Exception {
-        return ApiResponse.onSuccess(profileService.ownerProfile(request, profileImage));
+        return ApiResponse.onSuccess(profileService.ownerProfile(request));
     }
 
-    @PostMapping(value = "/trees/members/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping("/trees/members/register")
     @Operation(summary = "트리하우스 멤버 프로필 등록", description = "트리하우스 멤버 프로필을 등록합니다.")
     public ApiResponse registerTreeMember(
-            @RequestPart ProfileRequestDTO.createProfile request,
-            @RequestPart("profileImage") final MultipartFile profileImage
+            @RequestBody ProfileRequestDTO.createProfile request
             ) throws Exception {
-        return ApiResponse.onSuccess(profileService.createProfile(request, profileImage));
+        return ApiResponse.onSuccess(profileService.createProfile(request));
     }
 
     @GetMapping("/trees/{treeId}/members/{profileId}") //프로필 조회
