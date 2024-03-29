@@ -17,6 +17,8 @@ public enum GlobalErrorCode {
     // 401 Unauthorized - 권한 없음
     INVALID_TOKEN(UNAUTHORIZED, "토큰이 유효하지 않습니다."),
     LOGIN_REQUIRED(UNAUTHORIZED, "로그인이 필요한 서비스입니다."),
+    // 403 Forbidden - 인증 거부
+    AUTHENTICATION_DENIED(FORBIDDEN, "인증이 거부 되었습니다."),
     AUTHENTICATION_REQUIRED(UNAUTHORIZED, "인증 정보가 유효하지 않습니다."),
     // 404 Not Found - 찾을 수 없음
     NEED_AGREE_REQUIRE_TERMS(NOT_FOUND, "필수 약관에 동의해 주세요."),
