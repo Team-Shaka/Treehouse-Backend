@@ -28,7 +28,13 @@ public class MemberCommandService {
 
 
     public Member register(Member member) {
-        return memberRepository.save(member);
+        try {
+            return memberRepository.save(member);
+        }
+        catch (Exception e){
+            log.error("eerror");
+            return null;
+        }
     }
     public TokenDTO login(Member member) {
 

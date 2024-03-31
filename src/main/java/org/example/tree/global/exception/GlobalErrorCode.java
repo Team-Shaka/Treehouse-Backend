@@ -10,6 +10,13 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Getter
 @AllArgsConstructor
 public enum GlobalErrorCode {
+
+    // Server Error
+    SERVER_ERROR(INTERNAL_SERVER_ERROR,"서버 에러, 서버 개발자에게 알려주세요."),
+
+    // Args Validation Error
+    BAD_ARGS_ERROR(BAD_REQUEST, "request body의 validation이 실패했습니다. 응답 body를 참고해주세요"),
+
     //  Member
     // 400 BAD_REQUEST - 잘못된 요청
     NOT_VALID_PHONE_NUMBER(BAD_REQUEST, "유효하지 않은 전화번호 입니다."),

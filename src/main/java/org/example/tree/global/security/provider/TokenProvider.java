@@ -50,6 +50,7 @@ public class TokenProvider {
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
+        int h = 7;
     }
 
     // header 토큰을 가져오기
@@ -75,7 +76,7 @@ public class TokenProvider {
     public String createAccessToken(String memberId,Collection<? extends GrantedAuthority> authorities) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
+        return
                 Jwts.builder()
                         .setSubject(memberId)
                         .claim("authoritiesKey", authorities)
@@ -86,7 +87,7 @@ public class TokenProvider {
     }
     public String createRefreshToken(String memberId) {
         Date date = new Date();
-        return  BEARER_PREFIX +
+        return
                 Jwts.builder()
                         .setSubject(memberId)
                         .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
@@ -109,6 +110,9 @@ public class TokenProvider {
             log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+        }
+        catch (io.jsonwebtoken.security.SignatureException e){
+            log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다");
         }
         return false;
     }

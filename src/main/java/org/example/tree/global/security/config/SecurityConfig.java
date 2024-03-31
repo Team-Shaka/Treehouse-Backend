@@ -24,7 +24,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Slf4j
 @RequiredArgsConstructor
-@EnableWebSecurity(debug = true)
+//@EnableWebSecurity(debug = true)
 @Configuration
 public class SecurityConfig {
 
@@ -47,6 +47,7 @@ public class SecurityConfig {
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
                                 "/favicon.io",
+                                "/swagger-ui/**",
                                 "/docs/**");
     }
 
@@ -62,7 +63,8 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         authorize -> {
-                            authorize.requestMatchers("/swagger-ui/**").permitAll();
+//                            authorize.requestMatchers("/swagger-ui/**").permitAll();
+                            authorize.requestMatchers("/users/**").permitAll();
                             authorize.anyRequest().authenticated();
                 })
                 .exceptionHandling(

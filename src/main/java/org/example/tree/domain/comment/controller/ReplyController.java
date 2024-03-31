@@ -1,10 +1,13 @@
 package org.example.tree.domain.comment.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.comment.dto.ReplyRequestDTO;
 import org.example.tree.domain.comment.service.ReplyService;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,11 +20,10 @@ public class ReplyController {
     public ApiResponse createReply(
             @PathVariable final Long treeId,
             @PathVariable final Long commentId,
-            @RequestHeader("Authorization") final String header,
-            @RequestBody final ReplyRequestDTO.createReply request
-    ) {
-        String token = header.replace("Bearer ", "");
-        replyService.createReply(treeId, commentId, request, token);
+            @RequestBody final ReplyRequestDTO.createReply request,
+            @AuthMember @Parameter(hidden = true) Member member
+            ) {
+        replyService.createReply(treeId, commentId, request, member);
         return ApiResponse.onSuccess("");
     }
 
@@ -31,11 +33,10 @@ public class ReplyController {
             @PathVariable final Long treeId,
             @PathVariable final Long commentId,
             @PathVariable final Long replyId,
-            @RequestHeader("Authorization") final String header,
-            @RequestBody final ReplyRequestDTO.updateReply request
+            @RequestBody final ReplyRequestDTO.updateReply request,
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        replyService.updateReply(treeId, commentId, replyId, request, token);
+        replyService.updateReply(treeId, commentId, replyId, request, member);
         return ApiResponse.onSuccess("");
     }
 
@@ -45,10 +46,9 @@ public class ReplyController {
             @PathVariable final Long treeId,
             @PathVariable final Long commentId,
             @PathVariable final Long replyId,
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        replyService.deleteReply(treeId, commentId, replyId, token);
+        replyService.deleteReply(treeId, commentId, replyId, member);
         return ApiResponse.onSuccess("");
     }
 

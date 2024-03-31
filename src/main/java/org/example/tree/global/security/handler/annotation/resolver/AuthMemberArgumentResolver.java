@@ -1,10 +1,11 @@
-package org.example.tree.global.security.handler.annotation;
+package org.example.tree.global.security.handler.annotation.resolver;
 
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.member.converter.MemberConverter;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
+import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
