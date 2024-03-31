@@ -35,6 +35,4 @@ public class MemberController {
     ) {
         return ApiResponse.onSuccess(memberService.reissue(request));
     }
-
-
 }

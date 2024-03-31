@@ -1,12 +1,16 @@
 package org.example.tree.domain.post.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.post.dto.PostRequestDTO;
 import org.example.tree.domain.post.dto.PostResponseDTO;
 import org.example.tree.domain.post.service.PostService;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,21 +25,19 @@ public class PostController {
     @PostMapping("/trees/{treeId}/feed/posts")
     public ApiResponse<PostResponseDTO.createPost> createPost(
             @PathVariable final Long treeId,
-            @RequestHeader("Authorization") final String header,
-            @RequestBody final PostRequestDTO.createPost request
+            @RequestBody final PostRequestDTO.createPost request,
+            @AuthMember @Parameter(hidden = true)  Member member
     ) throws Exception {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.createPost(treeId, request, token));
+        return ApiResponse.onSuccess(postService.createPost(treeId, request, member));
     }
 
     @GetMapping("/trees/{treeId}/feed")
     @Operation(summary = "피드 조회", description = "특정 트리하우스 속 피드를 불러옵니다.")
     public ApiResponse<PostResponseDTO.getFeed> getFeed(
             @PathVariable final Long treeId,
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true)  Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.getFeed(treeId, token));
+        return ApiResponse.onSuccess(postService.getFeed(treeId, member));
     }
 
     @GetMapping("/trees/{treeId}/feed/posts/{postId}")
@@ -43,10 +45,10 @@ public class PostController {
     public ApiResponse<PostResponseDTO.getPost> getPost(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
-            @RequestHeader("Authorization") final String header
-    ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.getPost(treeId, postId, token));
+            @AuthMember @Parameter(hidden = true)  Member member
+    )
+    {
+        return ApiResponse.onSuccess(postService.getPost(treeId, postId, member));
     }
 
     @GetMapping("/trees/{treeId}/feed/posts")
@@ -54,10 +56,9 @@ public class PostController {
     public ApiResponse<List<PostResponseDTO.getPost>> getPosts(
             @PathVariable final Long treeId,
             @RequestParam(name = "member") final Long profileId,
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(postService.getTreePosts(treeId, profileId, token));
+        return ApiResponse.onSuccess(postService.getTreePosts(treeId, profileId, member));
     }
 
     @PatchMapping("/trees/{treeId}/feed/posts/{postId}")
@@ -65,11 +66,10 @@ public class PostController {
     public ApiResponse updatePost(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
-            @RequestHeader("Authorization") final String header,
+            @AuthMember @Parameter(hidden = true) Member member,
             @RequestBody final PostRequestDTO.updatePost request
     ) {
-        String token = header.replace("Bearer ", "");
-        postService.updatePost(treeId, postId, request, token);
+        postService.updatePost(treeId, postId, request, member);
         return ApiResponse.onSuccess("");
     }
 
@@ -78,10 +78,9 @@ public class PostController {
     public ApiResponse deletePost(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        postService.deletePost(treeId, postId, token);
+        postService.deletePost(treeId, postId, member);
         return ApiResponse.onSuccess("");
     }
 }

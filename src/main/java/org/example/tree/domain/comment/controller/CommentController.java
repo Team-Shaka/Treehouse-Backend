@@ -1,11 +1,14 @@
 package org.example.tree.domain.comment.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.comment.dto.CommentRequestDTO;
 import org.example.tree.domain.comment.dto.CommentResponseDTO;
 import org.example.tree.domain.comment.service.CommentService;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,12 +23,11 @@ public class CommentController {
     public ApiResponse createComment(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
-            @RequestHeader("Authorization") final String header,
-            @RequestBody final CommentRequestDTO.createComment request
+            @RequestBody final CommentRequestDTO.createComment request,
+            @AuthMember @Parameter(hidden = true) Member member
 
-    ) {
-        String token = header.replace("Bearer ", "");
-        commentService.createComment(treeId, postId, request, token);
+            ) {
+        commentService.createComment(treeId, postId, request, member);
         return ApiResponse.onSuccess("");
     }
 
@@ -34,10 +36,9 @@ public class CommentController {
     public ApiResponse<List<CommentResponseDTO.getComment>> getComments(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(commentService.getComments(treeId, postId, token));
+        return ApiResponse.onSuccess(commentService.getComments(treeId, postId, member));
     }
 
     @PatchMapping("/trees/{treeId}/feed/posts/{postId}/comments/{commentId}")
@@ -46,11 +47,10 @@ public class CommentController {
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
             @PathVariable final Long commentId,
-            @RequestHeader("Authorization") final String header,
-            @RequestBody final CommentRequestDTO.updateComment request
+            @RequestBody final CommentRequestDTO.updateComment request,
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        commentService.updateComment(treeId, postId, commentId, request, token);
+        commentService.updateComment(treeId, postId, commentId, request, member);
         return ApiResponse.onSuccess("");
     }
 
@@ -60,10 +60,9 @@ public class CommentController {
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
             @PathVariable final Long commentId,
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        commentService.deleteComment(treeId, postId, commentId, token);
+        commentService.deleteComment(treeId, postId, commentId, member);
         return ApiResponse.onSuccess("");
     }
 }

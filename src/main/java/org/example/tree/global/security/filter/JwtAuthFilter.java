@@ -1,4 +1,4 @@
-package org.example.tree.global.security.jwt;
+package org.example.tree.global.security.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -10,12 +10,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.tree.global.common.ApiResponse;
 import org.example.tree.global.exception.GlobalErrorCode;
+import org.example.tree.global.security.provider.TokenProvider;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.Date;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,14 +36,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 
         // 토큰이 있다면 진행
-        if(accessToken != null) {
-            if(!tokenProvider.validateToken(accessToken)){
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
-                return;
-            }
-            // 토큰 유효 -> getUserInfoFromToken메서드를 사용해 JWT 토큰의 payload에서 정보 반환
-            Claims info = tokenProvider.getUserInfoFromToken(accessToken);    // 토큰에서 user정보 가져옴(payload)
+        if(StringUtils.hasText(accessToken) && tokenProvider.validateToken(accessToken)) {
 
+            Authentication authentication = tokenProvider.getAuthentication(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        }
+        else{
+            SecurityContextHolder.getContext().setAuthentication(null);
         }
         // 다음 단계 실행 -> 다른 필터 및 컨트롤러 실행
         filterChain.doFilter(request,response);

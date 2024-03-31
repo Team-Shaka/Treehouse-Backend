@@ -1,14 +1,11 @@
 package org.example.tree.domain.member.service;
 
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.repository.MemberRepository;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
-import org.example.tree.global.security.jwt.TokenProvider;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.example.tree.global.security.provider.TokenProvider;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

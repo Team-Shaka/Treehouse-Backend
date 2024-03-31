@@ -1,11 +1,14 @@
 package org.example.tree.domain.reaction.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.reaction.dto.ReactionRequestDTO;
 import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
 import org.example.tree.domain.reaction.service.ReactionService;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,11 +22,10 @@ public class ReactionController {
     public ApiResponse<ReactionResponseDTO.addReaction> createPostReaction(
             @PathVariable Long treeId,
             @PathVariable Long postId,
-            @RequestHeader("Authorization") String header,
-            @RequestBody ReactionRequestDTO.createReaction request
+            @RequestBody ReactionRequestDTO.createReaction request,
+            @AuthMember @Parameter(hidden = true) Member member
             ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(reactionService.reactToPost(treeId, postId, request, token));
+        return ApiResponse.onSuccess(reactionService.reactToPost(treeId, postId, request, member));
     }
 
     @PostMapping("/trees/{treeId}/feed/comments/{commentId}/reaction")
@@ -31,11 +33,10 @@ public class ReactionController {
     public ApiResponse<ReactionResponseDTO.addReaction> createCommentReaction(
             @PathVariable Long treeId,
             @PathVariable Long commentId,
-            @RequestHeader("Authorization") String header,
-            @RequestBody ReactionRequestDTO.createReaction request
+            @RequestBody ReactionRequestDTO.createReaction request,
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(reactionService.reactToComment(treeId, commentId, request, token));
+        return ApiResponse.onSuccess(reactionService.reactToComment(treeId, commentId, request, member));
     }
 
     @PostMapping("/trees/{treeId}/feed/replies/{replyId}/reaction")
@@ -43,11 +44,10 @@ public class ReactionController {
     public ApiResponse<ReactionResponseDTO.addReaction> createReplyReaction(
             @PathVariable Long treeId,
             @PathVariable Long replyId,
-            @RequestHeader("Authorization") String header,
-            @RequestBody ReactionRequestDTO.createReaction request
-    ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(reactionService.reactToReply(treeId, replyId, request, token));
+            @RequestBody ReactionRequestDTO.createReaction request,
+            @AuthMember @Parameter(hidden = true) Member member
+            ) {
+        return ApiResponse.onSuccess(reactionService.reactToReply(treeId, replyId, request, member));
     }
 
 

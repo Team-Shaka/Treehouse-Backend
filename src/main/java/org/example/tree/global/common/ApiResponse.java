@@ -3,6 +3,10 @@ package org.example.tree.global.common;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.example.tree.global.exception.GlobalErrorCode;
@@ -13,6 +17,20 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @JsonPropertyOrder( {"isSuccess", "code", "message", "data"} )
 public class ApiResponse<T> {
+    @Override
+    public String toString() {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            // Java 8 날짜/시간 모듈 등록
+            mapper.registerModule(new JavaTimeModule());
+            // 날짜와 시간을 ISO-8601 형식의 문자열로 직렬화
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            // 이쁘게 출력하기
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @JsonProperty("isSuccess")
     private Boolean isSuccess;

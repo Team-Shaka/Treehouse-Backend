@@ -70,8 +70,7 @@ public class ProfileService {
     }
 
     @Transactional
-    public Profile getTreeProfile(String token, Long treeId) {
-        Member member = memberQueryService.findByToken(token);
+    public Profile getTreeProfile(Member member, Long treeId) {
         Tree tree = treeQueryService.findById(treeId);
         return profileQueryService.getTreeProfile(member,tree);
     }

@@ -10,6 +10,13 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 @Getter
 @AllArgsConstructor
 public enum GlobalErrorCode {
+
+    // Server Error
+    SERVER_ERROR(INTERNAL_SERVER_ERROR,"서버 에러, 서버 개발자에게 알려주세요."),
+
+    // Args Validation Error
+    BAD_ARGS_ERROR(BAD_REQUEST, "request body의 validation이 실패했습니다. 응답 body를 참고해주세요"),
+
     //  Member
     // 400 BAD_REQUEST - 잘못된 요청
     NOT_VALID_PHONE_NUMBER(BAD_REQUEST, "유효하지 않은 전화번호 입니다."),
@@ -17,6 +24,8 @@ public enum GlobalErrorCode {
     // 401 Unauthorized - 권한 없음
     INVALID_TOKEN(UNAUTHORIZED, "토큰이 유효하지 않습니다."),
     LOGIN_REQUIRED(UNAUTHORIZED, "로그인이 필요한 서비스입니다."),
+    // 403 Forbidden - 인증 거부
+    AUTHENTICATION_DENIED(FORBIDDEN, "인증이 거부 되었습니다."),
     AUTHENTICATION_REQUIRED(UNAUTHORIZED, "인증 정보가 유효하지 않습니다."),
     // 404 Not Found - 찾을 수 없음
     NEED_AGREE_REQUIRE_TERMS(NOT_FOUND, "필수 약관에 동의해 주세요."),

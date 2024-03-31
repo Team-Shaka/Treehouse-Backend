@@ -7,6 +7,7 @@ import org.example.tree.domain.comment.dto.CommentRequestDTO;
 import org.example.tree.domain.comment.dto.CommentResponseDTO;
 import org.example.tree.domain.comment.dto.ReplyResponseDTO;
 import org.example.tree.domain.comment.entity.Comment;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.notification.entity.NotificationType;
 import org.example.tree.domain.notification.service.NotificationService;
 import org.example.tree.domain.post.entity.Post;
@@ -35,8 +36,8 @@ public class CommentService {
     private final NotificationService notificationService;
 
     @Transactional
-    public void createComment(Long treeId, Long postId, CommentRequestDTO.createComment request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public void createComment(Long treeId, Long postId, CommentRequestDTO.createComment request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         Comment comment = commentConverter.toComment(request.getContent(), profile, post);
         post.increaseCommentCount();
@@ -46,13 +47,13 @@ public class CommentService {
     }
 
     @Transactional
-    public List<CommentResponseDTO.getComment> getComments(Long treeId, Long postId, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public List<CommentResponseDTO.getComment> getComments(Long treeId, Long postId, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         List<Comment> comments = commentQueryService.getComments(post);
         return comments.stream()
                 .map(comment -> {
-                    List<ReactionResponseDTO.getReaction> reactions = reactionService.getCommentReactions(treeId, comment.getId(), token);
+                    List<ReactionResponseDTO.getReaction> reactions = reactionService.getCommentReactions(treeId, comment.getId(), member);
                     List<ReplyResponseDTO.getReply> repliesForComment = replyService.getReplies(comment);
                     return commentConverter.toGetComment(comment, reactions, repliesForComment); // toGetComment 메서드 수정 필요
                 })
@@ -60,8 +61,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void updateComment(Long treeId, Long postId, Long commentId, CommentRequestDTO.updateComment request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public void updateComment(Long treeId, Long postId, Long commentId, CommentRequestDTO.updateComment request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         Comment comment = commentQueryService.findById(commentId);
         if (!comment.getProfile().getId().equals(profile.getId())) {
@@ -71,8 +72,8 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long treeId, Long postId, Long commentId, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public void deleteComment(Long treeId, Long postId, Long commentId, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         Comment comment = commentQueryService.findById(commentId);
         if (!comment.getProfile().getId().equals(profile.getId())) {

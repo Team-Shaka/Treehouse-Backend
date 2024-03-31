@@ -6,6 +6,7 @@ import org.example.tree.domain.comment.entity.Comment;
 import org.example.tree.domain.comment.entity.Reply;
 import org.example.tree.domain.comment.service.CommentQueryService;
 import org.example.tree.domain.comment.service.ReplyQueryService;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.notification.service.NotificationService;
 import org.example.tree.domain.post.entity.Post;
 import org.example.tree.domain.post.service.PostQueryService;
@@ -38,8 +39,8 @@ public class ReactionService {
     private final NotificationService notificationService;
 
     @Transactional
-    public ReactionResponseDTO.addReaction reactToPost(Long treeId, Long postId, ReactionRequestDTO.createReaction request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public ReactionResponseDTO.addReaction reactToPost(Long treeId, Long postId, ReactionRequestDTO.createReaction request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(postId, TargetType.POST, request.getType(), profile);
         if(isPushed){
@@ -55,9 +56,9 @@ public class ReactionService {
     }
 
     @Transactional
-    public List<ReactionResponseDTO.getReaction> getPostReactions(Long treeId, Long postId, String token) {
+    public List<ReactionResponseDTO.getReaction> getPostReactions(Long treeId, Long postId, Member member) {
         Map<ReactionType, Long> reactionSummary = reactionQueryService.getReactionSummary(postId, TargetType.POST);
-        Profile profile = profileService.getTreeProfile(token, treeId);
+        Profile profile = profileService.getTreeProfile(member, treeId);
 
         return reactionSummary.entrySet().stream().map(entry -> {
             ReactionType type = entry.getKey();
@@ -69,8 +70,8 @@ public class ReactionService {
     }
 
     @Transactional
-    public ReactionResponseDTO.addReaction reactToComment(Long treeId, Long commentId, ReactionRequestDTO.createReaction request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public ReactionResponseDTO.addReaction reactToComment(Long treeId, Long commentId, ReactionRequestDTO.createReaction request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Comment comment = commentQueryService.findById(commentId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(commentId, TargetType.COMMENT, request.getType(), profile);
         if(isPushed){
@@ -85,9 +86,9 @@ public class ReactionService {
     }
 
     @Transactional
-    public List<ReactionResponseDTO.getReaction> getCommentReactions(Long treeId, Long commentId, String token) {
+    public List<ReactionResponseDTO.getReaction> getCommentReactions(Long treeId, Long commentId, Member member) {
         Map<ReactionType, Long> reactionSummary = reactionQueryService.getReactionSummary(commentId, TargetType.COMMENT);
-        Profile profile = profileService.getTreeProfile(token, treeId);
+        Profile profile = profileService.getTreeProfile(member, treeId);
 
         return reactionSummary.entrySet().stream().map(entry -> {
             ReactionType type = entry.getKey();
@@ -99,8 +100,8 @@ public class ReactionService {
     }
 
     @Transactional
-    public ReactionResponseDTO.addReaction reactToReply(Long treeId, Long replyId, ReactionRequestDTO.createReaction request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public ReactionResponseDTO.addReaction reactToReply(Long treeId, Long replyId, ReactionRequestDTO.createReaction request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Reply reply = replyQueryService.findById(replyId);
         Boolean isPushed =reactionRepository.existsByTargetIdAndTargetTypeAndTypeAndProfile(replyId, TargetType.REPLY, request.getType(), profile);
         if(isPushed){

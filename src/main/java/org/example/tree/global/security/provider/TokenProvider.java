@@ -1,4 +1,4 @@
-package org.example.tree.global.security.jwt;
+package org.example.tree.global.security.provider;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -7,13 +7,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.tree.domain.member.repository.RefreshTokenRepository;
+import org.example.tree.global.security.jwt.RefreshToken;
 import org.springframework.beans.factory.annotation.Value;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Component
@@ -22,8 +29,12 @@ public class TokenProvider {
     public static final String ACCESS_TOKEN_HEADER = "Authorization";
     public static final String REFRESH_TOKEN_HEADER = "Refresh-Token";
     private static final String BEARER_PREFIX = "Bearer ";
-    private static final long TOKEN_TIME = 30 * 60 * 1000L;
-    private static final long REFRESH_TOKEN_TIME = 14 * 24 * 60 * 60 * 1000L;
+
+    @Value("${jwt.access-token-validity-in-seconds}")
+    private Long TOKEN_TIME;
+
+    @Value("${jwt.refresh-token-validity-in-seconds}")
+    private Long REFRESH_TOKEN_TIME;
 
     private final RefreshTokenRepository refreshTokenRepository;
 
@@ -39,6 +50,7 @@ public class TokenProvider {
     public void init() {
         byte[] bytes = Base64.getDecoder().decode(secretKey);
         key = Keys.hmacShaKeyFor(bytes);
+        int h = 7;
     }
 
     // header 토큰을 가져오기
@@ -61,12 +73,13 @@ public class TokenProvider {
     }
 
     // 토큰 생성
-    public String createAccessToken(String memberId) {
+    public String createAccessToken(String memberId,Collection<? extends GrantedAuthority> authorities) {
         Date date = new Date();
 
-        return BEARER_PREFIX +
+        return
                 Jwts.builder()
                         .setSubject(memberId)
+                        .claim("authoritiesKey", authorities)
                         .setExpiration(new Date(date.getTime() + TOKEN_TIME))
                         .setIssuedAt(date)
                         .signWith(key, signatureAlgorithm)
@@ -74,7 +87,7 @@ public class TokenProvider {
     }
     public String createRefreshToken(String memberId) {
         Date date = new Date();
-        return  BEARER_PREFIX +
+        return
                 Jwts.builder()
                         .setSubject(memberId)
                         .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
@@ -97,6 +110,9 @@ public class TokenProvider {
             log.info("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
         } catch (IllegalArgumentException e) {
             log.info("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
+        }
+        catch (io.jsonwebtoken.security.SignatureException e){
+            log.info("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다");
         }
         return false;
     }
@@ -133,6 +149,18 @@ public class TokenProvider {
 
     public String getMemberIdFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public Authentication getAuthentication(String token){
+        Claims claims =
+                Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token).getBody();
+
+        Collection<? extends GrantedAuthority> authorities =
+                Arrays.stream(claims.get("authoritiesKey").toString().split(","))
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList());
+        User principal = new User(claims.getSubject(), "", authorities);
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
 }

@@ -3,14 +3,18 @@ package org.example.tree.domain.member.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.tree.domain.member.entity.Member;
+import org.example.tree.domain.member.entity.MemberRole;
 import org.example.tree.domain.member.repository.MemberRepository;
 import org.example.tree.domain.member.repository.RefreshTokenRepository;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.example.tree.global.security.jwt.RefreshToken;
-import org.example.tree.global.security.jwt.TokenProvider;
+import org.example.tree.global.security.provider.TokenProvider;
 import org.example.tree.global.security.jwt.dto.TokenDTO;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -24,11 +28,17 @@ public class MemberCommandService {
 
 
     public Member register(Member member) {
-        return memberRepository.save(member);
+        try {
+            return memberRepository.save(member);
+        }
+        catch (Exception e){
+            log.error("eerror");
+            return null;
+        }
     }
     public TokenDTO login(Member member) {
 
-        String accessToken = tokenProvider.createAccessToken(member.getId());
+        String accessToken = tokenProvider.createAccessToken(member.getId(), List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
         String rawToken = tokenProvider.createRefreshToken(member.getId());
         RefreshToken refreshToken = RefreshToken.builder()
                 .memberId(member.getId())
@@ -45,7 +55,7 @@ public class MemberCommandService {
         RefreshToken invalidToken = refreshTokenRepository.findByMemberId(member.getId())
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.REFRESH_TOKEN_NOT_FOUND));
         refreshTokenRepository.delete(invalidToken);
-        String accessToken = tokenProvider.createAccessToken(member.getId());
+        String accessToken = tokenProvider.createAccessToken(member.getId(),List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
         String rawToken = tokenProvider.createRefreshToken(member.getId());
         RefreshToken refreshToken = RefreshToken.builder()
                 .memberId(member.getId())

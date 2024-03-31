@@ -33,7 +33,7 @@ public class SwaggerConfig {
                     .components(new Components().addSecuritySchemes("bearerAuth", securityScheme))
                     .security(Arrays.asList(securityRequirement))
                     .servers(Arrays.asList(
-                            new Server().url("https://dev.tttree.shop").description("Develop server")))
+                            new Server().url("https://dev.tttree.shop").description("Develop server"), new Server().url("http://localhost:8080").description("Local server")))
                     .info(new Info()
                         .title("Tree API")
                         .version("1.0.0"));

@@ -7,6 +7,7 @@ import org.example.tree.domain.comment.dto.ReplyRequestDTO;
 import org.example.tree.domain.comment.dto.ReplyResponseDTO;
 import org.example.tree.domain.comment.entity.Comment;
 import org.example.tree.domain.comment.entity.Reply;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.profile.service.ProfileService;
 import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
@@ -29,8 +30,8 @@ public class ReplyService {
     private final ReactionService reactionService;
 
     @Transactional
-    public void createReply(Long treeId, Long commentId, ReplyRequestDTO.createReply request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public void createReply(Long treeId, Long commentId, ReplyRequestDTO.createReply request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Comment comment = commentQueryService.findById(commentId);
         Reply reply = replyConverter.toReply(request.getContent(), profile, comment);
         replyCommandService.createReply(reply);
@@ -48,8 +49,8 @@ public class ReplyService {
     }
 
     @Transactional
-    public void updateReply(Long treeId, Long commentId, Long replyId, ReplyRequestDTO.updateReply request, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public void updateReply(Long treeId, Long commentId, Long replyId, ReplyRequestDTO.updateReply request, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Comment comment = commentQueryService.findById(commentId);
         Reply reply = replyQueryService.findById(replyId);
         if (!reply.getProfile().getId().equals(profile.getId())) {
@@ -59,8 +60,8 @@ public class ReplyService {
     }
 
     @Transactional
-    public void deleteReply(Long treeId, Long commentId, Long replyId, String token) {
-        Profile profile = profileService.getTreeProfile(token, treeId);
+    public void deleteReply(Long treeId, Long commentId, Long replyId, Member member) {
+        Profile profile = profileService.getTreeProfile(member, treeId);
         Comment comment = commentQueryService.findById(commentId);
         Reply reply = replyQueryService.findById(replyId);
         if (!reply.getProfile().getId().equals(profile.getId())) {
