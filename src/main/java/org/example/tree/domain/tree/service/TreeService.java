@@ -31,8 +31,7 @@ public class TreeService {
     }
 
     @Transactional
-    public List<TreeResponseDTO.getTree> getTrees(String token) {
-        Member member = memberQueryService.findByToken(token);
+    public List<TreeResponseDTO.getTree> getTrees(Member member) {
         Profile currentProfile = profileQueryService.getCurrentProfile(member);
         List<Long> treeIds = profileQueryService.findJoinedTree(currentProfile);
         List<Tree> trees = treeIds.stream()
@@ -51,8 +50,7 @@ public class TreeService {
     }
 
     @Transactional
-    public TreeResponseDTO.shiftTree shiftTree(Long treeId, String token) {
-        Member member = memberQueryService.findByToken(token);
+    public TreeResponseDTO.shiftTree shiftTree(Long treeId, Member member) {
         Tree tree = treeQueryService.findById(treeId);
         Profile currentProfile = profileQueryService.getCurrentProfile(member);
         currentProfile.inactivate();

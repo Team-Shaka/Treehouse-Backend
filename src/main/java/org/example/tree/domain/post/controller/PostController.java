@@ -23,6 +23,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("/trees/{treeId}/feed/posts")
+    @Operation(summary = "게시글 작성", description = "게시글을 작성합니다.")
     public ApiResponse<PostResponseDTO.createPost> createPost(
             @PathVariable final Long treeId,
             @RequestBody final PostRequestDTO.createPost request,
