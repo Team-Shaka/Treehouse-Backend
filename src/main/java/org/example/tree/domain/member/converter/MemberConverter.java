@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.member.dto.MemberResponseDTO;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.entity.MemberRole;
+import org.example.tree.domain.member.entity.MemberStatus;
 import org.example.tree.domain.member.service.MemberQueryService;
-import org.example.tree.domain.member.service.MemberService;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -28,25 +28,27 @@ public class MemberConverter {
      * @return Member
      */
     public static Member toMemberSecurity(String id){
-        return staticMemberQueryService.findById(id);
+        return staticMemberQueryService.findById(Long.valueOf(id));
     }
 
-    public Member toMember (String id, String phone) {
+    public Member toMember (String userName, String phone) {
         return Member.builder()
-                .id(id)
+                .userName(userName)
                 .phone(phone)
                 .role(MemberRole.ROLE_USER)
+                .status(MemberStatus.ACTIVE)
                 .build();
     }
 
-    public MemberResponseDTO.checkId toCheckId(Boolean isDuplicated) {
-        return MemberResponseDTO.checkId.builder()
+    public MemberResponseDTO.checkId toCheckName(Boolean isDuplicated) {
+        return MemberResponseDTO.checkName.builder()
                 .isDuplicated(isDuplicated)
                 .build();
     }
 
-    public MemberResponseDTO.registerMember toRegister(String accessToken, String refreshToken) {
+    public MemberResponseDTO.registerMember toRegister(Member member, String accessToken, String refreshToken) {
         return MemberResponseDTO.registerMember.builder()
+                .userId(member.getId())
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .build();

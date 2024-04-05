@@ -28,28 +28,28 @@ public class NotificationService {
     private final MemberQueryService memberQueryService;
 
     @Transactional
-    public void sendNotification(String title, String message, NotificationType type, String receiverId) {
+    public void sendNotification(String title, String message, NotificationType type, Long receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
         Notification notification = notificationConverter.toNotification(title, message, type, receiver);
         notificationCommandService.createNotification(notification);
     }
 
     @Transactional
-    public void commentNotification(Profile sender, Comment comment, String receiverId) {
+    public void commentNotification(Profile sender, Comment comment, Long receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
         Notification notification = notificationConverter.toCommentNotification(sender, comment, receiver);
         notificationCommandService.createNotification(notification);
     }
 
     @Transactional
-    public void reactionNotification(Profile sender, Reaction reaction, String receiverId) {
+    public void reactionNotification(Profile sender, Reaction reaction, Long receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
         Notification notification = notificationConverter.toReactionNotification(sender, reaction, receiver);
         notificationCommandService.createNotification(notification);
     }
 
     @Transactional
-    public void invitationNotification(Profile sender, Invitation invitation, String receiverId) {
+    public void invitationNotification(Profile sender, Invitation invitation, Long receiverId) {
         Member receiver = memberQueryService.findById(receiverId);
         Notification notification = notificationConverter.toInvitationNotification(sender, invitation, receiver);
         notificationCommandService.createNotification(notification);

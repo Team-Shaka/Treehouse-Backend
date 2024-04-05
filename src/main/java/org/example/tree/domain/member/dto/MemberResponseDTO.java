@@ -9,7 +9,7 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class checkId {
+    public static class checkName {
         private Boolean isDuplicated;
     }
 
@@ -18,6 +18,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class registerMember {
+        private Long userId;
         private String accessToken;
         private String refreshToken;
     }

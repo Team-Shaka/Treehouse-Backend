@@ -38,8 +38,8 @@ public class MemberCommandService {
     }
     public TokenDTO login(Member member) {
 
-        String accessToken = tokenProvider.createAccessToken(member.getId(), List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
-        String rawToken = tokenProvider.createRefreshToken(member.getId());
+        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()), List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
+        String rawToken = tokenProvider.createRefreshToken(String.valueOf(member.getId()));
         RefreshToken refreshToken = RefreshToken.builder()
                 .memberId(member.getId())
                 .token(rawToken)
@@ -55,8 +55,8 @@ public class MemberCommandService {
         RefreshToken invalidToken = refreshTokenRepository.findByMemberId(member.getId())
                 .orElseThrow(() -> new GeneralException(GlobalErrorCode.REFRESH_TOKEN_NOT_FOUND));
         refreshTokenRepository.delete(invalidToken);
-        String accessToken = tokenProvider.createAccessToken(member.getId(),List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
-        String rawToken = tokenProvider.createRefreshToken(member.getId());
+        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()),List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
+        String rawToken = tokenProvider.createRefreshToken(String.valueOf(member.getId()));
         RefreshToken refreshToken = RefreshToken.builder()
                 .memberId(member.getId())
                 .token(rawToken)

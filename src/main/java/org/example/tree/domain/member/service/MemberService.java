@@ -19,17 +19,17 @@ public class MemberService {
     private final MemberConverter memberConverter;
 
     @Transactional
-    public MemberResponseDTO.checkId checkId(MemberRequestDTO.checkId request) {
-        Optional<Member> optionalMember = memberQueryService.checkId(request.getUserId());
-        Boolean isDuplicated = optionalMember.isPresent();
-        return memberConverter.toCheckId(isDuplicated);
+    public MemberResponseDTO.checkName checkName(MemberRequestDTO.checkName request) {
+        Optional<Member> optionalMember = memberQueryService.checkName(request.getUserName());
+        Boolean isDuplicate = optionalMember.isPresent();
+        return memberConverter.toCheckName(isDuplicate);
     }
     @Transactional
     public MemberResponseDTO.registerMember register(MemberRequestDTO.registerMember request) {
-        Member member = memberConverter.toMember(request.getUserId(), request.getPhoneNumber());
+        Member member = memberConverter.toMember(request.getUserName(), request.getPhoneNumber());
         Member savedMember =memberCommandService.register(member);
         TokenDTO savedToken = memberCommandService.login(savedMember);
-        return memberConverter.toRegister(savedToken.getAccessToken(), savedToken.getRefreshToken());
+        return memberConverter.toRegister(savedMember, savedToken.getAccessToken(), savedToken.getRefreshToken());
     }
 
     @Transactional

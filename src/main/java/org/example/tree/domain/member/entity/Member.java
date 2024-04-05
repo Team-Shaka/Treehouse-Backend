@@ -3,10 +3,8 @@ package org.example.tree.domain.member.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.example.tree.common.BaseDateTimeEntity;
-import org.example.tree.domain.post.entity.Post;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Getter
@@ -17,7 +15,10 @@ import java.util.List;
 public class Member extends BaseDateTimeEntity {
 
     @Id
-    private String id; //고유 문자열 아이디(인스타그램 st.)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String userName; //고유 문자열 아이디(인스타그램 st.)
 
     private String bio;
 

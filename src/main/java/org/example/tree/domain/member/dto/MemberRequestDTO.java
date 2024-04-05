@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 public class MemberRequestDTO {
 
     @Getter
-    public static class checkId {
-        private String userId;
+    public static class checkName {
+        private String userName;
     }
 
     @Getter
     public static class registerMember {
         private String phoneNumber;
-        private String userId;
+        private String userName;
     }
 
     @Getter
