@@ -40,8 +40,8 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberResponseDTO.checkId toCheckId(Boolean isDuplicated) {
-        return MemberResponseDTO.checkId.builder()
+    public MemberResponseDTO.checkId toCheckName(Boolean isDuplicated) {
+        return MemberResponseDTO.checkName.builder()
                 .isDuplicated(isDuplicated)
                 .build();
     }
