@@ -1,11 +1,14 @@
 package org.example.tree.domain.invitation.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.invitation.dto.InvitationRequestDTO;
 import org.example.tree.domain.invitation.dto.InvitationResponseDTO;
 import org.example.tree.domain.invitation.service.InvitationService;
+import org.example.tree.domain.member.entity.Member;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,18 +54,16 @@ public class InvitationController {
     @GetMapping("/users/invitation")
     @Operation(summary = "초대장 조회", description = "내가 받은 초대장을 조회합니다.")
     public ApiResponse<List<InvitationResponseDTO.getInvitation>> getInvitation(
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true) Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(invitationService.getInvitation(token));
+        return ApiResponse.onSuccess(invitationService.getInvitation(member));
     }
 
     @GetMapping("/users/availableInvitation")
     @Operation(summary = "가용 초대장 조회", description = "내가 보낼 수 있는 초대장 개수를 조회합니다.")
     public ApiResponse<InvitationResponseDTO.getAvailableInvitation> getAvailableInvitation(
-            @RequestHeader("Authorization") final String header
+            @AuthMember @Parameter(hidden = true)  Member member
     ) {
-        String token = header.replace("Bearer ", "");
-        return ApiResponse.onSuccess(invitationService.getAvailableInvitation(token));
+        return ApiResponse.onSuccess(invitationService.getAvailableInvitation(member));
     }
 }

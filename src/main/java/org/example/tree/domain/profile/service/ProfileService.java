@@ -75,9 +75,14 @@ public class ProfileService {
         return profileQueryService.getTreeProfile(member,tree);
     }
 
+    /**
+     * 트리하우스 내 다른 멤버의 프로필 조회
+     * @param member //본인
+     * @param profileId //조회할 프로필의 id
+     * @return ProfileResponseDTO.getProfileDetails //프로필 조회 결과
+     */
     @Transactional
-    public ProfileResponseDTO.getProfileDetails getProfileDetails(String token, Long profileId) {
-        Member member = memberQueryService.findByToken(token);
+    public ProfileResponseDTO.getProfileDetails getProfileDetails(Member member, Long profileId) {
         Profile profile = profileQueryService.findById(profileId);
         Tree tree = profile.getTree();
         Profile myProfile = profileQueryService.getTreeProfile(member,tree);
@@ -86,9 +91,14 @@ public class ProfileService {
         return profileConverter.toGetProfileDetails(profile, treeIds, branchDegree);
     }
 
+    /**
+     * 내 프로필 조회
+     * @param member //본인
+     * @param treeId //조회할 트리하우스의 id
+     * @return ProfileResponseDTO.getProfileDetails //프로필 조회 결과
+     */
     @Transactional
-    public ProfileResponseDTO.getProfileDetails getMyProfile(String token, Long treeId) {
-        Member member = memberQueryService.findByToken(token);
+    public ProfileResponseDTO.getProfileDetails getMyProfile(Member member, Long treeId) {
         Tree tree = treeQueryService.findById(treeId);
         Profile profile = profileQueryService.getTreeProfile(member,tree);
         List<Long> treeIds = profileQueryService.findJoinedTree(profile);

@@ -73,14 +73,12 @@ public class InvitationService {
     }
 
     @Transactional
-    public InvitationResponseDTO.getAvailableInvitation getAvailableInvitation(String token) {
-        Member member = memberQueryService.findByToken(token);
+    public InvitationResponseDTO.getAvailableInvitation getAvailableInvitation(Member member) {
         return invitationConverter.toGetAvailableInvitation(member);
     }
 
     @Transactional
-    public List<InvitationResponseDTO.getInvitation> getInvitation(String token) {
-        Member member = memberQueryService.findByToken(token);
+    public List<InvitationResponseDTO.getInvitation> getInvitation(Member member) {
         List<Invitation> invitations= invitationQueryService.findAllByPhone(member.getPhone());
         return invitations.stream()
                 .map(invitation -> {

@@ -38,6 +38,13 @@ public class BranchService {
 //        return branch.getBranchDegree();
 //    }
 
+    /**
+     * 특정 멤버 사이의 Branch Degree를 계산합니다.
+     * @param treeId
+     * @param rootId
+     * @param leafId
+     * @return branchDegree(int)
+     */
     public int calculateBranchDegree(Long treeId, Long rootId, Long leafId) {
         // 두 멤버 사이의 모든 Branch 엔티티를 찾습니다.
         List<Branch> branches = branchQueryService.findAllBranchesInTree(treeId);
@@ -47,6 +54,14 @@ public class BranchService {
 
         return shortestDistance;
     }
+
+    /**
+     * 특정 멤버까지의 브랜치 최단 거리를 계산합니다.
+     * @param branches
+     * @param startMemberId
+     * @param endMemberId
+     * @return ShortestPathResult(최단 거리 결과 DTO)
+     */
 
     public BranchResponseDTO.ShortestPathResult findShortestDistance(List<Branch> branches, Long startMemberId, Long endMemberId) {
         Map<Long, List<Long>> adjacencyList = new HashMap<>();
@@ -91,13 +106,19 @@ public class BranchService {
         return branchConverter.toShortestPathResult(distance, path);
     }
 
+    /**
+     * 트리하우스 내의 두 멤버 사이의 최단 거리를 계산하고, 그에 따른 BranchView를 반환합니다.
+     * @param treeId
+     * @param member
+     * @param leafId
+     * @return branchView(DTO)
+     */
     @Transactional
-    public BranchResponseDTO.branchView getBranchView(Long treeId, String token, Long leafId) {
-        Member member = memberQueryService.findByToken(token);
+    public BranchResponseDTO.branchView getBranchView(Long treeId, Member member, Long leafId) {
         Tree tree = treeQueryService.findById(treeId);
-        List<Branch> branches = branchQueryService.findAllBranchesInTree(treeId);
-        Long rootId = profileQueryService.getTreeProfile(member, tree).getId();
-        BranchResponseDTO.ShortestPathResult result = findShortestDistance(branches, rootId, leafId);
+        List<Branch> branches = branchQueryService.findAllBranchesInTree(treeId); // 해당 트리의 모든 Branch 조회
+        Long rootId = profileQueryService.getTreeProfile(member, tree).getId(); // 시작 노드 ID는 현재 사용자의 ID
+        BranchResponseDTO.ShortestPathResult result = findShortestDistance(branches, rootId, leafId); // 최단 거리 계산
 
         // Node 정보 생성
         List<BranchResponseDTO.NodeDTO> nodes = result.getPath().stream()
@@ -114,6 +135,12 @@ public class BranchService {
         // 최종 DTO 생성 및 반환
         return branchConverter.toBranchView(nodes, links, rootId, leafId);
     }
+
+    /**
+     * 트리하우스 내의 모든 Branch를 조회하고, 그에 따른 전체 BranchView를 반환합니다.
+     * @param treeId
+     * @return branchView(DTO)
+     */
 
     @Transactional
     public BranchResponseDTO.branchView getCompleteBranchView(Long treeId) {
