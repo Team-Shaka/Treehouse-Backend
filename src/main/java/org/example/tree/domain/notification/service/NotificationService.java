@@ -55,8 +55,7 @@ public class NotificationService {
         notificationCommandService.createNotification(notification);
     }
 
-    public List<NotificationResponseDTO.getNotification> getUserNotifications(String token) {
-        Member member = memberQueryService.findByToken(token);
+    public List<NotificationResponseDTO.getNotification> getUserNotifications(Member member) {
         List<Notification> notifications = notificationQueryService.getNotifications(member);
         return notifications.stream()
                 .map(notificationConverter::toGetNotification)

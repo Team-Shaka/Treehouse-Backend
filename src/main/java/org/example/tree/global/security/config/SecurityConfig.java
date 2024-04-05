@@ -37,6 +37,10 @@ public class SecurityConfig {
     private final JwtAuthenticationExceptionHandler jwtAuthenticationExceptionHandler =
             new JwtAuthenticationExceptionHandler();
 
+    /**
+     * 특정 경로에 대한 보안 설정을 무시하도록 설정
+     * @return WebSecurityCustomizer
+     */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) ->
@@ -83,10 +87,10 @@ public class SecurityConfig {
         return request -> {
             org.springframework.web.cors.CorsConfiguration config =
                     new org.springframework.web.cors.CorsConfiguration();
-            config.setAllowedHeaders(Collections.singletonList("*"));
-            config.setAllowedMethods(Collections.singletonList("*"));
-            config.setAllowedOriginPatterns(Collections.singletonList("*"));
-            config.setAllowCredentials(true);
+            config.setAllowedHeaders(Collections.singletonList("*")); // 모든 헤더 허용
+            config.setAllowedMethods(Collections.singletonList("*")); // 모든 메소드 허용
+            config.setAllowedOriginPatterns(Collections.singletonList("*")); // 모든 Origin 허용
+            config.setAllowCredentials(true);   // 인증정보 허용
             return config;
         };
     }

@@ -14,9 +14,4 @@ public class RefreshToken {
     private String memberId;
 
     private String token;
-
-    public RefreshToken updateValue(String token) {
-        this.token = token;
-        return this;
-    }
 }

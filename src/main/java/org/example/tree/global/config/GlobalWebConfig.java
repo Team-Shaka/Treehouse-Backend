@@ -14,6 +14,10 @@ public class GlobalWebConfig implements WebMvcConfigurer {
 
     private final AuthMemberArgumentResolver authMemberArgumentResolver;
 
+    /**
+     * 컨트롤러 메서드의 특정 파라미터를 지원하는 커스텀한 ArgumentResolver를 추가
+     * @param resolverList
+     */
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolverList) {
         resolverList.add(authMemberArgumentResolver);

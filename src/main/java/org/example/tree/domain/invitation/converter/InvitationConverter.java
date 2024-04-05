@@ -2,6 +2,7 @@ package org.example.tree.domain.invitation.converter;
 
 import org.example.tree.domain.invitation.dto.InvitationResponseDTO;
 import org.example.tree.domain.invitation.entity.Invitation;
+import org.example.tree.domain.invitation.entity.InvitationStatus;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.profile.entity.Profile;
 import org.example.tree.domain.tree.entity.Tree;
@@ -17,6 +18,7 @@ public class InvitationConverter {
                 .sender(sender)
                 .tree(tree)
                 .phone(phone)
+                .status(InvitationStatus.PENDING)
                 .build();
     }
 
