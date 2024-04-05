@@ -19,6 +19,6 @@ public class NotificationResponseDTO {
         private String type;
         private Long treeId;
         private String treeName;
-        private LocalDateTime createdAt;
+        private String createdAt;
     }
 }

@@ -51,7 +51,7 @@ public class InvitationConverter {
     public InvitationResponseDTO.getInvitation toGetInvitation (Invitation invitation, List<String> treeMemberProfileImages) {
         return InvitationResponseDTO.getInvitation.builder()
                 .invitationId(invitation.getId())
-                .treeName(invitation.getTree().getName())
+                .treehouseName(invitation.getTree().getName())
                 .senderName(invitation.getSender().getMemberName())
                 .senderProfileImageUrl(invitation.getSender().getProfileImageUrl())
                 .treehouseSize(invitation.getTree().getTreeSize())
