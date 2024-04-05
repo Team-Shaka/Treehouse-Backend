@@ -9,8 +9,8 @@ public class MemberResponseDTO {
     @Getter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class checkName {
-        private Boolean isDuplicate;
+    public static class checkId {
+        private Boolean isDuplicated;
     }
 
     @Builder
