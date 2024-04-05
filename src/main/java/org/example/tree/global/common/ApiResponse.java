@@ -1,5 +1,6 @@
 package org.example.tree.global.common;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -38,6 +39,8 @@ public class ApiResponse<T> {
     private String code;
     @JsonProperty("message")
     private String message;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy.MM.dd")
     @JsonProperty("createdAt")
     private LocalDateTime createdAt;
     @JsonProperty("data")

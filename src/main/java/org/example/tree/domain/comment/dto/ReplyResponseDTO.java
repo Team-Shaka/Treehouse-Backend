@@ -19,6 +19,6 @@ public class ReplyResponseDTO {
         private String authorName;
         private String content;
         private List<ReactionResponseDTO.getReaction> reactions;
-        private LocalDateTime createdAt;
+        private String createdAt;
     }
 }

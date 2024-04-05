@@ -10,7 +10,7 @@ public class MemberResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class checkId {
-        private Boolean isDuplicate;
+        private Boolean isDuplicated;
     }
 
     @Builder

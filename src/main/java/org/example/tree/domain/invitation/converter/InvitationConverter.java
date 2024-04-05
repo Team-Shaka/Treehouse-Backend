@@ -32,14 +32,14 @@ public class InvitationConverter {
     public InvitationResponseDTO.acceptInvitation toAcceptInvitation (Invitation invitation) {
         return InvitationResponseDTO.acceptInvitation.builder()
                 .treeId(invitation.getTree().getId())
-                .isAccept(true)
+                .isAccepted(true)
                 .build();
     }
 
     public InvitationResponseDTO.rejectInvitation toRejectInvitation (Invitation invitation) {
         return InvitationResponseDTO.rejectInvitation.builder()
                 .treeId(invitation.getTree().getId())
-                .isAccept(false)
+                .isAccepted(false)
                 .build();
     }
 
@@ -53,10 +53,11 @@ public class InvitationConverter {
     public InvitationResponseDTO.getInvitation toGetInvitation (Invitation invitation, List<String> treeMemberProfileImages) {
         return InvitationResponseDTO.getInvitation.builder()
                 .invitationId(invitation.getId())
-                .treeName(invitation.getTree().getName())
+                .treehouseName(invitation.getTree().getName())
                 .senderName(invitation.getSender().getMemberName())
-                .treeSize(invitation.getTree().getTreeSize())
-                .treeMemberProfileImages(treeMemberProfileImages)
+                .senderProfileImageUrl(invitation.getSender().getProfileImageUrl())
+                .treehouseSize(invitation.getTree().getTreeSize())
+                .treehouseMemberProfileImages(treeMemberProfileImages)
                 .build();
     }
 }

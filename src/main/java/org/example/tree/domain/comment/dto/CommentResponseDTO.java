@@ -20,7 +20,7 @@ public class CommentResponseDTO {
         private String authorName;
         private String content;
         private List<ReactionResponseDTO.getReaction> reactions;
-        private LocalDateTime createdAt;
+        private String createdAt;
         private List<ReplyResponseDTO.getReply> replies;
     }
 }
