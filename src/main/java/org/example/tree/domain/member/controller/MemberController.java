@@ -15,10 +15,10 @@ public class MemberController {
     private final MemberService memberService;
     @PostMapping("/checkId")
     @Operation(summary = "아이디 중복 체크", description = "서비스에서 사용할 고유 ID를 중복 체크합니다.")
-    public ApiResponse<MemberResponseDTO.checkId> checkId(
+    public ApiResponse<MemberResponseDTO.checkName> checkName(
             @RequestBody final MemberRequestDTO.checkName request
     ) {
-        return ApiResponse.onSuccess(memberService.checkId(request));
+        return ApiResponse.onSuccess(memberService.checkName(request));
     }
     @PostMapping("/register")
     @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")

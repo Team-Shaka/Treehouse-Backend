@@ -19,7 +19,7 @@ public class MemberService {
     private final MemberConverter memberConverter;
 
     @Transactional
-    public MemberResponseDTO.checkId checkId(MemberRequestDTO.checkName request) {
+    public MemberResponseDTO.checkName checkName(MemberRequestDTO.checkName request) {
         Optional<Member> optionalMember = memberQueryService.checkName(request.getUserName());
         Boolean isDuplicate = optionalMember.isPresent();
         return memberConverter.toCheckName(isDuplicate);
