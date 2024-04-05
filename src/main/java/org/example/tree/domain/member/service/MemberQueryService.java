@@ -16,11 +16,11 @@ public class MemberQueryService {
     private final MemberRepository memberRepository;
     private final TokenProvider jwtTokenProvider;
 
-    public Optional<Member> checkId(String id) {
-        return memberRepository.findById(id);
+    public Optional<Member> checkName(String userName) {
+        return memberRepository.findByUserName(userName);
     }
-    public Member findById(String id) {
-        return memberRepository.findById(id)
+    public Member findById(Long id) {
+        return memberRepository.findById(String.valueOf(id))
                 .orElseThrow(()->new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
     }
 

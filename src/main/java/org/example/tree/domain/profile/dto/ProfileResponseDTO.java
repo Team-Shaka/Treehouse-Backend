@@ -25,7 +25,7 @@ public class ProfileResponseDTO {
     public static class getProfileDetails {
         private Long profileId;
         private List<Long> treeIds;
-        private String memberId;
+        private Long memberId;
         private String memberName;
         private String bio;
         private String profileImageUrl;

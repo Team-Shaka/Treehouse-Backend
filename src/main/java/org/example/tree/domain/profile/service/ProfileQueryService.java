@@ -27,7 +27,7 @@ public class ProfileQueryService {
     }
 
     public List<Long> findJoinedTree(Profile profile) {
-        String memberId = profile.getMember().getId();
+        Long memberId = profile.getMember().getId();
         List<Profile> foundProfiles = profileRepository.findAllByMember_Id(memberId);
         return foundProfiles.stream()
                 .map(foundProfile -> foundProfile.getTree().getId())

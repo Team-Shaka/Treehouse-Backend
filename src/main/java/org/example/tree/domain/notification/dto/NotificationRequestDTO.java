@@ -14,6 +14,6 @@ public class NotificationRequestDTO {
         private String title;
         private String message;
         private NotificationType type;
-        private String receiverId;
+        private Long receiverId;
     }
 }

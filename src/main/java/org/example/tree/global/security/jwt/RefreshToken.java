@@ -11,7 +11,7 @@ import lombok.*;
 @Getter
 public class RefreshToken {
     @Id
-    private String memberId;
+    private Long memberId;
 
     private String token;
 }

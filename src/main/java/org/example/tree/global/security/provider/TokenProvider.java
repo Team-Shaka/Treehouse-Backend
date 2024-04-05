@@ -125,7 +125,7 @@ public class TokenProvider {
 
         // 저장된 토큰과 비교
         String memberId = getMemberIdFromToken(refreshToken);
-        Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByMemberId(memberId);
+        Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository.findByMemberId(Long.valueOf(memberId));
 
         if (!refreshTokenOptional.isPresent()) {
             log.warn("No matching refresh token found for email: {}", memberId);

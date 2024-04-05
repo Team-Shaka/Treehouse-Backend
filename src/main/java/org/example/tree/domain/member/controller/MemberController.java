@@ -16,7 +16,7 @@ public class MemberController {
     @PostMapping("/checkId")
     @Operation(summary = "아이디 중복 체크", description = "서비스에서 사용할 고유 ID를 중복 체크합니다.")
     public ApiResponse<MemberResponseDTO.checkId> checkId(
-            @RequestBody final MemberRequestDTO.checkId request
+            @RequestBody final MemberRequestDTO.checkName request
     ) {
         return ApiResponse.onSuccess(memberService.checkId(request));
     }

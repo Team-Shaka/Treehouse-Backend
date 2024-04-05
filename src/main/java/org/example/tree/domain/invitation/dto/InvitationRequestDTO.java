@@ -9,16 +9,16 @@ public class InvitationRequestDTO {
 
     @Getter
     public static class sendInvitation {
-        private String senderId;
+        private Long senderId;
         private Long treeId;
         private String phoneNumber;
     }
 
     @Getter
     public static class inviteMember {
-        private String senderId;
+        private Long senderId;
         private Long treeId;
-        private String targetUserId;
+        private Long targetUserId;
     }
 
     @Getter

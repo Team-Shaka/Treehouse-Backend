@@ -10,7 +10,7 @@ public class ProfileRequestDTO {
     @Getter
     public static class createProfile {
         private Long treeId;
-        private String userId;
+        private Long userId;
         private String memberName;
         private String profileImage;
         private String bio;
@@ -20,7 +20,7 @@ public class ProfileRequestDTO {
     @Getter
     public static class ownerProfile {
         private Long treeId;
-        private String userId;
+        private Long userId;
         private String memberName;
         private String profileImage;
         private String bio;
