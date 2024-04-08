@@ -17,7 +17,7 @@ public class TreeQueryService {
 
     public Tree findById(Long id) {
         return treeRepository.findById(id)
-                .orElseThrow(()->new GeneralException(GlobalErrorCode.TREE_NOT_FOUND));
+                .orElseThrow(()->new GeneralException(GlobalErrorCode.TREEHOUSE_NOT_FOUND));
     }
 
 }

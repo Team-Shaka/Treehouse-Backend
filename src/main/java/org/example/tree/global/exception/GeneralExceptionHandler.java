@@ -96,21 +96,22 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
             GeneralException generalException,
             @AuthenticationPrincipal User user,
             HttpServletRequest request) {
-        getExceptionStackTrace(generalException, user, request);
-        GlobalErrorCode errorCode = generalException.getErrorCode();
-        return handleExceptionInternal(generalException, errorCode, null, request);
+//        getExceptionStackTrace(generalException, user, request);
+//        GlobalErrorCode errorCode = generalException.getErrorCode();
+        ErrorReasonDTO errorReasonHttpStatus = generalException.getErrorReasonHttpStatus();
+        return handleExceptionInternal(generalException, errorReasonHttpStatus, null, request);
     }
 
     private ResponseEntity<Object> handleExceptionInternal(
-            Exception e, GlobalErrorCode errorCode, HttpHeaders headers, HttpServletRequest request) {
+            Exception e, ErrorReasonDTO reason, HttpHeaders headers, HttpServletRequest request) {
 
         ApiResponse<Object> body =
-                ApiResponse.onFailure(errorCode, null);
+                ApiResponse.onFailure(reason.getCode(), reason.getMessage(), null);
         e.printStackTrace();
 
         WebRequest webRequest = new ServletWebRequest(request);
         return super.handleExceptionInternal(
-                e, body, headers, errorCode.getHttpStatus(), webRequest);
+                e, body, headers, reason.getHttpStatus(), webRequest);
     }
 
     private ResponseEntity<Object> handleExceptionInternalFalse(
@@ -121,7 +122,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request,
             String errorPoint) {
         ApiResponse<Object> body =
-                ApiResponse.onFailure(errorCode, errorPoint);
+                ApiResponse.onFailure(errorCode.getCode(), errorCode.getMessage(), errorPoint);
         return super.handleExceptionInternal(e, body, headers, status, request);
     }
 
@@ -132,14 +133,14 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
             WebRequest request,
             Map<String, String> errorArgs) {
         ApiResponse<Object> body =
-                ApiResponse.onFailure(errorCode, errorArgs);
+                ApiResponse.onFailure(errorCode.getCode(), errorCode.getMessage(), errorArgs);
         return super.handleExceptionInternal(e, body, headers, errorCode.getHttpStatus(), request);
     }
 
     private ResponseEntity<Object> handleExceptionInternalConstraint(
             Exception e, GlobalErrorCode errorCode, HttpHeaders headers, WebRequest request) {
         ApiResponse<Object> body =
-                ApiResponse.onFailure(errorCode, null);
+                ApiResponse.onFailure(errorCode.getCode(), errorCode.getMessage(), null);
         return super.handleExceptionInternal(e, body, headers, errorCode.getHttpStatus(), request);
     }
 

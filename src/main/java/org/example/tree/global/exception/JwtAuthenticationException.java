@@ -4,7 +4,7 @@ import org.springframework.security.core.AuthenticationException;
 
 public class JwtAuthenticationException extends AuthenticationException {
 
-    public JwtAuthenticationException(GlobalErrorCode code) {
+    public JwtAuthenticationException(AuthErrorCode code) {
         super(code.name());
     }
 }

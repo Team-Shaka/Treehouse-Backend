@@ -8,9 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.service.MemberQueryService;
-import org.example.tree.global.exception.GeneralException;
-import org.example.tree.global.exception.GlobalErrorCode;
-import org.example.tree.global.exception.JwtAuthenticationException;
+import org.example.tree.global.exception.*;
 import org.example.tree.global.redis.service.RedisService;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -119,7 +117,7 @@ public class TokenProvider {
             log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token, 만료된 JWT token 입니다.");
-            throw new JwtAuthenticationException(GlobalErrorCode.TOKEN_EXPIRED);
+            throw new JwtAuthenticationException(AuthErrorCode.TOKEN_EXPIRED);
 
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
@@ -137,20 +135,20 @@ public class TokenProvider {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(refreshToken);
         } catch (SecurityException | MalformedJwtException e) {
             log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다.");
-            throw new GeneralException(GlobalErrorCode.INVALID_TOKEN);
+            throw new AuthException(AuthErrorCode.INVALID_TOKEN);
         } catch (ExpiredJwtException e) {
             log.info("Expired JWT token, 만료된 JWT 리프레시 token 입니다.");
-            throw new GeneralException(GlobalErrorCode.REFRESH_TOKEN_EXPIRED);
+            throw new AuthException(AuthErrorCode.REFRESH_TOKEN_EXPIRED);
         } catch (UnsupportedJwtException e) {
             log.error("Unsupported JWT token, 지원되지 않는 JWT 토큰 입니다.");
-            throw new GeneralException(GlobalErrorCode.INVALID_TOKEN);
+            throw new AuthException(AuthErrorCode.INVALID_TOKEN);
         } catch (IllegalArgumentException e) {
             log.error("JWT claims is empty, 잘못된 JWT 토큰 입니다.");
-            throw new GeneralException(GlobalErrorCode.INVALID_TOKEN);
+            throw new AuthException(AuthErrorCode.INVALID_TOKEN);
         }
         catch (io.jsonwebtoken.security.SignatureException e){
             log.error("Invalid JWT signature, 유효하지 않는 JWT 서명 입니다");
-            throw new GeneralException(GlobalErrorCode.INVALID_TOKEN);
+            throw new AuthException(AuthErrorCode.INVALID_TOKEN);
         }
     }
 

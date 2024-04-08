@@ -7,6 +7,8 @@ import org.example.tree.domain.member.dto.MemberRequestDTO;
 import org.example.tree.domain.member.dto.MemberResponseDTO;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.entity.redis.RefreshToken;
+import org.example.tree.global.exception.AuthErrorCode;
+import org.example.tree.global.exception.AuthException;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.example.tree.global.redis.service.RedisService;
@@ -47,7 +49,7 @@ public class MemberService {
 
     @Transactional
     public MemberResponseDTO.reissue reissue(MemberRequestDTO.reissue request) {
-        RefreshToken refreshToken = redisService.findRefreshToken(request.getRefreshToken()).orElseThrow(() -> new GeneralException(GlobalErrorCode.REFRESH_TOKEN_EXPIRED));
+        RefreshToken refreshToken = redisService.findRefreshToken(request.getRefreshToken()).orElseThrow(() -> new AuthException(AuthErrorCode.REFRESH_TOKEN_EXPIRED));
         Member member = memberQueryService.findById(refreshToken.getMemberId());
         TokenDTO token = memberCommandService.reissueToken(member,refreshToken);
         return memberConverter.toReissue(token.getAccessToken(), token.getRefreshToken());
