@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.exception.AuthErrorCode;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.example.tree.global.security.provider.TokenProvider;
 import org.springframework.http.HttpStatus;
@@ -63,12 +64,15 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 
     // JWT 인증과 관련된 예외 처리
-    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
-        response.setStatus(statusCode);
+    public void jwtExceptionHandler(HttpServletResponse response, AuthErrorCode errorCode) {
+        response.setStatus(errorCode.getHttpStatus().value());
         response.setContentType("application/json");
 
         try {
-            String json = new ObjectMapper().writeValueAsString(ApiResponse.onFailure(GlobalErrorCode.INVALID_TOKEN, msg));
+            // AuthErrorCode로부터 code와 message 추출
+            String code = errorCode.getCode();
+            String message = errorCode.getMessage();
+            String json = new ObjectMapper().writeValueAsString(ApiResponse.onFailure(code, message, null)); // ApiResponse 객체를 JSON으로 변환
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());

@@ -15,6 +15,8 @@ import org.example.tree.domain.profile.service.ProfileQueryService;
 import org.example.tree.domain.profile.service.ProfileService;
 import org.example.tree.domain.reaction.dto.ReactionResponseDTO;
 import org.example.tree.domain.reaction.service.ReactionService;
+import org.example.tree.global.exception.AuthErrorCode;
+import org.example.tree.global.exception.AuthException;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.springframework.stereotype.Component;
@@ -93,7 +95,7 @@ public class PostService {
         Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         if (!post.getProfile().getId().equals(profile.getId())) {
-            throw new GeneralException(GlobalErrorCode.AUTHENTICATION_REQUIRED);
+            throw new AuthException(AuthErrorCode.AUTHENTICATION_REQUIRED);
         }
         post.updatePost(request.getContent());
     }
@@ -103,7 +105,7 @@ public class PostService {
         Profile profile = profileService.getTreeProfile(member, treeId);
         Post post = postQueryService.findById(postId);
         if (!post.getProfile().getId().equals(profile.getId())) {
-            throw new GeneralException(GlobalErrorCode.AUTHENTICATION_REQUIRED);
+            throw new AuthException(AuthErrorCode.AUTHENTICATION_REQUIRED);
         }
         postCommandService.deletePost(post);
     }

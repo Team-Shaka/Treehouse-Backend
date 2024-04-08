@@ -4,6 +4,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.exception.AuthErrorCode;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,10 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         response.setStatus(401);
         PrintWriter writer = response.getWriter();
 
-        ApiResponse<String> apiErrorResult = ApiResponse.onFailure(GlobalErrorCode.AUTHENTICATION_REQUIRED, "");
+        // AuthErrorCode.AUTHENTICATION_REQUIRED enum에서 코드와 메시지를 얻음
+        String code = AuthErrorCode.AUTHENTICATION_REQUIRED.getCode();
+        String message = AuthErrorCode.AUTHENTICATION_REQUIRED.getMessage();
+        ApiResponse<String> apiErrorResult = ApiResponse.onFailure(code, message, null);
 
         writer.write(apiErrorResult.toString());
         writer.flush();
