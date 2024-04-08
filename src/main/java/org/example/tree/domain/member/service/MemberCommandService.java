@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.entity.MemberRole;
+import org.example.tree.domain.member.entity.redis.RefreshToken;
 import org.example.tree.domain.member.repository.MemberRepository;
-import org.example.tree.domain.member.repository.RefreshTokenRepository;
-import org.example.tree.global.exception.GeneralException;
-import org.example.tree.global.exception.GlobalErrorCode;
-import org.example.tree.global.security.jwt.RefreshToken;
+import org.example.tree.global.redis.service.RedisService;
 import org.example.tree.global.security.provider.TokenProvider;
 import org.example.tree.global.security.jwt.dto.TokenDTO;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,53 +19,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MemberCommandService {
     private final MemberRepository memberRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final RedisService redisService;
     private final TokenProvider tokenProvider;
 
 
 
 
     public Member register(Member member) {
-        try {
-            return memberRepository.save(member);
-        }
-        catch (Exception e){
-            log.error("eerror");
-            return null;
-        }
+        return memberRepository.save(member);
     }
     public TokenDTO login(Member member) {
 
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()), List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
-        String rawToken = tokenProvider.createRefreshToken(String.valueOf(member.getId()));
-        RefreshToken refreshToken = RefreshToken.builder()
-                .memberId(member.getId())
-                .token(rawToken)
-                .build();
-        refreshTokenRepository.save(refreshToken);
+        String accessToken = tokenProvider.createAccessToken(member, List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
+        String refreshToken = redisService.generateRefreshToken(member).getRefreshToken();
         return TokenDTO.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(refreshToken)
                 .build();
     }
 
-    public TokenDTO reissue(Member member) {
-        RefreshToken invalidToken = refreshTokenRepository.findByMemberId(member.getId())
-                .orElseThrow(() -> new GeneralException(GlobalErrorCode.REFRESH_TOKEN_NOT_FOUND));
-        refreshTokenRepository.delete(invalidToken);
-        String accessToken = tokenProvider.createAccessToken(String.valueOf(member.getId()),List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
-        String rawToken = tokenProvider.createRefreshToken(String.valueOf(member.getId()));
-        RefreshToken refreshToken = RefreshToken.builder()
-                .memberId(member.getId())
-                .token(rawToken)
-                .build();
-        refreshTokenRepository.save(refreshToken);
+    public TokenDTO reissueToken(Member member, RefreshToken refreshToken) {
+
+        String accessToken = tokenProvider.createAccessToken(member, List.of(new SimpleGrantedAuthority(MemberRole.ROLE_USER.name())));
+        String newRefreshToken = redisService.reGenerateRefreshToken(member, refreshToken).getRefreshToken();
         return TokenDTO.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken.getToken())
+                .refreshToken(newRefreshToken)
                 .build();
     }
-
-
-
 }

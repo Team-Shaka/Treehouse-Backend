@@ -106,7 +106,7 @@ public class GeneralExceptionHandler extends ResponseEntityExceptionHandler {
 
         ApiResponse<Object> body =
                 ApiResponse.onFailure(errorCode, null);
-        //        e.printStackTrace();
+        e.printStackTrace();
 
         WebRequest webRequest = new ServletWebRequest(request);
         return super.handleExceptionInternal(

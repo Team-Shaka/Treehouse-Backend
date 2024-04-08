@@ -12,4 +12,8 @@ public class RootController {
     public String healthCheck(){
         return "I'm healty!";
     }
+
+    @GetMapping("/test")
+    @Operation(summary = "access Token 유효시간, 인증여부 테스트", description = "테스트용.")
+    public String testAccessToken(){return "test";}
 }

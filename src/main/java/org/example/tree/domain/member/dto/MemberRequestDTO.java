@@ -1,5 +1,7 @@
 package org.example.tree.domain.member.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +21,15 @@ public class MemberRequestDTO {
     }
 
     @Getter
+    public static class loginMember {
+        private String phoneNumber;
+    }
+
+    @Getter
     public static class reissue {
+
+        @NotNull
+        @NotBlank
         private String refreshToken;
     }
 }

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class MemberController {
     private final MemberService memberService;
+
+
     @PostMapping("/checkId")
     @Operation(summary = "아이디 중복 체크", description = "서비스에서 사용할 고유 ID를 중복 체크합니다.")
     public ApiResponse<MemberResponseDTO.checkName> checkName(
@@ -34,5 +36,12 @@ public class MemberController {
             @RequestBody final MemberRequestDTO.reissue request
     ) {
         return ApiResponse.onSuccess(memberService.reissue(request));
+    }
+    @PostMapping("/login-tmp")
+    @Operation(summary = "로그인 임시", description = "로그인 임시.")
+    public ApiResponse<MemberResponseDTO.registerMember> loginTemp(
+            @RequestBody final MemberRequestDTO.loginMember request
+    ){
+        return ApiResponse.onSuccess((memberService.login(request)));
     }
 }

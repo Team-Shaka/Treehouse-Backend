@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.example.tree.global.common.ApiResponse;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.example.tree.global.exception.JwtAuthenticationException;
+import org.example.tree.global.exception.JwtReissueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
