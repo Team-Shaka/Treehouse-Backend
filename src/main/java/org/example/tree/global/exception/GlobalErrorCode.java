@@ -23,6 +23,7 @@ public enum GlobalErrorCode {
 
     // 401 Unauthorized - 권한 없음
     INVALID_TOKEN(UNAUTHORIZED, "토큰이 유효하지 않습니다."),
+    INVALID_REFRESH_TOKEN(UNAUTHORIZED, "리프레시 토큰이 유효하지 않습니다."),
     LOGIN_REQUIRED(UNAUTHORIZED, "로그인이 필요한 서비스입니다."),
     // 403 Forbidden - 인증 거부
     AUTHENTICATION_DENIED(FORBIDDEN, "인증이 거부 되었습니다."),
@@ -31,6 +32,8 @@ public enum GlobalErrorCode {
     NEED_AGREE_REQUIRE_TERMS(NOT_FOUND, "필수 약관에 동의해 주세요."),
     MEMBER_NOT_FOUND(NOT_FOUND, "등록된 사용자 정보가 없습니다."),
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "리프레시 토큰이 존재하지 않습니다."),
+    REFRESH_TOKEN_EXPIRED(NOT_FOUND, "리프레시 토큰이 만료 되었습니다."),
+    TOKEN_EXPIRED(NOT_FOUND, "토큰이 만료 되었습니다."),
     // 409 CONFLICT : Resource 를 찾을 수 없음
     DUPLICATE_PHONE_NUMBER(CONFLICT, "중복된 전화번호가 존재합니다."),
 

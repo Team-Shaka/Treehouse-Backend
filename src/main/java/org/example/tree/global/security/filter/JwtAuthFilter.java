@@ -18,12 +18,15 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 @RequiredArgsConstructor
 // 들어오는 요청 처리
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
+
+    private final String[] whiteList;
 
 
     /* 요청이 들어올 때마다 실행.
@@ -70,5 +73,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.error(e.getMessage());
         }
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return Arrays.stream(whiteList).anyMatch(path::startsWith);
     }
 }

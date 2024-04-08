@@ -54,6 +54,10 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
+  data:
+    redis:
+      host: ${REDIS_URL}
+      port: 6379
 jwt:
   header: Authorization
   # dev server
@@ -61,8 +65,8 @@ jwt:
     key: ${JWT_SECRET}
   #  secret : ${JWT_SECRET}
   authorities-key: authoritiesKey
-  access-token-validity-in-seconds: 18000000 # 30 m
-  refresh-token-validity-in-seconds: 1209600000 # 14 d
+  access-token-validity-in-seconds: 300000 # 30 m
+  refresh-token-validity-in-seconds: 360000 # 14 d
 
 
 
@@ -82,6 +86,57 @@ cloud:
       #aws access key, secret key
 
 ---
+spring:
+  application:
+    name: tree-server-local
+  config:
+    activate:
+      on-profile: "local"
+  datasource:
+    username: ${aws.db.username}
+    password: ${aws.db.password}
+    url: jdbc:mysql://${aws.db.url}/${aws.db.name}?autoReconnect=true&setTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  sql:
+    init:
+      mode: never
+  data:
+    redis:
+      host: localhost
+      port : 6379
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+        hbm2ddl:
+          auto: update
+        default_batch_fetch_size: 1000
+jwt:
+  header: Authorization
+  # dev server
+  secret:
+    key: ${JWT_SECRET}
+  #  secret : ${JWT_SECRET}
+  authorities-key: authoritiesKey
+  access-token-validity-in-seconds: 20000 # 30 m
+  refresh-token-validity-in-seconds: 30000 # 14 d
+
+cloud:
+  aws:
+    s3:
+      bucket: elasticbeanstalk-ap-northeast-2-851725177732
+      #s3 bucket
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
+    credentials:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
 #spring:
 #  config:
 #    activate:

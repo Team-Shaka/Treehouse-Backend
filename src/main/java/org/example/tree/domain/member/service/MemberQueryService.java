@@ -7,37 +7,29 @@ import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
 import org.example.tree.global.security.provider.TokenProvider;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class MemberQueryService {
     private final MemberRepository memberRepository;
-    private final TokenProvider jwtTokenProvider;
 
     public Optional<Member> checkName(String userName) {
         return memberRepository.findByUserName(userName);
     }
     public Member findById(Long id) {
-        return memberRepository.findById(String.valueOf(id))
+        return memberRepository.findById(id)
                 .orElseThrow(()->new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+    }
+
+    public Boolean existById(Long id){
+        return memberRepository.existsById(id);
     }
 
     public Optional<Member> findByPhoneNumber(String phone) {
         return memberRepository.findByPhone(phone);
-    }
-
-    public Member findByToken(String token) {
-        // 토큰 검증
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new GeneralException(GlobalErrorCode.INVALID_TOKEN);
-        }
-
-        // 토큰을 사용하여 사용자 정보 가져오기
-       String memberId = jwtTokenProvider.getMemberIdFromToken(token);
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
-        return member;
     }
 }

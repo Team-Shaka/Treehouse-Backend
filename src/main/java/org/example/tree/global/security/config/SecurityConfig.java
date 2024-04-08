@@ -10,7 +10,6 @@ import org.example.tree.global.security.provider.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -36,6 +35,10 @@ public class SecurityConfig {
 
     private final JwtAuthenticationExceptionHandler jwtAuthenticationExceptionHandler =
             new JwtAuthenticationExceptionHandler();
+
+    private static final String[] JWT_WHITE_LIST ={
+            "/users/login-tmp","/users/reissue"
+    };
 
     /**
      * 특정 경로에 대한 보안 설정을 무시하도록 설정
@@ -77,7 +80,7 @@ public class SecurityConfig {
                                         .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                                         .accessDeniedHandler(jwtAccessDeniedHandler))
                 .addFilterBefore(
-                        new JwtAuthFilter(tokenProvider),
+                        new JwtAuthFilter(tokenProvider, JWT_WHITE_LIST),
                         UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationExceptionHandler, JwtAuthFilter.class)
                 .build();

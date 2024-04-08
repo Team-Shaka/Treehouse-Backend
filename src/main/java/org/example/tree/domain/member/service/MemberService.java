@@ -6,6 +6,10 @@ import org.example.tree.domain.member.converter.MemberConverter;
 import org.example.tree.domain.member.dto.MemberRequestDTO;
 import org.example.tree.domain.member.dto.MemberResponseDTO;
 import org.example.tree.domain.member.entity.Member;
+import org.example.tree.domain.member.entity.redis.RefreshToken;
+import org.example.tree.global.exception.GeneralException;
+import org.example.tree.global.exception.GlobalErrorCode;
+import org.example.tree.global.redis.service.RedisService;
 import org.example.tree.global.security.jwt.dto.TokenDTO;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +21,8 @@ public class MemberService {
     private final MemberCommandService memberCommandService;
     private final MemberQueryService memberQueryService;
     private final MemberConverter memberConverter;
+
+    private final RedisService redisService;
 
     @Transactional
     public MemberResponseDTO.checkName checkName(MemberRequestDTO.checkName request) {
@@ -33,9 +39,17 @@ public class MemberService {
     }
 
     @Transactional
+    public MemberResponseDTO.registerMember login(MemberRequestDTO.loginMember request) {
+        Member member = memberQueryService.findByPhoneNumber(request.getPhoneNumber()).orElseThrow(() -> new GeneralException(GlobalErrorCode.MEMBER_NOT_FOUND));
+        TokenDTO savedToken = memberCommandService.login(member);
+        return memberConverter.toRegister(member, savedToken.getAccessToken(), savedToken.getRefreshToken());
+    }
+
+    @Transactional
     public MemberResponseDTO.reissue reissue(MemberRequestDTO.reissue request) {
-        Member member = memberQueryService.findByToken(request.getRefreshToken());
-        TokenDTO token = memberCommandService.reissue(member);
+        RefreshToken refreshToken = redisService.findRefreshToken(request.getRefreshToken()).orElseThrow(() -> new GeneralException(GlobalErrorCode.REFRESH_TOKEN_EXPIRED));
+        Member member = memberQueryService.findById(refreshToken.getMemberId());
+        TokenDTO token = memberCommandService.reissueToken(member,refreshToken);
         return memberConverter.toReissue(token.getAccessToken(), token.getRefreshToken());
     }
 
