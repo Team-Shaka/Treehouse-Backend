@@ -64,6 +64,11 @@ public enum GlobalErrorCode implements BaseErrorCode{
     //Notification
     //404 Not Found - 찾을 수 없음
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "NOTIFICATION", "존재하지 않는 알림입니다."),
+
+    //FeignClient
+    FEIGN_CLIENT_ERROR_400(BAD_REQUEST, "FEIGN400", "feignClient 에서 400번대 에러가 발생했습니다."),
+    FEIGN_CLIENT_ERROR_500(INTERNAL_SERVER_ERROR, "FEIGN500", "feignClient 에서 500번대 에러가 발생했습니다."),
+
     ;
 
     private final HttpStatus httpStatus;
