@@ -9,20 +9,20 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileRequestDTO {
     @Getter
     public static class createProfile {
-        private Long treeId;
-        private Long userId;
+        private Long treehouseId;
+        private String userName;
         private String memberName;
-        private String profileImage;
+        private String profileImageURL;
         private String bio;
 
     }
 
     @Getter
     public static class ownerProfile {
-        private Long treeId;
-        private Long userId;
+        private Long treehouseId;
+        private String userName;
         private String memberName;
-        private String profileImage;
+        private String profileImageURL;
         private String bio;
 
     }

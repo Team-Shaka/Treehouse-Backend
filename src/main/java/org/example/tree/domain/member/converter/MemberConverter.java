@@ -31,7 +31,7 @@ public class MemberConverter {
         return staticMemberQueryService.findById(Long.valueOf(id));
     }
 
-    public Member toMember (String userName, String phone) {
+    public static Member toMember (String userName, String phone) {
         return Member.builder()
                 .userName(userName)
                 .phone(phone)
@@ -40,13 +40,13 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberResponseDTO.checkName toCheckName(Boolean isDuplicated) {
+    public static MemberResponseDTO.checkName toCheckName(Boolean isDuplicated) {
         return MemberResponseDTO.checkName.builder()
                 .isDuplicated(isDuplicated)
                 .build();
     }
 
-    public MemberResponseDTO.registerMember toRegister(Member member, String accessToken, String refreshToken) {
+    public static MemberResponseDTO.registerMember toRegister(Member member, String accessToken, String refreshToken) {
         return MemberResponseDTO.registerMember.builder()
                 .userId(member.getId())
                 .accessToken(accessToken)
@@ -54,7 +54,7 @@ public class MemberConverter {
                 .build();
     }
 
-    public MemberResponseDTO.reissue toReissue(String accessToken, String refreshToken) {
+    public static MemberResponseDTO.reissue toReissue(String accessToken, String refreshToken) {
         return MemberResponseDTO.reissue.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

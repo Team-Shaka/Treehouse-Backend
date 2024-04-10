@@ -35,7 +35,7 @@ public class InvitationController {
         return ApiResponse.onSuccess("");
     }
 
-    @PostMapping("/trees/members/invitation/accept")
+    @PostMapping("/treehouses/members/invitation/accept")
     @Operation(summary = "초대 수락", description = "받은 초대를 수락합니다.")
     public ApiResponse<InvitationResponseDTO.acceptInvitation> acceptInvitation(
             @RequestBody final InvitationRequestDTO.acceptInvitation request
@@ -43,7 +43,7 @@ public class InvitationController {
         return ApiResponse.onSuccess(invitationService.acceptInvitation(request));
     }
 
-    @PostMapping("/trees/members/invitation/reject")
+    @PostMapping("/treehouses/members/invitation/reject")
     @Operation(summary = "초대 거절", description = "받은 초대를 거절합니다.")
     public ApiResponse<InvitationResponseDTO.rejectInvitation> rejectInvitation(
             @RequestBody final InvitationRequestDTO.rejectInvitation request
@@ -53,10 +53,10 @@ public class InvitationController {
 
     @GetMapping("/users/invitation")
     @Operation(summary = "초대장 조회", description = "내가 받은 초대장을 조회합니다.")
-    public ApiResponse<List<InvitationResponseDTO.getInvitation>> getInvitation(
+    public ApiResponse<InvitationResponseDTO.getInvitations> getInvitations(
             @AuthMember @Parameter(hidden = true) Member member
     ) {
-        return ApiResponse.onSuccess(invitationService.getInvitation(member));
+        return ApiResponse.onSuccess(invitationService.getInvitations(member));
     }
 
     @GetMapping("/users/availableInvitation")

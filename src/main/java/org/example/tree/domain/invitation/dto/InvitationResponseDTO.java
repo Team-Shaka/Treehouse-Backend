@@ -21,7 +21,7 @@ public class InvitationResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class acceptInvitation {
-        private Long treeId;
+        private Long treehouseId;
         private Boolean isAccepted;
     }
 
@@ -30,7 +30,7 @@ public class InvitationResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class rejectInvitation {
-        private Long treeId;
+        private Long treehouseId;
         private Boolean isAccepted;
     }
 
@@ -45,6 +45,14 @@ public class InvitationResponseDTO {
         private String senderProfileImageUrl;
         private Integer treehouseSize;
         private List<String> treehouseMemberProfileImages;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class getInvitations {
+        List<InvitationResponseDTO.getInvitation> invitations;
     }
 
     @Builder

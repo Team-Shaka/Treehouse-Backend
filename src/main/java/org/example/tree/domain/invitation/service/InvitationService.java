@@ -2,7 +2,6 @@ package org.example.tree.domain.invitation.service;
 
 
 import lombok.RequiredArgsConstructor;
-import org.example.tree.domain.branch.service.BranchService;
 import org.example.tree.domain.invitation.converter.InvitationConverter;
 import org.example.tree.domain.invitation.dto.InvitationRequestDTO;
 import org.example.tree.domain.invitation.dto.InvitationResponseDTO;
@@ -18,7 +17,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -37,7 +35,7 @@ public class InvitationService {
     public InvitationResponseDTO.sendInvitation inviteUser(InvitationRequestDTO.sendInvitation request) {
         Member member = memberQueryService.findById(request.getSenderId());
         member.decreaseInvitationCount();
-        Tree tree = treeQueryService.findById(request.getTreeId());
+        Tree tree = treeQueryService.findById(request.getTreehouseId());
         Profile sender = profileQueryService.getTreeProfile(member, tree);
         Invitation invitation = invitationConverter.toInvitation(sender, tree, request.getPhoneNumber());
         Optional<Member> optionalMember = memberQueryService.findByPhoneNumber(request.getPhoneNumber());
@@ -78,9 +76,9 @@ public class InvitationService {
     }
 
     @Transactional
-    public List<InvitationResponseDTO.getInvitation> getInvitation(Member member) {
-        List<Invitation> invitations= invitationQueryService.findAllByPhone(member.getPhone());
-        return invitations.stream()
+    public InvitationResponseDTO.getInvitations getInvitations(Member member) {
+        List<Invitation> invitations = invitationQueryService.findAllByPhone(member.getPhone());
+        List<InvitationResponseDTO.getInvitation> invitationDtos = invitations.stream()
                 .map(invitation -> {
                     Tree tree = invitation.getTree(); // Invitation에서 Tree 정보를 가져옵니다.
                     List<Profile> treeMembers = profileQueryService.findTreeMembers(tree); // Tree의 모든 멤버를 조회합니다.
@@ -89,11 +87,13 @@ public class InvitationService {
                     List<String> randomProfileImages = treeMembers.stream()
                             .map(Profile::getProfileImageUrl)
                             .limit(3) // 최대 3명
-                            .collect(Collectors.toList());
+                            .toList();
 
                     // toGetInvitation 메소드를 수정하여, 선택된 멤버의 profileImage 정보를 포함시켜야 합니다.
                     return invitationConverter.toGetInvitation(invitation, randomProfileImages);
                 })
                 .collect(Collectors.toList());
+
+        return invitationConverter.toGetInvitations(invitationDtos);
     }
 }

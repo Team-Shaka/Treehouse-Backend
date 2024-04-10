@@ -33,16 +33,15 @@ public class ProfileService {
     private final InvitationQueryService invitationQueryService;
 
     @Transactional
-    public ProfileResponseDTO.createProfile createProfile(ProfileRequestDTO.createProfile request) throws Exception {
-        Tree tree = treeQueryService.findById(request.getTreeId());
-        Member member = memberQueryService.findById(request.getUserId());
+    public ProfileResponseDTO.createProfile createProfile(ProfileRequestDTO.createProfile request, Member member) throws Exception {
+        Tree tree = treeQueryService.findById(request.getTreehouseId());
         boolean isNewUser = profileQueryService.isNewUser(member);
         if (!isNewUser) {
             Profile currentProfile = profileQueryService.getCurrentProfile(member);
             currentProfile.inactivate();
             profileCommandService.updateProfile(currentProfile);
         }
-        String profileImageUrl = request.getProfileImage() == null ? DEFAULT_PROFILE_IMAGE : request.getProfileImage();
+        String profileImageUrl = request.getProfileImageURL() == null ? DEFAULT_PROFILE_IMAGE : request.getProfileImageURL();
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);
         tree.increaseTreeSize();
@@ -53,16 +52,15 @@ public class ProfileService {
     }
 
     @Transactional
-    public ProfileResponseDTO.createProfile ownerProfile(ProfileRequestDTO.ownerProfile request) throws Exception {
-        Tree tree = treeQueryService.findById(request.getTreeId());
-        Member member = memberQueryService.findById(request.getUserId());
+    public ProfileResponseDTO.createProfile ownerProfile(ProfileRequestDTO.ownerProfile request, Member member) throws Exception {
+        Tree tree = treeQueryService.findById(request.getTreehouseId());
         boolean isNewUser = profileQueryService.isNewUser(member);
         if (!isNewUser) {
             Profile currentProfile = profileQueryService.getCurrentProfile(member);
             currentProfile.inactivate();
             profileCommandService.updateProfile(currentProfile);
         }
-        String profileImageUrl = request.getProfileImage() == null ? DEFAULT_PROFILE_IMAGE : request.getProfileImage();
+        String profileImageUrl = request.getProfileImageURL() == null ? DEFAULT_PROFILE_IMAGE : request.getProfileImageURL();
         Profile newProfile = profileConverter.toProfile(tree, member, request.getMemberName(), request.getBio(), profileImageUrl);
         profileCommandService.createProfile(newProfile);
         tree.increaseTreeSize();

@@ -18,23 +18,25 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProfileController {
     private final ProfileService profileService;
 
-    @PostMapping("/trees/owner/register")
-    @Operation(summary = "트리하우스 설립자 프로필 등록", description = "트리하우스 오너 프로필을 등록합니다.")
-    public ApiResponse registerTreeOwner(
-            @RequestBody ProfileRequestDTO.ownerProfile request
+    @PostMapping("/treehouses/owner/register")
+    @Operation(summary = "트리하우스 설립자 등록", description = "트리하우스의 설립자(Owner)로 등록합니다.")
+    public ApiResponse registerTreehouseOwner(
+            @RequestBody ProfileRequestDTO.ownerProfile request,
+            @AuthMember @Parameter(hidden = true) Member member
     ) throws Exception {
-        return ApiResponse.onSuccess(profileService.ownerProfile(request));
+        return ApiResponse.onSuccess(profileService.ownerProfile(request, member));
     }
 
-    @PostMapping("/trees/members/register")
-    @Operation(summary = "트리하우스 멤버 프로필 등록", description = "트리하우스 멤버 프로필을 등록합니다.")
-    public ApiResponse registerTreeMember(
-            @RequestBody ProfileRequestDTO.createProfile request
+    @PostMapping("/treehouses/members/register")
+    @Operation(summary = "트리하우스 멤버 가입", description = "트리하우스의 멤버로 등록합니다.")
+    public ApiResponse registerTreehouseMember(
+            @RequestBody ProfileRequestDTO.createProfile request,
+            @AuthMember @Parameter(hidden = true) Member member
             ) throws Exception {
-        return ApiResponse.onSuccess(profileService.createProfile(request));
+        return ApiResponse.onSuccess(profileService.createProfile(request, member));
     }
 
-    @GetMapping("/trees/{treeId}/members/{profileId}") //프로필 조회
+    @GetMapping("/treehouses/{treeId}/members/{profileId}") //프로필 조회
     @Operation(summary = "멤버 프로필 조회", description = "트리하우스 속 특정 멤버의 프로필을 조회합니다.")
     public ApiResponse getProfileDetails(
             @AuthMember @Parameter(hidden = true) Member member,
@@ -43,7 +45,7 @@ public class ProfileController {
         return ApiResponse.onSuccess(profileService.getProfileDetails(member, profileId));
     }
 
-    @GetMapping("/trees/{treeId}/myProfile") //내 프로필 조회
+    @GetMapping("/treehouses/{treeId}/myProfile") //내 프로필 조회
     @Operation(summary = "내 프로필 조회", description = "트리하우스 속 내 프로필을 조회합니다.")
     public ApiResponse getMyProfile(
             @AuthMember @Parameter(hidden = true) Member member,
