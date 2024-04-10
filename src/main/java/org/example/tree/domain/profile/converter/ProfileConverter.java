@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 public class ProfileConverter {
-    public Profile toProfile (Tree tree, Member member, String memberName, String bio, String profileImageUrl) {
+    public static Profile toProfile (Tree tree, Member member, String memberName, String bio, String profileImageUrl) {
         return Profile.builder()
                 .tree(tree)
                 .member(member)
@@ -22,16 +22,14 @@ public class ProfileConverter {
                 .build();
     }
 
-    public ProfileResponseDTO.createProfile toCreateProfile(Profile profile) {
+    public static ProfileResponseDTO.createProfile toCreateProfile(Profile profile) {
         return ProfileResponseDTO.createProfile.builder()
-                .profileId(profile.getId())
-                .treeId(profile.getTree().getId())
-                .memberName(profile.getMemberName())
-                .profileImageUrl(profile.getProfileImageUrl())
+                .userId(profile.getMember().getId())
+                .treehouseId(profile.getTree().getId())
                 .build();
     }
 
-    public ProfileResponseDTO.getProfileDetails toGetProfileDetails(Profile profile, List<Long> treeIds, int branchDegree) {
+    public static ProfileResponseDTO.getProfileDetails toGetProfileDetails(Profile profile, List<Long> treeIds, int branchDegree) {
         return ProfileResponseDTO.getProfileDetails.builder()
                 .profileId(profile.getId())
                 .treeIds(treeIds)

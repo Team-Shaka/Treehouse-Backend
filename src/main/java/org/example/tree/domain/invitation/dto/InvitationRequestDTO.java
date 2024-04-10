@@ -10,7 +10,7 @@ public class InvitationRequestDTO {
     @Getter
     public static class sendInvitation {
         private Long senderId;
-        private Long treeId;
+        private Long treehouseId;
         private String phoneNumber;
     }
 

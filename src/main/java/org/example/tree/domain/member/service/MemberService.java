@@ -29,8 +29,8 @@ public class MemberService {
     @Transactional
     public MemberResponseDTO.checkName checkName(MemberRequestDTO.checkName request) {
         Optional<Member> optionalMember = memberQueryService.checkName(request.getUserName());
-        Boolean isDuplicate = optionalMember.isPresent();
-        return memberConverter.toCheckName(isDuplicate);
+        Boolean isDuplicated = optionalMember.isPresent();
+        return memberConverter.toCheckName(isDuplicated);
     }
     @Transactional
     public MemberResponseDTO.registerMember register(MemberRequestDTO.registerMember request) {

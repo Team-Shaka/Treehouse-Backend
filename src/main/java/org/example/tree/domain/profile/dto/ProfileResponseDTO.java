@@ -12,10 +12,8 @@ public class ProfileResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class createProfile {
-        private Long profileId;
-        private Long treeId;
-        private String memberName;
-        private String profileImageUrl;
+        private Long userId;
+        private Long treehouseId;
     }
 
     @Builder

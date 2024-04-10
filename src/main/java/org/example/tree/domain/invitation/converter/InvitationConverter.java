@@ -31,14 +31,14 @@ public class InvitationConverter {
 
     public InvitationResponseDTO.acceptInvitation toAcceptInvitation (Invitation invitation) {
         return InvitationResponseDTO.acceptInvitation.builder()
-                .treeId(invitation.getTree().getId())
+                .treehouseId(invitation.getTree().getId())
                 .isAccepted(true)
                 .build();
     }
 
     public InvitationResponseDTO.rejectInvitation toRejectInvitation (Invitation invitation) {
         return InvitationResponseDTO.rejectInvitation.builder()
-                .treeId(invitation.getTree().getId())
+                .treehouseId(invitation.getTree().getId())
                 .isAccepted(false)
                 .build();
     }
@@ -59,5 +59,11 @@ public class InvitationConverter {
                 .treehouseSize(invitation.getTree().getTreeSize())
                 .treehouseMemberProfileImages(treeMemberProfileImages)
                 .build();
+    }
+
+    public InvitationResponseDTO.getInvitations toGetInvitations(List<InvitationResponseDTO.getInvitation> invitationDtos) {
+       return InvitationResponseDTO.getInvitations.builder()
+               .invitations(invitationDtos)
+               .build();
     }
 }
