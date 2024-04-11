@@ -11,7 +11,7 @@ public class NcpDto {
     @Setter
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public class MessageDto {
+    public static class MessageDto {
         String to;
         String content;
     }
@@ -20,7 +20,7 @@ public class NcpDto {
     @Getter
     @AllArgsConstructor(access = AccessLevel.PROTECTED)
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    public class SmsRequestDto {
+    public static class SmsRequestDto {
         String type;
         String contentType;
         String countryCode;
