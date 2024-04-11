@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.branch.dto.BranchResponseDTO;
 import org.example.tree.domain.branch.service.BranchService;
 import org.example.tree.domain.member.entity.Member;
-import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.common.CommonResponse;
 import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,18 +16,18 @@ public class BranchController {
     private final BranchService branchService;
 
     @GetMapping("/trees/{treeId}/branchView")
-    public ApiResponse<BranchResponseDTO.branchView> getBranchView(
+    public CommonResponse<BranchResponseDTO.branchView> getBranchView(
             @PathVariable Long treeId,
             @RequestParam("memberId") Long profileId,
             @AuthMember @Parameter(hidden = true) Member member
     ) {
-        return ApiResponse.onSuccess(branchService.getBranchView(treeId, member, profileId));
+        return CommonResponse.onSuccess(branchService.getBranchView(treeId, member, profileId));
     }
 
     @GetMapping("/trees/{treeId}/branchView/all")
-    public ApiResponse<BranchResponseDTO.branchView> getCompleteBranchView(
+    public CommonResponse<BranchResponseDTO.branchView> getCompleteBranchView(
             @PathVariable Long treeId
     ) {
-        return ApiResponse.onSuccess(branchService.getCompleteBranchView(treeId));
+        return CommonResponse.onSuccess(branchService.getCompleteBranchView(treeId));
     }
 }

@@ -4,11 +4,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.common.CommonResponse;
 import org.example.tree.global.exception.AuthErrorCode;
-import org.example.tree.global.exception.GlobalErrorCode;
 import org.example.tree.global.exception.JwtAuthenticationException;
-import org.example.tree.global.exception.JwtReissueException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -30,7 +28,7 @@ public class JwtAuthenticationExceptionHandler extends OncePerRequestFilter {
             PrintWriter writer = response.getWriter();
             String errorCodeName = authException.getMessage();
             AuthErrorCode errorCode = AuthErrorCode.valueOf(errorCodeName);
-            ApiResponse<String> apiErrorResult = ApiResponse.onFailure(errorCode.getCode(),errorCode.getMessage(), null);
+            CommonResponse<String> apiErrorResult = CommonResponse.onFailure(errorCode.getCode(),errorCode.getMessage(), null);
 
             writer.write(apiErrorResult.toString());
             writer.flush();

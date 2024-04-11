@@ -3,9 +3,8 @@ package org.example.tree.global.security.handler;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.common.CommonResponse;
 import org.example.tree.global.exception.AuthErrorCode;
-import org.example.tree.global.exception.GlobalErrorCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -32,7 +31,7 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         // AuthErrorCode.AUTHENTICATION_DENIED enum에서 코드와 메시지를 얻음
         String code = AuthErrorCode.AUTHENTICATION_DENIED.getCode();
         String message = AuthErrorCode.AUTHENTICATION_DENIED.getMessage();
-        ApiResponse<String> apiErrorResult = ApiResponse.onFailure(code, message, null);
+        CommonResponse<String> apiErrorResult = CommonResponse.onFailure(code, message, null);
         writer.write(apiErrorResult.toString());
         writer.flush();
         writer.close();
