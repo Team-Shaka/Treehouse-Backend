@@ -55,4 +55,8 @@ public class MemberService {
         return memberConverter.toReissue(token.getAccessToken(), token.getRefreshToken());
     }
 
+    public void existsByPhoneNum(String phoneNum) {
+        memberQueryService.existByPhoneNumber(phoneNum);
+    }
+
 }

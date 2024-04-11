@@ -5,6 +5,7 @@ import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.member.repository.MemberRepository;
 import org.example.tree.global.exception.GeneralException;
 import org.example.tree.global.exception.GlobalErrorCode;
+import org.example.tree.global.exception.MemberException;
 import org.example.tree.global.security.provider.TokenProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,5 +32,11 @@ public class MemberQueryService {
 
     public Optional<Member> findByPhoneNumber(String phone) {
         return memberRepository.findByPhone(phone);
+    }
+
+    public void existByPhoneNumber(String phoneNum) {
+        if (memberRepository.existsByPhone(phoneNum)) {
+            throw new MemberException(GlobalErrorCode.PHONE_NUMBER_EXIST);
+        }
     }
 }

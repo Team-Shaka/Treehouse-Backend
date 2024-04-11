@@ -64,6 +64,17 @@ public enum GlobalErrorCode implements BaseErrorCode{
     //Notification
     //404 Not Found - 찾을 수 없음
     NOTIFICATION_NOT_FOUND(NOT_FOUND, "NOTIFICATION", "존재하지 않는 알림입니다."),
+
+    //FeignClient
+    FEIGN_CLIENT_ERROR_400(BAD_REQUEST, "FEIGN400", "feignClient 에서 400번대 에러가 발생했습니다."),
+    FEIGN_CLIENT_ERROR_500(INTERNAL_SERVER_ERROR, "FEIGN500", "feignClient 에서 500번대 에러가 발생했습니다."),
+
+    // NCP Phone Auth
+    PHONE_NUMBER_EXIST(OK, "NCP200_1", "이미 인증된 전화번호입니다."),
+    PHONE_AUTH_NOT_FOUND(BAD_REQUEST, "NCP400_1", "인증 번호 요청이 필요합니다."),
+    PHONE_AUTH_WRONG(BAD_REQUEST, "NCP400_2", "잘못된 인증 번호 입니다."),
+    PHONE_AUTH_TIMEOUT(BAD_REQUEST, "NCP400_3", "인증 시간이 초과되었습니다."),
+
     ;
 
     private final HttpStatus httpStatus;

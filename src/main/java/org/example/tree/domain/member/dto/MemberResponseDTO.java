@@ -31,4 +31,20 @@ public class MemberResponseDTO {
         private String accessToken;
         private String refreshToken;
     }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class checkPhoneAuth{
+        boolean authenticated;
+    }
+
+    @Builder
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class checkSentSms{
+        boolean messageSent;
+    }
 }
