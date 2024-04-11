@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.tree.domain.comment.dto.ReplyRequestDTO;
 import org.example.tree.domain.comment.service.ReplyService;
 import org.example.tree.domain.member.entity.Member;
-import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.common.CommonResponse;
 import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,19 +17,19 @@ public class ReplyController {
 
     @PostMapping("/trees/{treeId}/feed/comments/{commentId}/reply")
     @Operation(summary = "답글 작성", description = "특정 댓글에 답글을 작성합니다.")
-    public ApiResponse createReply(
+    public CommonResponse createReply(
             @PathVariable final Long treeId,
             @PathVariable final Long commentId,
             @RequestBody final ReplyRequestDTO.createReply request,
             @AuthMember @Parameter(hidden = true) Member member
             ) {
         replyService.createReply(treeId, commentId, request, member);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 
     @PatchMapping("/trees/{treeId}/feed/comments/{commentId}/reply/{replyId}")
     @Operation(summary = "답글 수정", description = "답글을 수정합니다.")
-    public ApiResponse updateReply(
+    public CommonResponse updateReply(
             @PathVariable final Long treeId,
             @PathVariable final Long commentId,
             @PathVariable final Long replyId,
@@ -37,19 +37,19 @@ public class ReplyController {
             @AuthMember @Parameter(hidden = true) Member member
     ) {
         replyService.updateReply(treeId, commentId, replyId, request, member);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 
     @DeleteMapping("/trees/{treeId}/feed/comments/{commentId}/reply/{replyId}")
     @Operation(summary = "답글 삭제", description = "답글을 삭제합니다.")
-    public ApiResponse deleteReply(
+    public CommonResponse deleteReply(
             @PathVariable final Long treeId,
             @PathVariable final Long commentId,
             @PathVariable final Long replyId,
             @AuthMember @Parameter(hidden = true) Member member
     ) {
         replyService.deleteReply(treeId, commentId, replyId, member);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 
 }

@@ -7,7 +7,7 @@ import org.example.tree.domain.comment.dto.CommentRequestDTO;
 import org.example.tree.domain.comment.dto.CommentResponseDTO;
 import org.example.tree.domain.comment.service.CommentService;
 import org.example.tree.domain.member.entity.Member;
-import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.common.CommonResponse;
 import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class CommentController {
 
     @PostMapping("/trees/{treeId}/feed/posts/{postId}/comments")
     @Operation(summary = "댓글 작성", description = "특정 게시글에 댓글 작성합니다.")
-    public ApiResponse createComment(
+    public CommonResponse createComment(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
             @RequestBody final CommentRequestDTO.createComment request,
@@ -28,22 +28,22 @@ public class CommentController {
 
             ) {
         commentService.createComment(treeId, postId, request, member);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 
     @GetMapping("/trees/{treeId}/feed/posts/{postId}/comments")
     @Operation(summary = "댓글 조회", description = "Reaction과 댓글에 달린 답글도 같이 출력됩니다.")
-    public ApiResponse<List<CommentResponseDTO.getComment>> getComments(
+    public CommonResponse<List<CommentResponseDTO.getComment>> getComments(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
             @AuthMember @Parameter(hidden = true) Member member
     ) {
-        return ApiResponse.onSuccess(commentService.getComments(treeId, postId, member));
+        return CommonResponse.onSuccess(commentService.getComments(treeId, postId, member));
     }
 
     @PatchMapping("/trees/{treeId}/feed/posts/{postId}/comments/{commentId}")
     @Operation(summary = "댓글 수정", description = "댓글을 수정합니다.")
-    public ApiResponse updateComment(
+    public CommonResponse updateComment(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
             @PathVariable final Long commentId,
@@ -51,18 +51,18 @@ public class CommentController {
             @AuthMember @Parameter(hidden = true) Member member
     ) {
         commentService.updateComment(treeId, postId, commentId, request, member);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 
     @DeleteMapping("/trees/{treeId}/feed/posts/{postId}/comments/{commentId}")
     @Operation(summary = "댓글 삭제", description = "댓글을 삭제합니다.")
-    public ApiResponse deleteComment(
+    public CommonResponse deleteComment(
             @PathVariable final Long treeId,
             @PathVariable final Long postId,
             @PathVariable final Long commentId,
             @AuthMember @Parameter(hidden = true) Member member
     ) {
         commentService.deleteComment(treeId, postId, commentId, member);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 }

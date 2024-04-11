@@ -7,7 +7,7 @@ import org.example.tree.domain.member.entity.Member;
 import org.example.tree.domain.tree.dto.TreeRequestDTO;
 import org.example.tree.domain.tree.dto.TreeResponseDTO;
 import org.example.tree.domain.tree.service.TreeService;
-import org.example.tree.global.common.ApiResponse;
+import org.example.tree.global.common.CommonResponse;
 import org.example.tree.global.security.handler.annotation.AuthMember;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,28 +21,28 @@ public class TreeController {
 
     @Operation(summary = "트리하우스 등록")
     @PostMapping("/register")
-    public ApiResponse createTree(
+    public CommonResponse createTree(
             @RequestBody TreeRequestDTO.createTree request
     ) {
         treeService.createTree(request);
-        return ApiResponse.onSuccess("");
+        return CommonResponse.onSuccess("");
     }
 
     @Operation(summary = "트리하우스 조회")
     @GetMapping
-    public ApiResponse<List<TreeResponseDTO.getTree>> getTrees(
+    public CommonResponse<List<TreeResponseDTO.getTree>> getTrees(
             @AuthMember @Parameter(hidden = true) Member member
     ) {
-         return ApiResponse.onSuccess(treeService.getTrees(member));
+         return CommonResponse.onSuccess(treeService.getTrees(member));
     }
 
     @Operation(summary = "트리하우스 위치 변경")
     @PostMapping("/{treeId}")
-    public ApiResponse<TreeResponseDTO.shiftTree> shiftTree(
+    public CommonResponse<TreeResponseDTO.shiftTree> shiftTree(
             @AuthMember @Parameter(hidden = true) Member member,
             @PathVariable final Long treeId
     ) {
-        return ApiResponse.onSuccess(treeService.shiftTree(treeId, member));
+        return CommonResponse.onSuccess(treeService.shiftTree(treeId, member));
     }
 
 }
