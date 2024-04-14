@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 // 테스트를 위해 짧게 하기도 해야함
 // 60 * 60 * 24 * 14 <- 2주
-@RedisHash(value = "refreshToken_Treehouse", timeToLive = 60 * 8)
+@RedisHash(value = "refreshToken_Treehouse", timeToLive = 60 * 2)
 @Builder
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
